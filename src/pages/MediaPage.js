@@ -1,9 +1,13 @@
 import React from "react";
 import Media from '../components/Media';
+import Nav from '../components/Nav';
 
 const MediaPage = () => {
     return (
-        <Media mediaHash={new URL(window.location.href).searchParams.get("media")}/>
+        <React.Fragment>
+            <Nav />
+            <Media mediaHash={new URL(window.location.href).searchParams.get("media")}/>
+        </React.Fragment>
     );
 }
 

@@ -1,35 +1,48 @@
 import React, { Component } from 'react';
-import MediaThumbnail from './MediaThumbnail'
+import MediaThumbnail from './MediaThumbnail';
+
+import API from '../api/API';
+import { SearchRequest, SearchMediaSetRequest } from '../api/requests/SearchRequests';
 
 class MediaThumbnails extends Component {
 
     state = {
         mediaSet: this.props.mediaSet,
         searchQuery: this.props.searchQuery,
-        mediasData : []
+        media : []
     };
 
     componentDidMount = () => {
         if (this.state.mediaSet === null) {
             return;
         }
-        var query;
+        let request;
         if (this.state.searchQuery === null || this.state.searchQuery.length === 0){
-            query = 'http://localhost:8000/api/search/' + this.state.mediaSet;
+            request = new SearchMediaSetRequest({ set: this.state.mediaSet });
         } else {
-            query = 'http://localhost:8000/api/search/' + this.state.mediaSet + '/' + this.state.searchQuery;
+            request = new SearchRequest({ set : this.state.mediaSet, query : this.state.searchQuery })
         };
-        fetch(query)
-        .then(response => response.json())
-        .then(data => {
-            this.setState({ mediasData: data['data'] })
+        API.get(request).then(queriedMedia => {
+            this.setState({ media : queriedMedia });
+        }).catch(error => { 
+            switch(error.name) {
+                case ("APINetworkError"):
+                    alert("Failed to connect to API.");
+                    break;
+                case ("APINotFoundError"):
+                    alert("MediaSet not found.");
+                    break;
+                default:
+                    alert(error.message);
+                    break;
+            }
         });
     }
 
     render() { 
         return ( 
             <div id="thumbnails">
-                {this.state.mediasData.map(media => <MediaThumbnail key={media.hash} data={media}/>)}
+                {this.state.media.map(media => <MediaThumbnail key={media.hash} data={media}/>)}
             </div>
         );
     }
