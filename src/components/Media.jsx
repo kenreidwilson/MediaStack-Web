@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import API from '../api/API'
 import { MediaInfoRequest } from '../api/requests/MediaRequests'
-import MediaImage from './MediaImage';
-import MediaVideo from './MediaVideo';
 import MediaInfoSidebar from './MediaInfoSidebar';
 
 class Media extends Component {
@@ -18,17 +16,7 @@ class Media extends Component {
         API.get(new MediaInfoRequest({ hash : this.state.mediaHash })).then(mediaInfo => {
             this.setState({ media : mediaInfo})
         }).catch(error => { 
-            switch(error.name) {
-                case ("APINetworkError"):
-                    alert("Failed to connect to API.");
-                    break;
-                case ("APINotFoundError"):
-                    alert("Media not found.");
-                    break;
-                default:
-                    alert(error.message);
-                    break;
-            }
+            alert(error.message)
         });
     }
     
@@ -61,5 +49,35 @@ class Media extends Component {
         );
     }
 }
+
+class MediaVideo extends Component {
+    state = {
+        media : this.props.mediaData
+    }
+    
+    render() { 
+        return (
+            <video controls autoplay muted>
+                <source
+                    src={`http://localhost:8000/api/media/${this.state.media.hash}`}
+                    type="video/mp4"
+                >
+                </source>
+            </video>
+        );
+    }
+}
  
+class MediaImage extends Component {
+    state = {
+        media : this.props.mediaData
+    }
+
+    render() { 
+        return (
+            <img alt={this.state.media.tags.toString()} src={`http://localhost:8000/api/media/${this.state.media.hash}`}></img>
+        );
+    }
+}
+
 export default Media;

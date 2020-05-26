@@ -4,6 +4,7 @@ class MediaInfoSidebar extends Component {
     state = {
         media : this.props.mediaData
     }
+    
     render() { 
         return (
             <div id="media_info">

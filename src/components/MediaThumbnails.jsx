@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import MediaThumbnail from './MediaThumbnail';
 
 import API from '../api/API';
 import { SearchRequest, SearchMediaSetRequest } from '../api/requests/SearchRequests';
@@ -25,17 +24,7 @@ class MediaThumbnails extends Component {
         API.get(request).then(queriedMedia => {
             this.setState({ media : queriedMedia });
         }).catch(error => { 
-            switch(error.name) {
-                case ("APINetworkError"):
-                    alert("Failed to connect to API.");
-                    break;
-                case ("APINotFoundError"):
-                    alert("MediaSet not found.");
-                    break;
-                default:
-                    alert(error.message);
-                    break;
-            }
+            alert(error.message);
         });
     }
 
@@ -44,6 +33,27 @@ class MediaThumbnails extends Component {
             <div id="thumbnails">
                 {this.state.media.map(media => <MediaThumbnail key={media.hash} data={media}/>)}
             </div>
+        );
+    }
+}
+
+class MediaThumbnail extends Component {
+    state = {
+        media: this.props.data
+    };
+
+    render() {
+        let classes = "thumbnail ";
+        classes += this.state.media.album == null ? "media_thumbnail" : "album_thumbnail";
+        let alt = this.state.media.tags.toString();
+        return (
+            <a href={`/media?media=${this.state.media.hash}`}>
+                <img 
+                    alt={alt} 
+                    className={classes} 
+                    src={`http://localhost:8000/api/media/${this.state.media.hash}/thumbnail`}>
+                </img>
+            </a>
         );
     }
 }

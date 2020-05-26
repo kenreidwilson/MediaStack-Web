@@ -9,7 +9,7 @@ class SearchRequest extends BaseRequest {
         this.searchQuery = options.query;
     }
 
-    getRequestURL() {
+    getURL() {
         return `${this.baseURL}${primaryResource}${this.mediaSet}/${this.searchQuery}`;
     }
 }
@@ -20,7 +20,7 @@ class SearchMediaSetRequest extends BaseRequest {
         this.mediaSet = options.set;
     }
 
-    getRequestURL() {
+    getURL() {
         return `${this.baseURL}${primaryResource}${this.mediaSet}`;
     }
 }

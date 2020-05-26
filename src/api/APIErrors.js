@@ -19,8 +19,16 @@ class APIBadRequestError extends Error {
     }
 }
 
+class APIUnexpectedResponseError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "APIUnexpectedResponseError";
+    }
+}
+
 export {
     APINetworkError,
     APINotFoundError,
-    APIBadRequestError
+    APIBadRequestError,
+    APIUnexpectedResponseError
 };

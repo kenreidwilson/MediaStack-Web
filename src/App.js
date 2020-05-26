@@ -5,7 +5,7 @@ import './css/style.css';
 import IndexPage from './pages/IndexPage';
 import MediaPage from './pages/MediaPage';
 import SearchPage from './pages/SearchPage';
-import Error404Page from './pages/Error404Page';
+import Error404Page from './pages/404Page';
  
 class App extends Component {
   render() {

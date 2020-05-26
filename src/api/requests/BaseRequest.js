@@ -3,8 +3,12 @@ class BaseRequest {
         this.baseURL = "http://localhost:8000/api";
     }
 
-    getRequestURL() {
+    getURL() {
         throw Error("Method not implemented.");
+    }
+
+    getData() {
+        return null;
     }
 }
 
