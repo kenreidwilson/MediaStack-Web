@@ -5,11 +5,22 @@ const primaryResource = "/media/"
 class MediaInfoRequest extends BaseRequest {
     constructor(options) {
         super();
-        this.mediaHash = options.hash;
+        this.mediaHash = options.mediaId;
     }
 
     getURL() {
         return `${this.baseURL}${primaryResource}${this.mediaHash}/info`;
+    }
+}
+
+class MediaFileRequest extends BaseRequest {
+    constructor(options) {
+        super();
+        this.mediaHash = options.mediaId;
+    }
+
+    getURL() {
+        return `${this.baseURL}${primaryResource}${this.mediaHash}/file`;
     }
 }
 
@@ -63,6 +74,7 @@ class MediaDeleteTagRequest extends BaseRequest {
 
 export { 
     MediaInfoRequest,
+    MediaFileRequest,
     MediaChangeSourceRequest,
     MediaChangeScoreRequest,
     MediaAddTagRequest,

@@ -1,0 +1,30 @@
+  #mediapage {
+    display: grid;
+    grid-template-columns: 230px auto;
+  }
+
+  #mediapage-sidebar {
+    width: 230px;
+  }
+
+  #mediapage-content {
+    max-width: auto;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  @media only screen and (max-width: 768px) {
+
+    #mediapage {
+      grid-template-columns: auto;
+    }
+
+    #mediapage-sidebar, #mediapage-content {
+      width: 95%;
+    }
+
+    #mediapage-content {
+      padding-bottom: 5px;
+      grid-row: 1;
+    }
+  }

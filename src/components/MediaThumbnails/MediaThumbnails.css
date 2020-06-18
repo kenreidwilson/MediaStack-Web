@@ -1,0 +1,23 @@
+@import '../../css/style.css';
+
+#thumbnails {
+    width: 90%;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.media_thumbnail {
+    border:1px solid var(--media-thumbnail-border-color);
+}
+  
+.album_thumbnail {
+    border:1px solid var(--album-thumbnail-border-color);
+}
+
+@media only screen and (max-width: 768px) {
+    #thumbnails {
+        width: 100%;
+    }
+}

@@ -1,6 +1,6 @@
 class BaseRequest {
     constructor() {
-        this.baseURL = "http://localhost:8000/api";
+        this.baseURL = `${process.env.REACT_APP_API}/api`;
     }
 
     getURL() {

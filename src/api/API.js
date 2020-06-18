@@ -30,7 +30,7 @@ class API {
         return Axios.post(request.getURL(), request.getData())
         .then(response => {
             if (response.status === 201) {
-                return null;
+                return response.data[API_RESPONSE_DATA_KEY];
             }
             throw { 'response' : { 'status' : response.status }, 'message' : "Invalid response status." };
         })
@@ -51,7 +51,7 @@ class API {
         return Axios.delete(request.getURL())
         .then(response => {
             if (response.status === 200) {
-                return null;
+                return response.data[API_RESPONSE_DATA_KEY];
             }
             throw { 'response' : { 'status' : response.status }, 'message' : "Invalid response status." };
         })
@@ -72,7 +72,7 @@ class API {
         return Axios.put(request.getURL(), request.getData())
         .then(response => {
             if (response.status === 200) {
-                return null;
+                return response.data[API_RESPONSE_DATA_KEY];
             }
             throw { 'response' : { 'status' : response.status }, 'message' : "Invalid response status." };
         })

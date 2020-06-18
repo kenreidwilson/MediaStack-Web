@@ -1,0 +1,6 @@
+  @import '../../css/style.css';
+
+  .selected-thumbnail {
+    border:3px solid var(--media-thumbnail-border-color);
+    padding: 3px; 
+  }

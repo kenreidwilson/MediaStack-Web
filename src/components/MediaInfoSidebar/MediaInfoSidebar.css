@@ -1,0 +1,41 @@
+@import '../../css/style.css';
+
+#media_info {
+    border: 3px solid var(--main-accent-color);
+    text-align: left;
+  }
+  
+  #media_info ul li p {
+    display: inline;
+  }
+  
+  #media_info p {
+    color: var(--main-text-color);;
+    padding-left: 5px;
+  }
+  
+  #media_info p a {
+    text-decoration: none;
+    color: var(--main-accent-color);
+  }
+  
+  #media_info ul li {
+    padding: 1px 0px;
+  }
+  
+  #media_info ul li a {
+    text-decoration: none;
+    color: var(--main-accent-color);
+  }
+  
+  .starrr {
+    display: inline-block; 
+  }
+    
+  .starrr a {
+    font-size: 16px;
+    padding: 0 1px;
+    cursor: pointer;
+    color: #FFD119;
+    text-decoration: none; 
+  }
