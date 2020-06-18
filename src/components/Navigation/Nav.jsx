@@ -1,23 +1,52 @@
 import React, { Component } from 'react';
 
-import './Nav.css'
+import NavOptionsButton from './NavOptionsButton/NavOptionsButton';
+import NavSideDrawer from './NavSideDrawer/NavSideDrawer';
+import Backdrop from '../Backdrop/Backdrop';
 
-class Nav extends Component {
+import './Nav.css';
+
+export default class Nav extends Component {
     state = {
-        NavElements : {
-            "Media" : `/search`,
+        navElements : {
             "Index" : `/`,
-            "All"   : `/search?query`
-        }
+            "Search" : `/search`,
+            "Upload" : `/upload`,
+            "Login" : `/login`
+        },
+        sideDrawerOpen : false
+    }
+
+    navOptionsButtonClickHandler = () => {
+        this.setState((previousState) => {
+            return {sideDrawerOpen: !previousState.sideDrawerOpen}
+        });
+    }
+
+    backdropClickHandler = () => {
+        this.setState({sideDrawerOpen : false })
     }
 
     render() { 
         return (
-            <div id="nav">
-                {Object.entries(this.state.NavElements).map( ([key, value]) => <a key={key} href={value}><h4>{` ${key} `}</h4></a>)}
-            </div>
+            <React.Fragment>
+                <header id="nav_wrapper">
+                    <nav id="nav">
+                        <div id="nav_options_button">
+                            <NavOptionsButton onClick={this.navOptionsButtonClickHandler}/>
+                        </div>
+                        <div id="nav_title"><a href="/">MediaStack</a></div>
+                        <div className="nav_spacer"></div>
+                        <div id="nav_items_wrapper">
+                            <ul>
+                                {Object.entries(this.state.navElements).map( ([key, value]) =><li><a key={key} href={value}>{` ${key} `}</a></li>)}
+                            </ul>
+                        </div>
+                    </nav>
+                </header>
+                <NavSideDrawer navElements={this.state.navElements} isShown={this.state.sideDrawerOpen}/>
+                {this.state.sideDrawerOpen ? <Backdrop onClick={this.backdropClickHandler}/> : null}
+            </React.Fragment>
         );
     }
 }
- 
-export default Nav;
