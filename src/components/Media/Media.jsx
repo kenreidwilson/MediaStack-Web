@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import $ from 'jquery'
+
+import MediaVideo from './MediaVideo/MediaVideo'
+import MediaImage from './MediaImage/MediaImage'
 
 import './Media.css'
 
@@ -31,36 +33,6 @@ export default class Media extends Component {
             <div id="media">
                 {this.getMediaComponent()}
             </div>
-        );
-    }
-}
-
-class MediaVideo extends Component {    
-    render() { 
-        return (
-            <video autoplay="true" controls loop="true" muted id="mediaVideo">
-                <source
-                    src={`${process.env.REACT_APP_API}${this.props.media.file}`}
-                    type="video/mp4">
-                </source>
-            </video>
-        );
-    }
-}
- 
-class MediaImage extends Component {
-
-    componentDidMount = () => {
-        if (typeof this.props.onImageClick !== 'undefined') {
-            $("#mediaImage").on("click", (event) => {
-                this.props.onImageClick(event);
-            });
-        }
-    }
-
-    render() { 
-        return (
-            <img id="mediaImage" alt={this.props.media.tags.toString()} src={`${process.env.REACT_APP_API}${this.props.media.file}`}></img>
         );
     }
 }
