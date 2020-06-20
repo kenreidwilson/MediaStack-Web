@@ -1,32 +1,30 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
 
-const primaryResource = "/search/"
+const primaryResource = "/search"
 
 class SearchRequest extends BaseRequest {
-    constructor(mediaSet, searchQuery) {
+    constructor(searchQuery) {
         super();
-        this.mediaSet = mediaSet;
         this.searchQuery = searchQuery;
     }
 
     send() {
-        return API.get(`${this.baseURL}${primaryResource}${this.mediaSet}/${this.searchQuery}`);
+        return API.post(`${this.baseURL}${primaryResource}`, this.searchQuery);
     }
 }
 
-class SearchMediaSetRequest extends BaseRequest {
-    constructor(mediaSet) {
+class SearchAllRequest extends BaseRequest {
+    constructor() {
         super();
-        this.mediaSet = mediaSet;
     }
 
     send() {
-        return API.get(`${this.baseURL}${primaryResource}${this.mediaSet}`);
+        return API.get(`${this.baseURL}${primaryResource}`);
     }
 }
 
 export {
     SearchRequest,
-    SearchMediaSetRequest
+    SearchAllRequest
 };

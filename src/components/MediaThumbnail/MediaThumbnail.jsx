@@ -6,7 +6,7 @@ import './MediaThumbnail.css'
 export default class MediaThumbnail extends Component {
 
     static propTypes = {
-        media : PropTypes.object.isRequired,
+        mediaId : PropTypes.string.isRequired,
         classes : PropTypes.string
     }
 
@@ -17,11 +17,9 @@ export default class MediaThumbnail extends Component {
     render() {
         return (
             <img 
-                alt={this.props.media.tags.toString()} 
                 className={this.props.classes}
-                src={`${process.env.REACT_APP_API}${this.props.media.thumbnail}`}>
+                src={`${process.env.REACT_APP_API}/api/media/${this.props.mediaId}/thumbnail`}>
             </img>
         );
     }
 }
-

@@ -1,0 +1,9 @@
+#index_page_content {
+    display: flex;
+    align-items: center;
+}
+
+#index_search_menu {
+    margin: auto;
+    width: 100%;
+}

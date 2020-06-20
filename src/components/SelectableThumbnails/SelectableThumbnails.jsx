@@ -19,7 +19,7 @@ export default class SelectableThumbnails extends Component {
             <div>
                 {this.props.mediaList.map((media, index) => 
                     <a key={index} onClick={() => this.onThumbnailClick(index)}>
-                        <MediaThumbnail media={media} classes={index === this.props.mediaNumber ? 
+                        <MediaThumbnail mediaId={media.hash} classes={index === this.props.mediaNumber ? 
                             "thumbnail selected-thumbnail" : 
                             "thumbnail"}
                         />

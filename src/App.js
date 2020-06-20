@@ -5,7 +5,7 @@ import './css/style.css';
 import IndexPage from './pages/IndexPage/IndexPage';
 import MediaPage from './pages/MediaPage/MediaPage';
 import AlbumMediaPage from './pages/AlbumMediaPage/AlbumMediaPage';
-import SearchPage from './pages/SearchPage/SearchPage';
+import ThumbnailPage from './pages/ThumbnailPage/ThumbnailPage';
 import Error404Page from './pages/404Page/404Page';
  
 class App extends Component {
@@ -14,10 +14,10 @@ class App extends Component {
        <BrowserRouter>
         <div>
             <Switch>
-                <Route path="/" component={IndexPage} exact/>
+                <Route history={this.history} path="/" component={IndexPage} exact/>
                 <Route path="/media" component={MediaPage} exact/>
                 <Route path="/album" component={AlbumMediaPage} exact/>
-                <Route path="/search" component={SearchPage} exact/>
+                <Route path="/search" component={ThumbnailPage} exact/>
                 <Route component={Error404Page}/>
            </Switch>
         </div> 
