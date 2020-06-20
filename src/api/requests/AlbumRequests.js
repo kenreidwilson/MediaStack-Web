@@ -1,4 +1,5 @@
 import BaseRequest from './BaseRequest'
+import API from '../API';
 
 const primaryResource = "/albums/"
 
@@ -7,19 +8,19 @@ class AlbumsRequest extends BaseRequest {
         super();
     }
 
-    getURL() {
-        return `${this.baseURL}/albums`
+    send() {
+        return  API.get(`${this.baseURL}/albums`);
     }
 }
 
 class AlbumInfoRequest extends BaseRequest {
-    constructor(options) {
+    constructor(albumId) {
         super();
-        this.albumName = options.albumId;
+        this.albumName = albumId;
     }
 
-    getURL() {
-        return `${this.baseURL}${primaryResource}${this.albumName}/info`;
+    send() {
+        return API.get(`${this.baseURL}${primaryResource}${this.albumName}/info`);
     }
 }
 

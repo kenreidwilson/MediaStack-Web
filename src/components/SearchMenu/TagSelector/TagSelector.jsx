@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 
-import API from '../../../api/API';
 import { TagsRequest } from '../../../api/requests/TagRequests'
 
 export default class TagSelector extends Component {
@@ -15,7 +14,7 @@ export default class TagSelector extends Component {
             return;
         }
         this.setState({ isLoading : true })
-        API.get(new TagsRequest()).then(response => {
+        new TagsRequest().send().then(response => {
             let tagOptions = [];
             response['tags'].forEach((tag, index) => {
                 tagOptions.push({ value: tag, label: tag });

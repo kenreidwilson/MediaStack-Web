@@ -1,74 +1,75 @@
 import BaseRequest from './BaseRequest'
+import API from '../API';
 
 const primaryResource = "/media/"
 
 class MediaInfoRequest extends BaseRequest {
-    constructor(options) {
+    constructor(mediaId) {
         super();
-        this.mediaHash = options.mediaId;
+        this.mediaHash = mediaId;
     }
 
-    getURL() {
-        return `${this.baseURL}${primaryResource}${this.mediaHash}/info`;
+    send() {
+        return API.get(`${this.baseURL}${primaryResource}${this.mediaHash}/info`);
     }
 }
 
 class MediaFileRequest extends BaseRequest {
-    constructor(options) {
+    constructor(mediaId) {
         super();
-        this.mediaHash = options.mediaId;
+        this.mediaHash = mediaId;
     }
 
-    getURL() {
-        return `${this.baseURL}${primaryResource}${this.mediaHash}/file`;
+    send() {
+        return API.get(`${this.baseURL}${primaryResource}${this.mediaHash}/file`);
     }
 }
 
 class MediaChangeSourceRequest extends BaseRequest {
-    constructor(options) {
+    constructor(mediaId, source) {
         super();
-        this.mediaHash = options.hash;
-        this.newSource = options.source;
+        this.mediaHash = mediaId;
+        this.newSource = source;
     }
 
-    getURL() {
-        return `${this.baseURL}${primaryResource}${this.mediaHash}/source/${this.newSource}`;
+    send() {
+        return API.put(`${this.baseURL}${primaryResource}${this.mediaHash}/source/${this.newSource}`);
     }
 }
 
 class MediaChangeScoreRequest extends BaseRequest {
-    constructor(options) {
+    constructor(mediaId, score) {
         super();
-        this.mediaHash = options.hash;
-        this.newScore = options.score;
+        this.mediaHash = mediaId;
+        this.newScore = score;
     }
 
-    getURL() {
-        return `${this.baseURL}${primaryResource}${this.mediaHash}/score/${this.newScore}`;
+    send() {
+        return API.put(`${this.baseURL}${primaryResource}${this.mediaHash}/score/${this.newScore}`);
     }
 }
 
 class MediaAddTagRequest extends BaseRequest {
-    constructor(options) {
+    constructor(mediaId, tagName) {
         super();
-        this.mediaHash = options.hash;
-        this.newTagName = options.tag;
+        this.mediaHash = mediaId;
+        this.newTagName = tagName;
     }
 
-    getURL() {
-        return `${this.baseURL}${primaryResource}${this.mediaHash}/tags/${this.newTagName}`;
+    send() {
+        return API.post(`${this.baseURL}${primaryResource}${this.mediaHash}/tags/${this.newTagName}`);
     }
 }
 
 class MediaDeleteTagRequest extends BaseRequest {
-    constructor(options) {
+    constructor(mediaId, tagName) {
         super();
-        this.mediaHash = options.hash;
-        this.oldTagName = options.tag;
+        this.mediaHash = mediaId;
+        this.oldTagName = tagName;
     }
 
-    getURL() {
-        return `${this.baseURL}${primaryResource}${this.mediaHash}/tags/${this.oldTagName}`;
+    send() {
+        return API.delete(`${this.baseURL}${primaryResource}${this.mediaHash}/tags/${this.oldTagName}`);
     }
 }
 

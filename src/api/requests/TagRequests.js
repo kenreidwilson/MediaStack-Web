@@ -1,12 +1,13 @@
 import BaseRequest from './BaseRequest'
+import API from '../API';
 
 class TagsRequest extends BaseRequest {
-    constructor(options) {
+    constructor() {
         super();
     }
 
-    getURL() {
-        return `${this.baseURL}/tags`;
+    send() {
+        return API.get(`${this.baseURL}/tags`);
     }
 }
 

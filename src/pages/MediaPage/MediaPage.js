@@ -3,7 +3,6 @@ import Nav from '../../components/Navigation/Nav';
 import Media from '../../components/Media/Media';
 import MediaInfoSidebar from '../../components/MediaInfoSidebar/MediaInfoSidebar'
 
-import API from '../../api/API'
 import { MediaInfoRequest } from '../../api/requests/MediaRequests'
 
 import './MediaPage.css'
@@ -22,7 +21,7 @@ export default class MediaPageComponent extends Component {
     }
 
     componentDidMount = () => {
-        API.get(new MediaInfoRequest({ mediaId : new URL(window.location.href).searchParams.get("media") })).then(response => {
+        new MediaInfoRequest(new URL(window.location.href).searchParams.get("media")).send().then(response => {
             this.setState({ mediaInfo : response['media'] });
         }).catch(error => { 
             alert(error.message);

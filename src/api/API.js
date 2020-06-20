@@ -6,8 +6,8 @@ const API_RESPONSE_MESSAGE_KEY = "message";
 
 class API {
 
-    static get(request) {
-        return Axios.get(request.getURL())
+    static get(url) {
+        return Axios.get(url)
         .then(response => {
             if (response.status === 200) {
                 return response.data[API_RESPONSE_DATA_KEY];
@@ -26,8 +26,8 @@ class API {
         });
     }
 
-    static post(request) {
-        return Axios.post(request.getURL(), request.getData())
+    static post(url, data) {
+        return Axios.post(url, data)
         .then(response => {
             if (response.status === 201) {
                 return response.data[API_RESPONSE_DATA_KEY];
@@ -47,8 +47,8 @@ class API {
         });
     }
 
-    static delete(request) {
-        return Axios.delete(request.getURL())
+    static delete(url) {
+        return Axios.delete(url)
         .then(response => {
             if (response.status === 200) {
                 return response.data[API_RESPONSE_DATA_KEY];
@@ -68,8 +68,8 @@ class API {
         });
     }
 
-    static put(request) {
-        return Axios.put(request.getURL(), request.getData())
+    static put(url, data) {
+        return Axios.put(url, data)
         .then(response => {
             if (response.status === 200) {
                 return response.data[API_RESPONSE_DATA_KEY];

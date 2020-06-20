@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Nav from '../../components/Navigation/Nav';
 import MediaThumbnails from '../../components/MediaThumbnails/MediaThumbnails';
 
-import API from '../../api/API';
 import { SearchRequest, SearchMediaSetRequest } from '../../api/requests/SearchRequests';
 
 const SearchPage = () => {
@@ -24,11 +23,11 @@ export default class SearchPageComponent extends Component {
         }
         let request;
         if (this.state.searchQuery === null || this.state.searchQuery.length === 0){
-            request = new SearchMediaSetRequest({ set: this.state.mediaSet });
+            request = new SearchMediaSetRequest(this.state.mediaSet);
         } else {
-            request = new SearchRequest({ set : this.state.mediaSet, query : this.state.searchQuery })
+            request = new SearchRequest(this.state.mediaSet, this.state.searchQuery);
         };
-        API.get(request).then(queriedMedia => {
+        request.send().then(queriedMedia => {
             this.setState({ mediaList : queriedMedia });
         }).catch(error => { 
             alert(error.message);

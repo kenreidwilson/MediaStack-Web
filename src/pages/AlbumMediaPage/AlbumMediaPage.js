@@ -6,7 +6,6 @@ import MediaInfoSidebar from '../../components/MediaInfoSidebar/MediaInfoSidebar
 import SelectableThumbnails from '../../components/SelectableThumbnails/SelectableThumbnails';
 import SelectableThumbnailSlider from '../../components/SelectableThumbnailSlider/SelectableThumbnailSlider'
 
-import API from '../../api/API'
 import { AlbumInfoRequest } from '../../api/requests/AlbumRequests'
 
 const AlbumMediaPage = () => {
@@ -28,7 +27,7 @@ export default class AlbumMediaPageComponent extends Component {
         if (typeof this.state.albumInfo !== 'undefined') {
             return;
         }
-        API.get(new AlbumInfoRequest({ albumId : new URL(window.location.href).searchParams.get("album") })).then(response => {
+        new AlbumInfoRequest(new URL(window.location.href).searchParams.get("album") ).send().then(response => {
             this.setState({ albumInfo : response });
         }).catch(error => { 
             alert(error.message);

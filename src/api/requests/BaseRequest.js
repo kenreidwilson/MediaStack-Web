@@ -3,12 +3,8 @@ class BaseRequest {
         this.baseURL = `${process.env.REACT_APP_API}/api`;
     }
 
-    getURL() {
-        throw Error("Method not implemented.");
-    }
-
-    getData() {
-        return null;
+    send() {
+        throw Error("Request not implemented.");
     }
 }
 
