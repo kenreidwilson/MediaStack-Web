@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 
-import API from '../../../api/API';
 import { AlbumsRequest } from '../../../api/requests/AlbumRequests'
 
 export default class AlbumSelector extends Component {
@@ -15,7 +14,7 @@ export default class AlbumSelector extends Component {
             return;
         }
         this.setState({ isLoading : true })
-        API.get(new AlbumsRequest()).then(response => {
+        new AlbumsRequest().send().then(response => {
             let albumOptions = [];
             response.forEach((album, index) => {
                 albumOptions.push({ value: album.name, label: album.name });

@@ -28,6 +28,7 @@ export default class SearchMenu extends Component {
         return (
             <div id="search_menu">
                 <TagSelector onChange={this.onTagSelection}/>
+                <AlbumSelector onChange={this.onAlbumSelection}/>
             </div>
         );
     }
