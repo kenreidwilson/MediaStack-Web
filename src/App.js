@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
  
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/style.css';
 import IndexPage from './pages/IndexPage/IndexPage';
 import MediaPage from './pages/MediaPage/MediaPage';
@@ -10,7 +11,7 @@ import Error404Page from './pages/404Page/404Page';
  
 class App extends Component {
   render() {
-    return (      
+    return (
        <BrowserRouter>
         <div>
             <Switch>

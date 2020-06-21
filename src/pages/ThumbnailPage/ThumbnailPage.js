@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import Nav from '../../components/Navigation/Nav';
+
+import Navigation from '../../components/Navigation/Nav';
 import MediaThumbnails from '../../components/MediaThumbnails/MediaThumbnails';
+import BannerAlert from '../../components/BannerAlert/BannerAlert';
 
 import { SearchRequest, SearchAllRequest } from '../../api/requests/SearchRequests';
 
@@ -12,11 +14,17 @@ const ThumbnailPage = () => {
 
 export default class ThumbnailPageComponent extends Component {
     state = { 
-        collapseAlbums : false,
-        mediaList : []
-     }
+        collapseAlbums : true,
+        mediaList : null,
+        alerts : []
+    }
 
-     componentDidMount = async () => {
+    addAlert = (alert) => {
+        let alerts = this.state.alerts.concat(alert);
+        this.setState({ alerts })
+    }
+
+    componentDidMount = async () => {
         let request;
         if (typeof this.props.location.state === 'undefined') {
             request = new SearchAllRequest();
@@ -27,6 +35,9 @@ export default class ThumbnailPageComponent extends Component {
         await request.send().then(response => {
             let media = response.media;
             let result = media.concat(response.albums);
+            if (result.length === 0) {
+                this.addAlert(<BannerAlert variant="warning" heading="API Response:" body="Nothing was found."/>);
+            }
             result.sort((a, b) => {
                 if (a.category !== b.category) {
                     return a.category > b.category;
@@ -39,16 +50,16 @@ export default class ThumbnailPageComponent extends Component {
             });
             this.setState({mediaList : result })
         }).catch(error => { 
-            alert(error.message);
+            this.addAlert(<BannerAlert variant="danger" heading="API Error: " body={error.message}/>);
         });
     }
 
     render() { 
         return ( 
             <React.Fragment>
-                <Nav />
-                {this.state.mediaList.length !== 0 ? <MediaThumbnails collapseAlbums={this.state.collapseAlbums} mediaList={this.state.mediaList}/> : null}
-                {this.state.mediaList.length === 0 ? <h2>Nothing was found...</h2> : null}
+                <Navigation />
+                {this.state.alerts.map(errorComponent => errorComponent)}
+                {this.state.mediaList ? <MediaThumbnails collapseAlbums={this.state.collapseAlbums} mediaList={this.state.mediaList}/> : null}
             </React.Fragment>
          );
     }
