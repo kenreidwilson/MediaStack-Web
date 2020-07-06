@@ -32,15 +32,19 @@ export default class AlbumMediaPageComponent extends Component {
         if (typeof this.state.albumInfo !== 'undefined') {
             return;
         }
-        new AlbumInfoRequest(new URL(window.location.href).searchParams.get("album") ).send().then(response => {
+        new AlbumInfoRequest(new URL(window.location.href).searchParams.get("id") ).send().then(response => {
             this.setState({ albumInfo : response });
         }).catch(error => { 
             this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
         });
     }
 
+    onSidebarNavClick = (searchQuery) => {
+        this.props.history.push('/search', { searchQuery : searchQuery });
+    }
+    
     getCurrentMediaInfo = () => {
-        return this.state.albumInfo['album']['media'][this.state.mediaNumber];
+        return this.state.albumInfo.media[this.state.mediaNumber];
     }
 
     addAlert = (alert) => {
@@ -50,9 +54,9 @@ export default class AlbumMediaPageComponent extends Component {
 
     handleScoreEdit = async (newScore) => {
         if (this.state.albumInfo[this.state.mediaNumber] !== newScore) {
-            await new MediaChangeInfoRequest(this.getCurrentMediaInfo().hash, {'score' : newScore }).send().then(response => {
+            await new MediaChangeInfoRequest(this.getCurrentMediaInfo().id, {'score' : newScore }).send().then(response => {
                 let albumInfo = this.state.albumInfo
-                albumInfo.album.media[this.state.mediaNumber] = response
+                albumInfo.media[this.state.mediaNumber] = response
                 this.setState({ albumInfo })
             }).catch(error => {
                 this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
@@ -66,9 +70,9 @@ export default class AlbumMediaPageComponent extends Component {
 
     handleModalSave = async (newMediaInfo) => {
         if (Object.keys(newMediaInfo).length > 0) {
-            await new MediaChangeInfoRequest(this.getCurrentMediaInfo().hash, newMediaInfo).send().then(response => {
+            await new MediaChangeInfoRequest(this.getCurrentMediaInfo().id, newMediaInfo).send().then(response => {
                 let albumInfo = this.state.albumInfo
-                albumInfo.album.media[this.state.mediaNumber] = response
+                albumInfo.media[this.state.mediaNumber] = response
                 this.setState({ albumInfo })
             }).catch(error => {
                 this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
@@ -94,7 +98,7 @@ export default class AlbumMediaPageComponent extends Component {
     }
 
     handleNextMedia = () => {
-        if (this.state.mediaNumber === this.state.albumInfo['album']['media'].length - 1) {
+        if (this.state.mediaNumber === this.state.albumInfo.media.length - 1) {
             this.setState({ mediaNumber : 0 })
         } else {
             this.setState({ mediaNumber : (this.state.mediaNumber + 1) })
@@ -103,7 +107,7 @@ export default class AlbumMediaPageComponent extends Component {
 
     handlePreviousMedia = () => {
         if (this.state.mediaNumber === 0) {
-            this.setState({ mediaNumber : this.state.albumInfo['album']['media'].length - 1})
+            this.setState({ mediaNumber : this.state.albumInfo.media.length - 1})
         } else {
             this.setState({ mediaNumber : (this.state.mediaNumber - 1) })
         }
@@ -125,6 +129,7 @@ export default class AlbumMediaPageComponent extends Component {
                     <div id="mediapage-sidebar">
                         {typeof this.state.albumInfo !== 'undefined' && this.state.mediaNumber !== null ? 
                             <MediaInfoSidebar 
+                                onSidebarNavClick={this.onSidebarNavClick}
                                 handleEdit={this.handleOpenModal}
                                 handleScoreEdit={this.handleScoreEdit}
                                 media={this.getCurrentMediaInfo()}
@@ -142,12 +147,12 @@ export default class AlbumMediaPageComponent extends Component {
                                 <SelectableThumbnailSlider 
                                     mediaNumber={this.state.mediaNumber}
                                     onThumbnailClick={this.handleThumbnailClick} 
-                                    mediaList={this.state.albumInfo['album']['media']}/>
+                                    mediaList={this.state.albumInfo.media}/>
                                 : <div id="thumbnails">
                                         <SelectableThumbnails
                                             mediaNumber={this.state.mediaNumber}
                                             onThumbnailClick={this.handleThumbnailClick} 
-                                            mediaList={this.state.albumInfo['album']['media']}/>
+                                            mediaList={this.state.albumInfo.media}/>
                                 </div>
                             ) 
                             : null}

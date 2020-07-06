@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import TagSelector from './TagSelector/TagSelector';
 import UniqueQuerySelector from './UniqueQuerySelector/UniqueQuerySelector';
-import { AlbumsRequest } from '../../api/requests/AlbumRequests';
+
 import { ArtistsRequest } from '../../api/requests/ArtistRequests';
 import { CategoriesRequest } from '../../api/requests/CategoryRequests';
 
@@ -55,12 +55,6 @@ export default class SearchMenu extends Component {
                     <h4>Tags: </h4>
                     <div className="selector">
                         <TagSelector onChange={this.onTagSelection}/>
-                    </div>
-                </div>
-                <div className="search_menu_item">
-                    <h4>Album: </h4>
-                    <div className="selector">
-                        <UniqueQuerySelector placeholder="Enter Album name..." request={new AlbumsRequest()} onChange={this.onAlbumSelection}/>
                     </div>
                 </div>
                 <div className="search_menu_item">

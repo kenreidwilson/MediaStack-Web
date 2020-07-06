@@ -12,7 +12,7 @@ export default class Navigation extends Component {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto">
                         <Nav.Link href="/search">
-                            <Nav.Link href="/search">Search</Nav.Link>
+                            <Nav.Link href="/search">Media</Nav.Link>
                         </Nav.Link>
                         <Nav.Link href="/upload">
                             <Nav.Link href="/upload">Upload</Nav.Link>

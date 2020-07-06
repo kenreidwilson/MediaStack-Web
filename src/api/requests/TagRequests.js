@@ -11,6 +11,18 @@ class TagsRequest extends BaseRequest {
     }
 }
 
+class TagCreationRequest extends BaseRequest {
+    constructor(tagName) {
+        super();
+        this.tagName = tagName;
+    }
+
+    send() {
+        return API.post(`${this.baseURL}/tags/${this.tagName}`)
+    }
+}
+
 export {
-    TagsRequest
+    TagsRequest,
+    TagCreationRequest
 }

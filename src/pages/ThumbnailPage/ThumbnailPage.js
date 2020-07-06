@@ -4,6 +4,9 @@ import Navigation from '../../components/Navigation/Nav';
 import MediaThumbnails from '../../components/MediaThumbnails/MediaThumbnails';
 import BannerAlert from '../../components/BannerAlert/BannerAlert';
 
+import { CategoriesRequest } from '../../api/requests/CategoryRequests';
+import { ArtistsRequest } from '../../api/requests/ArtistRequests';
+import { AlbumsRequest } from '../../api/requests/AlbumRequests';
 import { SearchRequest, SearchAllRequest } from '../../api/requests/SearchRequests';
 
 const ThumbnailPage = () => {
@@ -25,6 +28,34 @@ export default class ThumbnailPageComponent extends Component {
     }
 
     componentDidMount = async () => {
+
+        function responseToDict(response) {
+            if (response === null) {
+                return null;
+            }
+            let dict = {}
+            response.forEach(object => {
+                dict[object.id] = object;
+            })
+            return dict;
+        }
+
+        let categories = {}
+        let artists = {}
+        let albums = {}
+
+        await new CategoriesRequest().send().then(response => {
+            categories = responseToDict(response);
+        })
+
+        await new ArtistsRequest().send().then(response => {
+            artists = responseToDict(response);
+        })
+
+        await new AlbumsRequest().send().then(response => {
+            albums = responseToDict(response);
+        })
+
         let request;
         if (typeof this.props.location.state === 'undefined') {
             request = new SearchAllRequest();
@@ -39,12 +70,20 @@ export default class ThumbnailPageComponent extends Component {
                 this.addAlert(<BannerAlert variant="warning" heading="API Response:" body="Nothing was found."/>);
             }
             result.sort((a, b) => {
-                if (a.category !== b.category) {
-                    return a.category > b.category;
-                } else if (a.artist !== b.artist) {
-                    return a.artist > b.artist;
-                } else if (a.album !== b.album) {
-                    return a.album > b.album;
+                if (a.category_id !== b.category_id) {
+                    return categories[a.category_id].name > categories[b.category_id].name;
+                } else if (a.artist_id !== b.artist_id) {
+                    let a_artist = artists[a.artist_id]
+                    let b_artist = artists[b.artist_id]
+                    if (typeof a_artist === 'undefined') return false
+                    if (typeof b_artist === 'undefined') return true
+                    return artists[a.artist_id].name > artists[b.artist_id].name;
+                } else if (a.album_id !== b.album_id) {
+                    let a_album = albums[a.album_id]
+                    let b_album = albums[b.album_id]
+                    if (typeof a_album === 'undefined') return false
+                    if (typeof b_album === 'undefined') return true
+                    return albums[a.album_id].name > albums[b.album_id].name;
                 }
                 return true;
             });

@@ -16,8 +16,8 @@ export default class TagSelector extends Component {
         this.setState({ isLoading : true })
         new TagsRequest().send().then(response => {
             let tagOptions = [];
-            Object.keys(response).forEach((tag, index) => {
-                tagOptions.push({ value: tag, label: tag });
+            response.forEach((tag, index) => {
+                tagOptions.push({ value: tag.id, label: tag.name });
             });
             this.setState({ tagOptions, isLoading : false });
         }).catch(error => {

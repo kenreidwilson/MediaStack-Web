@@ -22,8 +22,8 @@ export default class MediaPageComponent extends Component {
     }
 
     componentDidMount = () => {
-        new MediaInfoRequest(new URL(window.location.href).searchParams.get("media")).send().then(response => {
-            this.setState({ mediaInfo : response['media'] });
+        new MediaInfoRequest(new URL(window.location.href).searchParams.get("id")).send().then(response => {
+            this.setState({ mediaInfo : response });
         }).catch(error => { 
             this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
         });
@@ -36,7 +36,7 @@ export default class MediaPageComponent extends Component {
 
     handleScoreEdit = async (newScore) => {
         if (this.state.mediaInfo.score !== newScore) {
-            await new MediaChangeInfoRequest(this.state.mediaInfo.hash, {'score' : newScore }).send().then(response => {
+            await new MediaChangeInfoRequest(this.state.mediaInfo.id, {'score' : newScore }).send().then(response => {
                 this.setState({ mediaInfo : response })
             }).catch(error => {
                 this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
@@ -50,7 +50,8 @@ export default class MediaPageComponent extends Component {
 
     handleModalSave = async (newMediaInfo) => {
         if (Object.keys(newMediaInfo).length > 0) {
-            await new MediaChangeInfoRequest(this.state.mediaInfo.hash, newMediaInfo).send().then(response => {
+            console.log(newMediaInfo);
+            await new MediaChangeInfoRequest(this.state.mediaInfo.id, newMediaInfo).send().then(response => {
                 this.setState({mediaInfo : response})
             }).catch(error => {
                 this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
@@ -61,6 +62,10 @@ export default class MediaPageComponent extends Component {
 
     handleModalClose = () => {
         this.setState({ showEditModal : false});
+    }
+
+    onSidebarNavClick = (searchQuery) => {
+        this.props.history.push('/search', { searchQuery : searchQuery });
     }
 
     render() {
@@ -78,7 +83,8 @@ export default class MediaPageComponent extends Component {
                 <div id="mediapage">
                     <div id="mediapage-sidebar">
                         {this.state.mediaInfo !== null ? 
-                            <MediaInfoSidebar 
+                            <MediaInfoSidebar
+                                onSidebarNavClick={this.onSidebarNavClick}
                                 handleEdit={this.handleOpenModal}
                                 handleScoreEdit={this.handleScoreEdit}
                                 media={this.state.mediaInfo}/> 

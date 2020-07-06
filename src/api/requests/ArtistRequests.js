@@ -11,6 +11,18 @@ class ArtistsRequest extends BaseRequest {
     }
 }
 
+class ArtistInfoRequest extends BaseRequest {
+    constructor(artistId) {
+        super();
+        this.artistId = artistId
+    }
+
+    send() {
+        return API.get(`${this.baseURL}/artists/${this.artistId}/info`);
+    }
+}
+
 export {
-    ArtistsRequest
+    ArtistsRequest,
+    ArtistInfoRequest
 }

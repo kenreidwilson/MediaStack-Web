@@ -7,7 +7,6 @@ import './IndexPage.css';
 export default class IndexPage extends Component {
 
     onSearch = (searchQuery) => {
-        console.log(searchQuery)
         this.props.history.push('/search', { searchQuery : searchQuery })
     }
 

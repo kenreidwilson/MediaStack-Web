@@ -11,6 +11,18 @@ class CategoriesRequest extends BaseRequest {
     }
 }
 
+class CategoryInfoRequest extends BaseRequest {
+    constructor(categoryId) {
+        super();
+        this.categoryId = categoryId
+    }
+
+    send() {
+        return API.get(`${this.baseURL}/categories/${this.categoryId}/info`)
+    }
+}
+
 export {
-    CategoriesRequest
+    CategoriesRequest,
+    CategoryInfoRequest
 }

@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
 import { Modal, Button }from "react-bootstrap";
-import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
+import $ from 'jquery'
 
-import { TagsRequest } from '../../api/requests/TagRequests'
+import { TagsRequest, TagCreationRequest } from '../../api/requests/TagRequests'
 
 export default class MediaInfoEditModal extends Component {
     
     state = {
-        newTags : this.props.media.tags,
         newSource : this.props.media.source,
         tagOptions : null,
+        selectedTagOptions : null,
         isTagOptionsLoading : false
     }
 
+    componentDidMount = () => {
+        //$(document.body).on('keydown', (event) => {if (event.keyCode === 27) this.props.handleClose()});
+        this.setState({ selectedTagOptions : this.defaultTagOptions() })
+    }
+
     onTagChange = (tagsSelected) => {
-        if (tagsSelected === null) {
-            return;
-        }
-        let newSelectedTags = [];
-        tagsSelected.forEach(tag => {
-            newSelectedTags.push(tag.value);
-        })
-        this.setState({ newTags : newSelectedTags })
+        this.setState({ selectedTagOptions : tagsSelected })
     }
 
     onSourceChange = (event) => {
@@ -31,8 +30,14 @@ export default class MediaInfoEditModal extends Component {
     handleSaveClick = () => {
         let newMediaInfo = {};
 
-        if (this.state.newTags !== this.props.media.tags) {
-            newMediaInfo['tags'] = this.state.newTags;
+        if (this.state.selectedTagOptions !== this.defaultTagOptions()) {
+            let newTags = []
+            if (this.state.selectedTagOptions !== null) {
+                this.state.selectedTagOptions.forEach(tagOption => {
+                    newTags.push(tagOption.value)
+                })
+            }
+            newMediaInfo['tags'] = newTags;
         }
 
         if (this.state.newSource !== this.props.media.source) {
@@ -49,8 +54,10 @@ export default class MediaInfoEditModal extends Component {
         this.setState({ isTagOptionsLoading : true })
         new TagsRequest().send().then(response => {
             let tagOptions = [];
-            Object.keys(response).forEach((tag, index) => {
-                tagOptions.push({ value: tag, label: tag });
+            response.forEach((tag, index) => {
+                if (!this.props.media.tags.includes(tag)) {
+                    tagOptions.push({ value: tag.id, label: tag.name });
+                }
             });
             this.setState({ tagOptions, isTagOptionsLoading : false });
         }).catch(error => {
@@ -62,9 +69,23 @@ export default class MediaInfoEditModal extends Component {
     defaultTagOptions = () => {
         let defaults = [];
         this.props.media.tags.forEach(tag => {
-            defaults.push({ value : tag, label : tag });
+            defaults.push({ value : tag.id, label : tag.name });
         });
         return defaults;
+    }
+
+    handleOptionCreation = (inputValue) => {
+        this.setState({ isTagOptionsLoading : true })
+        new TagCreationRequest(inputValue).send().then(newTag => {
+            this.setState({ 
+                tagOptions: [...this.state.tagOptions, {'value': newTag.id, 'label': newTag.name}],
+                selectedTagOptions: [...this.state.selectedTagOptions, {'value': newTag.id, 'label': newTag.name}],
+                isTagOptionsLoading : false
+            })
+        }).catch(error => {
+            console.log(error);
+            this.setState({ isTagOptionsLoading : false })
+        })
     }
 
     render() { 
@@ -80,11 +101,12 @@ export default class MediaInfoEditModal extends Component {
                         <input type="text" value={this.state.newSource} onChange={this.onSourceChange} />
                     </form>
                     <p>Tags:</p>
-                    <Select 
+                    <CreatableSelect 
                         placeholder="Enter Tags..."
-                        defaultValue={this.defaultTagOptions()}
+                        value={this.state.selectedTagOptions}
                         options={this.state.tagOptions === null ? [] : this.state.tagOptions}
                         onChange={this.onTagChange}
+                        onCreateOption={this.handleOptionCreation}
                         isSearchable
                         isMulti
                         isLoading={this.state.isTagOptionsLoading}

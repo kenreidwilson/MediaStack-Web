@@ -22,8 +22,8 @@ export default class UniqueQuerySelector extends Component {
         this.setState({ isLoading : true })
         this.props.request.send().then(response => {
             let options = [];
-            Object.keys(response).forEach((optionItem, index) => {
-                options.push({ value: optionItem, label: optionItem });
+            response.forEach((optionItem, index) => {
+                options.push({ value: optionItem.id, label: optionItem.name });
             });
             this.setState({ options, isLoading : false });
         }).catch(error => {
