@@ -4,7 +4,7 @@ import $ from 'jquery'
 import './MediaImage.css'
 
 export default class MediaImage extends Component {
-
+    
     componentDidMount = () => {
         if (typeof this.props.onImageClick !== 'undefined') {
             $("#mediaImage").on("click", (event) => {
@@ -15,7 +15,9 @@ export default class MediaImage extends Component {
 
     render() { 
         return (
-            <img id="mediaImage" alt={this.props.media.tags.toString()} src={`${process.env.REACT_APP_API}${this.props.media.file}`}></img>
+            <div>
+                <img onLoad={this.props.onImageLoad} id="mediaImage" alt={this.props.media.tags.toString()} src={`${process.env.REACT_APP_API}${this.props.media.file}`}></img>
+            </div>
         );
     }
 }

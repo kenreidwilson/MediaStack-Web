@@ -18,6 +18,7 @@ export default class MediaPageComponent extends Component {
     state = {
         mediaInfo : null,
         showEditModal : false,
+        isImageLoading : true,
         alerts : []
     }
 

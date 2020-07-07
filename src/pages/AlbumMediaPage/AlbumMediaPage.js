@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Spinner from 'react-bootstrap/Spinner'
 
 import Navigation from '../../components/Navigation/Nav';
 import Media from '../../components/Media/Media';
@@ -22,6 +23,7 @@ export default class AlbumMediaPageComponent extends Component {
         albumInfo : this.props.album,
         mediaNumber : new URL(window.location.href).searchParams.get("page"),
         showEditModal : false,
+        isImageLoading : true,
         alerts : []
     }
 
@@ -37,6 +39,10 @@ export default class AlbumMediaPageComponent extends Component {
         }).catch(error => { 
             this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
         });
+    }
+
+    onImageLoad = () => {
+        this.setState({ isImageLoading : false })
     }
 
     onSidebarNavClick = (searchQuery) => {
@@ -86,7 +92,7 @@ export default class AlbumMediaPageComponent extends Component {
     }
     
     handleThumbnailClick = (index) => {
-        this.setState({ mediaNumber : index });
+        this.setState({ mediaNumber : index, isImageLoading : true });
     }
 
     handleMediaClick = (event) => {
@@ -103,6 +109,7 @@ export default class AlbumMediaPageComponent extends Component {
         } else {
             this.setState({ mediaNumber : (this.state.mediaNumber + 1) })
         }
+        this.setState({ isImageLoading : true })
     }
 
     handlePreviousMedia = () => {
@@ -111,6 +118,7 @@ export default class AlbumMediaPageComponent extends Component {
         } else {
             this.setState({ mediaNumber : (this.state.mediaNumber - 1) })
         }
+        this.setState({ isImageLoading : true })
     }
 
     render() { 
@@ -137,10 +145,14 @@ export default class AlbumMediaPageComponent extends Component {
                     </div>
                     <div id="mediapage-content">
                         {typeof this.state.albumInfo !== 'undefined' && this.state.mediaNumber !== null ? 
-                            <Media 
-                                onImageClick={this.handleMediaClick}
-                                media={this.getCurrentMediaInfo()}
-                            />
+                            <div>
+                                {this.state.isImageLoading ? <Spinner id="imageLoadingSpinner" animation="border" variant="primary" /> : null}
+                                <Media 
+                                    onImageLoad={this.onImageLoad}
+                                    onImageClick={this.handleMediaClick}
+                                    media={this.getCurrentMediaInfo()}
+                                />
+                            </div>
                         : null}
                         {typeof this.state.albumInfo !== 'undefined' ? 
                             (global.matchMedia(`(min-width: 768px)`).matches ?

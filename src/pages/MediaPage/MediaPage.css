@@ -13,6 +13,11 @@
     overflow: hidden;
   }
 
+  #imageLoadingSpinner {
+    position: absolute;
+    margin: 20% 42.5%;
+  }
+
   @media only screen and (max-width: 768px) {
 
     #mediapage {

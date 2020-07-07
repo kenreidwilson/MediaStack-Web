@@ -10,11 +10,13 @@ export default class Media extends Component {
         switch(this.props.media.type) {
             case "image":
                 return <MediaImage 
+                    onImageLoad={this.props.onImageLoad}
                     onImageClick={this.props.onImageClick}
                     media={this.props.media}
                 />;
             case "animated_image":
                 return <MediaImage 
+                    onImageLoad={this.props.onImageLoad}
                     onImageClick={this.props.onImageClick}
                     media={this.props.media}
                 />;
