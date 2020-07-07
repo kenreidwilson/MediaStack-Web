@@ -6,7 +6,7 @@ export default class InfoSideBarElement extends Component {
         return (
             <p>{this.props.label}
                 {
-                    this.props.value === null ? "None" : 
+                    this.props.value === null ? "" : 
                         typeof this.props.onClick === 'undefined' ? 
                             this.props.value :
                             <a onClick={this.props.onClick}>{this.props.value}</a>
