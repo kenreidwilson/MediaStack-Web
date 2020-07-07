@@ -71,8 +71,8 @@ export default class MediaInfoSidebar extends Component {
     render() { 
         return (
             <React.Fragment>
+                <button class="edit_button btn btn-primary" onClick={this.props.handleEdit}>Edit</button>
                 <div id="media_info">
-                    <button onClick={this.props.handleEdit}>Edit</button>
                     <InfoSideBarElement 
                         label={"Type: "} 
                         value={this.props.media.type}

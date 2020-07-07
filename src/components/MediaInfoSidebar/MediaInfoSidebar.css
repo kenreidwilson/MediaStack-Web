@@ -1,6 +1,6 @@
 @import '../../css/style.css';
 
-#media_info {
+  #media_info {
     border: 3px solid var(--main-accent-color);
     text-align: left;
   }
@@ -27,15 +27,8 @@
     text-decoration: none;
     color: var(--main-accent-color);
   }
-  
-  .starrr {
-    display: inline-block; 
-  }
-    
-  .starrr a {
-    font-size: 16px;
-    padding: 0 1px;
-    cursor: pointer;
-    color: #FFD119;
-    text-decoration: none; 
+
+  .edit_button {
+    margin: 5px auto 10px auto;
+    width: 100%;
   }
