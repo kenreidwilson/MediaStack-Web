@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Spinner from 'react-bootstrap/Spinner'
 
 import Navigation from '../../components/Navigation/Nav';
 import Media from '../../components/Media/Media';
@@ -96,7 +97,11 @@ export default class MediaPageComponent extends Component {
                             : null}
                     </div>
                     <div id="mediapage-content">
-                        {this.state.mediaInfo !== null ? <Media media={this.state.mediaInfo}/> : null}
+                        {this.state.isImageLoading ? <Spinner id="imageLoadingSpinner" animation="border" variant="primary" /> : null}
+                        <Media 
+                            onImageLoad={() => {this.setState({ isImageLoading : false })}}
+                            media={this.state.mediaInfo}
+                        />
                     </div>
                 </div>
             </React.Fragment>
