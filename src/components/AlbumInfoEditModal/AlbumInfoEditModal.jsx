@@ -15,12 +15,14 @@ export default class AlbumInfoEditModal extends Component {
         albumSelectedAddTagOptions : [],
         albumSelectedRemoveTagOptions : [],
         tagOptions : null,
+        albumRemoveTagOptions : null,
         isTagOptionsLoading : false
     }
 
     componentDidMount = () => {
         this.setState({ 
             mediaSelectedTagOptions : this.getMediaDefaultTagOptions(),
+            albumRemoveTagOptions : this.getAlbumRemoveTagOptions(),
             newAlbumSource : this.getAlbumSource() 
         })
     }
@@ -44,6 +46,14 @@ export default class AlbumInfoEditModal extends Component {
             defaults.push({ value : tag.id, label : tag.name });
         });
         return defaults;
+    }
+
+    getAlbumRemoveTagOptions = () => {
+        let defaults = [];
+        this.props.album.tags.forEach(tag => {
+            defaults.push({value: tag.id, label : tag.name });
+        });
+        return defaults
     }
     
     getTagOptions = () => {
@@ -228,12 +238,11 @@ export default class AlbumInfoEditModal extends Component {
                             <Select 
                                 placeholder="Enter Tags..."
                                 value={this.state.albumSelectedRemoveTagOptions}
-                                options={this.state.tagOptions === null ? [] : this.state.tagOptions}
+                                options={this.state.albumRemoveTagOptions === null ? [] : this.state.albumRemoveTagOptions}
                                 onChange={this.onAlbumRemoveTagChange}
                                 isSearchable
                                 isMulti
                                 isLoading={this.state.isTagOptionsLoading}
-                                onFocus={this.getTagOptions}
                             />
                         </div>
                     </div>
