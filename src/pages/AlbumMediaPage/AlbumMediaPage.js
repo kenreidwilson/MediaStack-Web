@@ -4,13 +4,14 @@ import Spinner from 'react-bootstrap/Spinner'
 import Navigation from '../../components/Navigation/Nav';
 import Media from '../../components/Media/Media';
 import MediaInfoSidebar from '../../components/MediaInfoSidebar/MediaInfoSidebar';
+import AlbumInfoSidebar from '../../components/MediaInfoSidebar/AlbumInfoSidebar';
 import SelectableThumbnails from '../../components/SelectableThumbnails/SelectableThumbnails';
 import SelectableThumbnailSlider from '../../components/SelectableThumbnailSlider/SelectableThumbnailSlider'
-import MediaInfoEditModal from '../../components/MediaInfoEditModal/MediaInfoEditModal'
+import AlbumInfoEditModal from '../../components/AlbumInfoEditModal/AlbumInfoEditModal'
 import BannerAlert from '../../components/BannerAlert/BannerAlert';
 
-import { AlbumInfoRequest } from '../../api/requests/AlbumRequests'
-import { MediaChangeInfoRequest } from '../../api/requests/MediaRequests'
+import { AlbumInfoRequest, AlbumInfoChangeRequest } from '../../api/requests/AlbumRequests'
+import { MediaInfoChangeRequest } from '../../api/requests/MediaRequests'
 
 const AlbumMediaPage = () => {
     return (
@@ -58,12 +59,30 @@ export default class AlbumMediaPageComponent extends Component {
         this.setState({ alerts })
     }
 
-    handleScoreEdit = async (newScore) => {
+    handleEditMediaScore = async (newScore) => {
         if (this.state.albumInfo[this.state.mediaNumber] !== newScore) {
-            await new MediaChangeInfoRequest(this.getCurrentMediaInfo().id, {'score' : newScore }).send().then(response => {
+            await new MediaInfoChangeRequest(this.getCurrentMediaInfo().id, {'score' : newScore }).send().then(response => {
                 let albumInfo = this.state.albumInfo
                 albumInfo.media[this.state.mediaNumber] = response
                 this.setState({ albumInfo })
+            }).catch(error => {
+                this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
+            })
+        }
+    }
+
+    getAlbumScore = () => {
+        let score = 0;
+        this.state.albumInfo.media.forEach(media => {
+            score += media.score;
+        })
+        return score === 0 ? 0 : score / this.state.albumInfo.media.length;
+    }
+
+    handleEditAlbumScore = async (newScore) => {
+        if (this.getAlbumScore() !== newScore) {
+            await new AlbumInfoChangeRequest(this.state.albumInfo.id, {'score' : newScore}).send().then(response => {
+                this.setState({ albumInfo : response })
             }).catch(error => {
                 this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
             })
@@ -74,9 +93,11 @@ export default class AlbumMediaPageComponent extends Component {
         this.setState({ showEditModal : true });
     }
 
-    handleModalSave = async (newMediaInfo) => {
+    handleModalSave = async (newInfo) => {
+        let newMediaInfo = newInfo['media'];
+
         if (Object.keys(newMediaInfo).length > 0) {
-            await new MediaChangeInfoRequest(this.getCurrentMediaInfo().id, newMediaInfo).send().then(response => {
+            await new MediaInfoChangeRequest(this.getCurrentMediaInfo().id, newMediaInfo).send().then(response => {
                 let albumInfo = this.state.albumInfo
                 albumInfo.media[this.state.mediaNumber] = response
                 this.setState({ albumInfo })
@@ -84,6 +105,17 @@ export default class AlbumMediaPageComponent extends Component {
                 this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
             })
         }
+
+        let newAlbumInfo = newInfo['album'];
+
+        if (Object.keys(newAlbumInfo).length > 0) {
+            await new AlbumInfoChangeRequest(this.state.albumInfo.id, newAlbumInfo).send().then(response => {
+                this.setState({ albumInfo : response });
+            }).catch(error => {
+                this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
+            })
+        }
+
         this.setState({ showEditModal : false});
     }
 
@@ -125,23 +157,34 @@ export default class AlbumMediaPageComponent extends Component {
         return ( 
             <React.Fragment>
                 {this.state.showEditModal ? 
-                    <MediaInfoEditModal 
+                    <AlbumInfoEditModal 
                         isShown={this.state.showEditModal} 
                         handleClose={this.handleModalClose}
                         handleSave={this.handleModalSave}
-                        media={this.getCurrentMediaInfo()}/> 
+                        media={this.getCurrentMediaInfo()}
+                        album={this.state.albumInfo}
+                    /> 
                     : null}
                 <Navigation />
                 {this.state.alerts.map(errorComponent => errorComponent)}
                 <div id="mediapage">
                     <div id="mediapage-sidebar">
                         {typeof this.state.albumInfo !== 'undefined' && this.state.mediaNumber !== null ? 
-                            <MediaInfoSidebar 
-                                onSidebarNavClick={this.onSidebarNavClick}
-                                handleEdit={this.handleOpenModal}
-                                handleScoreEdit={this.handleScoreEdit}
-                                media={this.getCurrentMediaInfo()}
-                                /> : null}
+                            <div>
+                                <button class="edit_button btn btn-primary" onClick={this.handleOpenModal}>Edit</button>
+                                <MediaInfoSidebar 
+                                    onSidebarNavClick={this.onSidebarNavClick}
+                                    handleEdit={this.handleOpenModal}
+                                    handleScoreEdit={this.handleEditMediaScore}
+                                    media={this.getCurrentMediaInfo()}
+                                />
+                                <AlbumInfoSidebar
+                                    onSidebarNavClick={this.onSidebarNavClick}
+                                    handleEdit={this.handleOpenModal}
+                                    handleScoreEdit={this.handleEditAlbumScore}
+                                    album={this.state.albumInfo}
+                                />
+                            </div> : null}
                     </div>
                     <div id="mediapage-content">
                         {typeof this.state.albumInfo !== 'undefined' && this.state.mediaNumber !== null ? 

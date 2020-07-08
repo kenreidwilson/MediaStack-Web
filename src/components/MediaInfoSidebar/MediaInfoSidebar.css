@@ -1,5 +1,13 @@
 @import '../../css/style.css';
 
+  #media_info_title {
+    text-align: center;
+    font-size: medium;
+    border-bottom: 1px solid white;
+    width: 50%;
+    margin: 0px auto 10px auto;
+  }
+
   #media_info {
     border: 3px solid var(--main-accent-color);
     text-align: left;

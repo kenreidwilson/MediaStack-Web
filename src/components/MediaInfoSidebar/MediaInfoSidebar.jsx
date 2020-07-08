@@ -70,9 +70,8 @@ export default class MediaInfoSidebar extends Component {
 
     render() { 
         return (
-            <React.Fragment>
-                <button class="edit_button btn btn-primary" onClick={this.props.handleEdit}>Edit</button>
                 <div id="media_info">
+                    <p id="media_info_title">{`Media Info  `}</p>
                     <InfoSideBarElement 
                         label={"Type: "} 
                         value={this.props.media.type}
@@ -106,7 +105,6 @@ export default class MediaInfoSidebar extends Component {
                         tags={this.props.media.tags}
                         onClick={this.onTagClick}/>
                 </div>
-            </React.Fragment>
          );
     }
 }

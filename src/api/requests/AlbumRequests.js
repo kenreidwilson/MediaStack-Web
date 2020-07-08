@@ -24,7 +24,20 @@ class AlbumInfoRequest extends BaseRequest {
     }
 }
 
+class AlbumInfoChangeRequest extends BaseRequest {
+    constructor(albumId, albumInfo) {
+        super();
+        this.albumId = albumId;
+        this.albumInfo = albumInfo
+    }
+
+    send() {
+        return API.put(`${this.baseURL}${primaryResource}${this.albumId}/info`, this.albumInfo);
+    }
+}
+
 export {
     AlbumsRequest,
-    AlbumInfoRequest
+    AlbumInfoRequest,
+    AlbumInfoChangeRequest
 }

@@ -6,7 +6,7 @@ import MediaInfoSidebar from '../../components/MediaInfoSidebar/MediaInfoSidebar
 import BannerAlert from '../../components/BannerAlert/BannerAlert';
 import MediaInfoEditModal from '../../components/MediaInfoEditModal/MediaInfoEditModal'
 
-import { MediaInfoRequest, MediaChangeInfoRequest } from '../../api/requests/MediaRequests'
+import { MediaInfoRequest, MediaInfoChangeRequest } from '../../api/requests/MediaRequests'
 
 import './MediaPage.css'
 
@@ -37,7 +37,7 @@ export default class MediaPageComponent extends Component {
 
     handleScoreEdit = async (newScore) => {
         if (this.state.mediaInfo.score !== newScore) {
-            await new MediaChangeInfoRequest(this.state.mediaInfo.id, {'score' : newScore }).send().then(response => {
+            await new MediaInfoChangeRequest(this.state.mediaInfo.id, {'score' : newScore }).send().then(response => {
                 this.setState({ mediaInfo : response })
             }).catch(error => {
                 this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
@@ -52,7 +52,7 @@ export default class MediaPageComponent extends Component {
     handleModalSave = async (newMediaInfo) => {
         if (Object.keys(newMediaInfo).length > 0) {
             console.log(newMediaInfo);
-            await new MediaChangeInfoRequest(this.state.mediaInfo.id, newMediaInfo).send().then(response => {
+            await new MediaInfoChangeRequest(this.state.mediaInfo.id, newMediaInfo).send().then(response => {
                 this.setState({mediaInfo : response})
             }).catch(error => {
                 this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
@@ -84,11 +84,15 @@ export default class MediaPageComponent extends Component {
                 <div id="mediapage">
                     <div id="mediapage-sidebar">
                         {this.state.mediaInfo !== null ? 
-                            <MediaInfoSidebar
-                                onSidebarNavClick={this.onSidebarNavClick}
-                                handleEdit={this.handleOpenModal}
-                                handleScoreEdit={this.handleScoreEdit}
-                                media={this.state.mediaInfo}/> 
+                            <div>
+                                <button class="edit_button btn btn-primary" onClick={this.handleOpenModal}>Edit</button>
+                                <MediaInfoSidebar
+                                    onSidebarNavClick={this.onSidebarNavClick}
+                                    handleEdit={this.handleOpenModal}
+                                    handleScoreEdit={this.handleScoreEdit}
+                                    media={this.state.mediaInfo}
+                                /> 
+                            </div>
                             : null}
                     </div>
                     <div id="mediapage-content">

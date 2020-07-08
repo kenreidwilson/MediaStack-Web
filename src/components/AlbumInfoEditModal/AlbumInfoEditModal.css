@@ -1,0 +1,31 @@
+
+#info_edit_modal_body {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.info_edit_modal_seperator {
+    width: 80%;
+    text-align: center;
+    margin: 0px auto 5px auto;
+}
+
+.info_edit_modal_element {
+    display: inline-block;
+    width: 100%;
+}
+
+.info_edit_modal_element p {
+    width: 110px;
+    float: left;
+    margin-left: 5px;
+}
+
+.info_edit_modal_source_form {
+    overflow: hidden;
+}
+
+.info_edit_modal_source_form input {
+    width: 100%;
+}

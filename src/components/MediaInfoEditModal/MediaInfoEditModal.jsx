@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button }from "react-bootstrap";
 import CreatableSelect from 'react-select/creatable';
-import $ from 'jquery'
 
 import { TagsRequest, TagCreationRequest } from '../../api/requests/TagRequests'
 
@@ -15,7 +14,6 @@ export default class MediaInfoEditModal extends Component {
     }
 
     componentDidMount = () => {
-        //$(document.body).on('keydown', (event) => {if (event.keyCode === 27) this.props.handleClose()});
         this.setState({ selectedTagOptions : this.defaultTagOptions() })
     }
 
@@ -96,22 +94,28 @@ export default class MediaInfoEditModal extends Component {
                         <Modal.Title>{`Edit Media Info`}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                    <p>Source: </p>
-                    <form>
-                        <input type="text" value={this.state.newSource} onChange={this.onSourceChange} />
-                    </form>
-                    <p>Tags:</p>
-                    <CreatableSelect 
-                        placeholder="Enter Tags..."
-                        value={this.state.selectedTagOptions}
-                        options={this.state.tagOptions === null ? [] : this.state.tagOptions}
-                        onChange={this.onTagChange}
-                        onCreateOption={this.handleOptionCreation}
-                        isSearchable
-                        isMulti
-                        isLoading={this.state.isTagOptionsLoading}
-                        onFocus={this.getTagOptions}
-                    />
+                    <div className="info_edit_modal_body">
+                        <div className="info_edit_modal_element">
+                            <p>Source: </p>
+                            <form className="info_edit_modal_source_form">
+                                <input type="text" value={this.state.newSource} onChange={this.onSourceChange} />
+                            </form>
+                        </div>
+                        <div className="info_edit_modal_element">
+                            <p>Tags:</p>
+                            <CreatableSelect 
+                                placeholder="Enter Tags..."
+                                value={this.state.selectedTagOptions}
+                                options={this.state.tagOptions === null ? [] : this.state.tagOptions}
+                                onChange={this.onTagChange}
+                                onCreateOption={this.handleOptionCreation}
+                                isSearchable
+                                isMulti
+                                isLoading={this.state.isTagOptionsLoading}
+                                onFocus={this.getTagOptions}
+                            />
+                        </div>
+                    </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.props.handleClose}>Close</Button>

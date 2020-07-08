@@ -39,6 +39,6 @@ class MediaFileRequest extends BaseRequest {
 
 export { 
     MediaInfoRequest,
-    MediaInfoChangeRequest as MediaChangeInfoRequest,
+    MediaInfoChangeRequest,
     MediaFileRequest
 }
