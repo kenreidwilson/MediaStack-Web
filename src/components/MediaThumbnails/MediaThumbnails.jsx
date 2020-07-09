@@ -38,15 +38,18 @@ export default class MediaThumbnails extends Component {
                     <a href={this.props.collapseAlbums && object.album_id !== null ? 
                         `/album?id=${object.id}` : 
                         `/media?id=${object.id}`}>
-                        <MediaThumbnail 
-                            key={object.hash} 
-                            mediaId={this.props.collapseAlbums && object.album_id !== null ? 
-                                object.cover_id :
-                                object.id} 
-                            classes={this.props.collapseAlbums && object.album_id !== null ?
-                                "thumbnail album_thumbnail" :
-                                "thumbnail media_thumbnail"}
-                        />
+                        <div className="thumbnail_container">
+                            {object.album_id !== null ? <span id="album_id_badge" class="badge badge-primary">Album</span> : null}
+                            <MediaThumbnail 
+                                key={object.hash} 
+                                mediaId={this.props.collapseAlbums && object.album_id !== null ? 
+                                    object.cover_id :
+                                    object.id} 
+                                classes={this.props.collapseAlbums && object.album_id !== null ?
+                                    "thumbnail album_thumbnail" :
+                                    "thumbnail media_thumbnail"}
+                            />
+                        </div>
                     </a>
                 )}
             </div>
