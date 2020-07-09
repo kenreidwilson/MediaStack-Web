@@ -10,11 +10,14 @@
 .search_menu_item {
     display: flex;
     align-items: center;
+    margin: 10px 0px 0px 0px;
 }
 
-.search_menu_item h4 {
-    width: 90px;
+.search_menu_item p {
+    font-size: large;
+    width: 100px;
     color: var(--main-accent-color);
+    margin: auto;
 }
 
 .selector {
@@ -22,8 +25,14 @@
 }
 
 #search_button {
-    margin-top: 10px;
+    margin: 10px 0px 0px 90px;
     width: 100px;
+}
+
+#show_advanced_options_element {
+    text-align: center;
+    float: right;
+    color: var(--main-accent-color);
 }
 
 @media (max-width: 768px) {
@@ -34,4 +43,4 @@
     .search_menu_item {
         flex-direction: column;
     }
-  }
+}

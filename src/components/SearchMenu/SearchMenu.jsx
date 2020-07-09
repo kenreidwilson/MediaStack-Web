@@ -10,41 +10,18 @@ import './SearchMenu.css';
 
 export default class SearchMenu extends Component {
     state = { 
-        tagsSelected : [],
-        albumSelected : null,
-        artistSelected : null,
-        categorySelected : null
+        showAdvancedOptions : false,
+        tagOptionsSelected : [],
+        albumOptionSelected : null,
+        artistOptionSelected : null,
+        categoryOptionSelected : null
      }
-
-    onTagSelection = tagsSelected => {
-        if (tagsSelected === null) {
-            return;
-        }
-        let newSelectedTags = [];
-        tagsSelected.forEach(tag => {
-            newSelectedTags.push(tag.value);
-        })
-        this.setState({ tagsSelected : newSelectedTags })
-    }
-
-    onAlbumSelection = albumSelected => {
-        this.setState({ albumSelected });
-    }
-
-    onArtistSelection = artistSelected => {
-        this.setState({ artistSelected });
-    }
-
-    onCategorySelection = categorySelected => {
-        this.setState({ categorySelected });
-    }
 
     onSearch = () => {
         this.props.onSearch({
-            'whitelist_tags' : this.state.tagsSelected,
-            'album' : this.state.albumSelected ? this.state.albumSelected.value : null,
-            'artist' : this.state.artistSelected ? this.state.artistSelected.value : null,
-            'category' : this.state.categorySelected ? this.state.categorySelected.value : null
+            'whitelist_tags' : this.state.tagOptionsSelected.map((tagOption) => {return tagOption.value}),
+            'artist' : this.state.artistOptionSelected ? this.state.artistOptionSelected.value : null,
+            'category' : this.state.categoryOptionSelected ? this.state.categoryOptionSelected.value : null
         })
     }
 
@@ -52,24 +29,39 @@ export default class SearchMenu extends Component {
         return (
             <div id="search_menu">
                 <div className="search_menu_item">
-                    <h4>Tags: </h4>
+                    <p>Tags: </p>
                     <div className="selector">
-                        <TagSelector onChange={this.onTagSelection}/>
+                        <TagSelector onChange={(selectedOptions) => {this.setState({tagOptionsSelected : selectedOptions})}}/>
                     </div>
                 </div>
-                <div className="search_menu_item">
-                    <h4>Artist: </h4>
-                    <div className="selector">
-                        <UniqueQuerySelector placeholder="Enter Artist name..." request={new ArtistsRequest()} onChange={this.onArtistSelection}/>
+                {this.state.showAdvancedOptions ? <div id="advanced_options">
+                    <div className="search_menu_item">
+                        <p>Category: </p>
+                        <div className="selector">
+                            <UniqueQuerySelector 
+                                placeholder="Enter Category name..." 
+                                request={new CategoriesRequest()} 
+                                onChange={(selectedOption) => {this.setState({categoryOptionSelected : selectedOption})}}/>
+                        </div>
                     </div>
-                </div>
-                <div className="search_menu_item">
-                    <h4>Category: </h4>
-                    <div className="selector">
-                        <UniqueQuerySelector placeholder="Enter Category name..." request={new CategoriesRequest()} onChange={this.onCategorySelection}/>
+                    <div className="search_menu_item">
+                        <p>Artist: </p>
+                        <div className="selector">
+                            <UniqueQuerySelector 
+                                placeholder="Enter Artist name..." 
+                                request={new ArtistsRequest()} 
+                                onChange={(selectedOption) => {this.setState({artistOptionSelected : selectedOption})}}/>
+                        </div>
                     </div>
+                </div> : null}
+                <div>
+                    <button class="btn btn-primary" id="search_button" onClick={this.onSearch}>Search</button>
+                    <a 
+                        onClick={() => {this.setState(prevState => ({showAdvancedOptions : !prevState.showAdvancedOptions}))}} 
+                        id="show_advanced_options_element">
+                            {this.state.showAdvancedOptions ? "hide advanced options" : "show advanced options"}
+                    </a>
                 </div>
-                <button id="search_button" onClick={this.onSearch}>Search</button>
             </div>
         );
     }
