@@ -16,7 +16,7 @@ export default class AlbumInfoSidebar extends Component {
         this.props.album.media.forEach(media => {
             score += media.score;
         })
-        return score === 0 ? 0 : score / this.props.album.media.length;
+        return score === 0 ? 0 : Math.round(score / this.props.album.media.length);
     }
 
     render() { 
