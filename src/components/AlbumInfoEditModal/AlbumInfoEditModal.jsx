@@ -130,7 +130,7 @@ export default class AlbumInfoEditModal extends Component {
     handleSaveClick = () => {
 
         let newMediaInfo = {};
-
+        
         if (!this.compareOptions(this.state.mediaSelectedTagOptions, this.getMediaDefaultTagOptions())) {
             let newTags = []
             if (this.state.mediaSelectedTagOptions !== null) {
@@ -171,9 +171,14 @@ export default class AlbumInfoEditModal extends Component {
     }
 
     compareOptions = (options, otherOptions) => {
-        if (options.length !== otherOptions.length) {
+        if (options === otherOptions) {
+            return true;
+        }
+
+        if (options.length !== otherOptions.length || options === null) {
             return false;
         }
+        
         for (let i = 0; i < options.length; i++) {
             if (options[i].value !== otherOptions[i].value || options[i].label !== otherOptions[i].label) {
                 return false;
