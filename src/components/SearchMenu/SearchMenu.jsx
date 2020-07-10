@@ -40,7 +40,6 @@ export default class SearchMenu extends Component {
             searchQuery['type'] = this.state.typeOptionSelected.value;
         }
 
-        console.log(this.state.ratingOptionSelected);
         if (this.state.ratingOptionSelected) {
             searchQuery[this.state.ratingOptionSelected.comparator] = this.state.ratingOptionSelected.value;
         }

@@ -20,13 +20,15 @@ export default class RatingSelector extends Component {
 
       onStarClick(nextValue) {
         let newValue = nextValue === this.props.ratingValue ? 0 : nextValue;
-        this.setState({ ratingValue : newValue }, () => {
-          this.props.onChange(this.getRatingQuery()); 
+        let ratingOption = this.state.ratingComparator ? {'label': this.state.dropdownLabel, 'value': this.state.ratingComparator} : {'label': "Equal", 'value':"score"};
+        this.setState({ ratingValue : newValue, ratingComparator : ratingOption.value, dropdownLabel : ratingOption.label }, () => {
+          this.props.onChange(this.getRatingQuery());
         })
       }
 
       onComparatorClick(comparatorOption) {
-        this.setState({ ratingComparator : comparatorOption.value, dropdownLabel : comparatorOption.label}, () => {
+        let ratingValue = comparatorOption.value ? this.state.ratingValue : 0;
+        this.setState({ ratingComparator : comparatorOption.value, dropdownLabel : comparatorOption.label, ratingValue}, () => {
           this.props.onChange(this.getRatingQuery());
         })
       }
@@ -63,7 +65,7 @@ export default class RatingSelector extends Component {
             <div id="rating_selector_stars">
               <StarRatingComponent 
                   starCount={5}
-                  value={this.props.ratingValue}
+                  value={this.state.ratingValue}
                   onStarClick={this.onStarClick.bind(this)}
               />
             </div>
