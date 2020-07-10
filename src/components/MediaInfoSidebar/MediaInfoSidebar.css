@@ -25,6 +25,7 @@
   #media_info p a {
     text-decoration: none;
     color: var(--main-accent-color);
+    cursor: pointer;
   }
   
   #media_info ul li {
@@ -34,6 +35,7 @@
   #media_info ul li a {
     text-decoration: none;
     color: var(--main-accent-color);
+    cursor: pointer;
   }
 
   .edit_button {
