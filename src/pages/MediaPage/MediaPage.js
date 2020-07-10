@@ -99,7 +99,7 @@ export default class MediaPageComponent extends Component {
                     <div id="mediapage-content">
                         {this.state.isImageLoading ? <Spinner id="imageLoadingSpinner" animation="border" variant="primary" /> : null}
                         <Media 
-                            onImageLoad={() => {this.setState({ isImageLoading : false })}}
+                            onLoad={() => {this.setState({ isImageLoading : false })}}
                             media={this.state.mediaInfo}
                         />
                     </div>
