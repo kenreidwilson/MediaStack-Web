@@ -7,6 +7,7 @@ import IndexPage from './pages/IndexPage/IndexPage';
 import MediaPage from './pages/MediaPage/MediaPage';
 import AlbumMediaPage from './pages/AlbumMediaPage/AlbumMediaPage';
 import ThumbnailPage from './pages/ThumbnailPage/ThumbnailPage';
+import TagsPage from './pages/TagsPage/TagsPage';
 import Error404Page from './pages/404Page/404Page';
  
 class App extends Component {
@@ -19,6 +20,7 @@ class App extends Component {
                 <Route path="/media" component={MediaPage} exact/>
                 <Route path="/album" component={AlbumMediaPage} exact/>
                 <Route path="/search" component={ThumbnailPage} exact/>
+                <Route path="/tags" component={TagsPage} exact/>
                 <Route component={Error404Page}/>
            </Switch>
         </div> 
