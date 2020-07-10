@@ -200,7 +200,7 @@ export default class AlbumInfoEditModal extends Component {
                         <div className="info_edit_modal_element">
                             <p>Source: </p>
                             <form className="info_edit_modal_source_form">
-                                <input type="text" value={this.state.newMediaSource} onChange={this.onMediaTagChange} />
+                                <input type="text" value={this.state.newMediaSource} onChange={this.onMediaSourceChange} />
                             </form>
                         </div>
                         <div className="info_edit_modal_element">
@@ -221,7 +221,7 @@ export default class AlbumInfoEditModal extends Component {
                         <div className="info_edit_modal_element">
                             <p>Source: </p>
                             <form className="info_edit_modal_source_form">
-                                <input type="text" value={this.state.newAlbumSource} onChange={this.onMediaTagChange} />
+                                <input type="text" value={this.state.newAlbumSource} onChange={this.onAlbumSourceChange} />
                             </form>
                         </div>  
                         <div className="info_edit_modal_element">
