@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import Select from 'react-select';
 
 import TagSelector from './TagSelector/TagSelector';
 import UniqueQuerySelector from './UniqueQuerySelector/UniqueQuerySelector';
+import RatingSelector from './RatingSelector/RatingSelector';
 
 import { ArtistsRequest } from '../../api/requests/ArtistRequests';
 import { CategoriesRequest } from '../../api/requests/CategoryRequests';
@@ -14,15 +16,36 @@ export default class SearchMenu extends Component {
         tagOptionsSelected : [],
         albumOptionSelected : null,
         artistOptionSelected : null,
-        categoryOptionSelected : null
+        categoryOptionSelected : null,
+        typeOptionSelected : null,
+        ratingOptionSelected : null
      }
 
     onSearch = () => {
-        this.props.onSearch({
-            'whitelist_tags' : this.state.tagOptionsSelected.map((tagOption) => {return tagOption.value}),
-            'artist' : this.state.artistOptionSelected ? this.state.artistOptionSelected.value : null,
-            'category' : this.state.categoryOptionSelected ? this.state.categoryOptionSelected.value : null
-        })
+        let searchQuery = {};
+
+        if (this.state.tagOptionsSelected) {
+            searchQuery['whitelist_tags'] = this.state.tagOptionsSelected.map((tagOption) => {return tagOption.value});
+        }
+
+        if (this.state.artistOptionSelected) {
+            searchQuery['artist'] = this.state.artistOptionSelected.value;
+        }
+
+        if (this.state.categoryOptionSelected) {
+            searchQuery['category'] = this.state.categoryOptionSelected.value;
+        }
+
+        if (this.state.typeOptionSelected) {
+            searchQuery['type'] = this.state.typeOptionSelected.value;
+        }
+
+        console.log(this.state.ratingOptionSelected);
+        if (this.state.ratingOptionSelected) {
+            searchQuery[this.state.ratingOptionSelected.comparator] = this.state.ratingOptionSelected.value;
+        }
+
+        this.props.onSearch(searchQuery);
     }
 
     render() { 
@@ -51,6 +74,26 @@ export default class SearchMenu extends Component {
                                 placeholder="Enter Artist name..." 
                                 request={new ArtistsRequest()} 
                                 onChange={(selectedOption) => {this.setState({artistOptionSelected : selectedOption})}}/>
+                        </div>
+                    </div>
+                    <div className="search_menu_item">
+                        <p>Type: </p>
+                        <div className="selector">
+                        <Select 
+                            placeholder={"Choose a media type..."}
+                            options={[{ 'label': 'image', value: 'image'}, { 'label': 'animated_image', value: 'animated_image'}, { 'label': 'video', value: 'video'}]}
+                            value={this.state.typeOptionSelected}
+                            onChange={(selectedOption) => this.setState({ typeOptionSelected : selectedOption })}
+                            isSearchable
+                            isClearable
+                        />
+                        </div>
+                    </div>
+                    <div className="search_menu_item">
+                        <p>Rating: </p>
+                        <div className="selector">
+                            <RatingSelector 
+                                onChange={(selectedOption) => this.setState({ ratingOptionSelected : selectedOption })}/>
                         </div>
                     </div>
                 </div> : null}
