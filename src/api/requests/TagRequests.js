@@ -11,6 +11,17 @@ class TagsRequest extends BaseRequest {
     }
 }
 
+class TagInfoRequest extends BaseRequest {
+    constructor(tagId) {
+        super();
+        this.tagId = tagId;
+    }
+
+    send() {
+        return API.get(`${this.baseURL}/tags/${this.tagId}/info`);
+    }
+}
+
 class TagCreationRequest extends BaseRequest {
     constructor(tagName) {
         super();
@@ -22,7 +33,33 @@ class TagCreationRequest extends BaseRequest {
     }
 }
 
+class TagDeletionRequest extends BaseRequest {
+    constructor(tagId) {
+        super();
+        this.tagId = tagId;
+    }
+
+    send() {
+        return API.delete(`${this.baseURL}/tags/${this.tagId}`);
+    }
+}
+
+class TagNameChangeRequest extends BaseRequest {
+    constructor(tagId, newTagName) {
+        super();
+        this.tagId = tagId;
+        this.newTagName = newTagName;
+    }
+
+    send() {
+        return API.put(`${this.baseURL}/tags/${this.tagId}/info`, {'name': this.newTagName})
+    }
+}
+
 export {
     TagsRequest,
-    TagCreationRequest
+    TagInfoRequest,
+    TagCreationRequest,
+    TagDeletionRequest,
+    TagNameChangeRequest
 }

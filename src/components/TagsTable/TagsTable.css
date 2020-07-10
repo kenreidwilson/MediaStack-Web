@@ -1,0 +1,15 @@
+#tags_table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#tags_table_table {
+    width: 95%;
+}
+
+.edit_a, .delete_a {
+    color: var(--main-text-color);
+    cursor: pointer;
+}

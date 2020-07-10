@@ -14,6 +14,9 @@ export default class Navigation extends Component {
                         <Nav.Link href="/search">
                             <Nav.Link href="/search">Media</Nav.Link>
                         </Nav.Link>
+                        <Nav.Link href="/tags">
+                            <Nav.Link href="/tags">Tags</Nav.Link>
+                        </Nav.Link>
                         <Nav.Link href="/upload">
                             <Nav.Link href="/upload">Upload</Nav.Link>
                         </Nav.Link>
