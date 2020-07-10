@@ -24,7 +24,7 @@ export default class AlbumMediaPageComponent extends Component {
         albumInfo : this.props.album,
         mediaNumber : new URL(window.location.href).searchParams.get("page"),
         showEditModal : false,
-        isImageLoading : true,
+        isMediaLoading : true,
         alerts : []
     }
 
@@ -42,8 +42,8 @@ export default class AlbumMediaPageComponent extends Component {
         });
     }
 
-    onImageLoad = () => {
-        this.setState({ isImageLoading : false })
+    onMediaLoad = () => {
+        this.setState({ isMediaLoading : false })
     }
 
     onSidebarNavClick = (searchQuery) => {
@@ -124,7 +124,10 @@ export default class AlbumMediaPageComponent extends Component {
     }
     
     handleThumbnailClick = (index) => {
-        this.setState({ mediaNumber : index, isImageLoading : true });
+        if (this.state.mediaNumber === index) {
+            return;
+        }
+        this.setState({ mediaNumber : index, isMediaLoading : true });
     }
 
     handleMediaClick = (event) => {
@@ -141,7 +144,7 @@ export default class AlbumMediaPageComponent extends Component {
         } else {
             this.setState({ mediaNumber : (this.state.mediaNumber + 1) })
         }
-        this.setState({ isImageLoading : true })
+        this.setState({ isMediaLoading : true })
     }
 
     handlePreviousMedia = () => {
@@ -150,7 +153,7 @@ export default class AlbumMediaPageComponent extends Component {
         } else {
             this.setState({ mediaNumber : (this.state.mediaNumber - 1) })
         }
-        this.setState({ isImageLoading : true })
+        this.setState({ isMediaLoading : true })
     }
 
     render() { 
@@ -189,9 +192,9 @@ export default class AlbumMediaPageComponent extends Component {
                     <div id="mediapage-content">
                         {typeof this.state.albumInfo !== 'undefined' && this.state.mediaNumber !== null ? 
                             <div>
-                                {this.state.isImageLoading ? <Spinner id="imageLoadingSpinner" animation="border" variant="primary" /> : null}
+                                {this.state.isMediaLoading ? <Spinner id="imageLoadingSpinner" animation="border" variant="primary" /> : null}
                                 <Media 
-                                    onImageLoad={this.onImageLoad}
+                                    onLoad={this.onMediaLoad}
                                     onImageClick={this.handleMediaClick}
                                     media={this.getCurrentMediaInfo()}
                                 />
