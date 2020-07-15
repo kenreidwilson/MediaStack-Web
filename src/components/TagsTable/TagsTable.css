@@ -9,6 +9,10 @@
     width: 95%;
 }
 
+#tags_table_table table tbody tr {
+    color: white;
+}
+
 .edit_a, .delete_a {
     color: var(--main-text-color);
     cursor: pointer;

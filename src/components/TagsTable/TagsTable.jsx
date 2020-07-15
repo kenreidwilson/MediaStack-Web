@@ -8,18 +8,29 @@ import './TagsTable.css'
 export default class TagsTable extends Component {
     
     state = {
+        tagsInfo: {},
         pageNumber: 0,
         showEditModal: false,
         showDeleteModal: false,
-        selectedTag: null
+        selectedTag: null,
+        isTagInfoLoading: false
     }
 
     tagsPerPage = 15;
 
+    componentDidMount = () => {
+        this.props.tags.forEach(tag => {
+            new TagInfoRequest(tag.id).send().then(tagInfo => {
+                this.setState(prevState => {
+                    let tagsInfo = Object.assign({}, prevState.tagsInfo);
+                    tagsInfo[tag.id] = tagInfo;
+                    return { tagsInfo }
+                })
+            })
+        })
+    }
+
     numberOfPages = () => {
-        if (this.props.tags === null) {
-            return 0;
-        }
         return Math.ceil(this.props.tags.length / this.tagsPerPage);
     }
 
@@ -73,8 +84,9 @@ export default class TagsTable extends Component {
                         <thead className="thead-dark">
                             <tr>
                                 <th style={{width: "5%"}}>ID</th>
-                                <th style={{width: "80%"}}>Name</th>
-                                <th style={{width: "15%"}}>Edit</th>
+                                <th style={{width: "20%"}}>Name</th>
+                                <th style={{width: "60%"}}>Media Count</th>
+                                <th style={{width: "15%", minWidth: "111px"}}>Edit</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,6 +94,12 @@ export default class TagsTable extends Component {
                                 <tr>
                                     <th scope="row">{tag.id}</th>
                                     <td>{tag.name}</td>
+                                    <td>{this.state.tagsInfo[tag.id] ? 
+                                        this.state.tagsInfo[tag.id].media.length : 
+                                        <div class="spinner-border spinner-border-sm" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>}
+                                    </td>
                                     <td>
                                         <a className="edit_a" onClick={() => this.setState({ selectedTag : tag, showEditModal: true })}>Edit</a> |
                                         <a className="delete_a" onClick={() => this.setState({ selectedTag : tag, showDeleteModal: true })}> Delete</a>

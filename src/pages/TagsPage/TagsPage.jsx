@@ -46,6 +46,9 @@ export default class TagsPage extends Component {
     }
     
     render() { 
+        if (this.state.tags === null) {
+            return null;
+        }
         return ( 
             <React.Fragment>
                 <Navigation />
