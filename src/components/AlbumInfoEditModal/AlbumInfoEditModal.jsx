@@ -175,7 +175,7 @@ export default class AlbumInfoEditModal extends Component {
             return true;
         }
 
-        if (options.length !== otherOptions.length || options === null) {
+        if (options === null || options.length !== otherOptions.length) {
             return false;
         }
         
