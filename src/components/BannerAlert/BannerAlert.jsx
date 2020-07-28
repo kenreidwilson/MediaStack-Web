@@ -1,20 +1,16 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Alert } from 'react-bootstrap';
 
-export default class BannerAlert extends Component {
-    state = { 
-        isShown : true
-    }
+export default function BannerAlert({variant, heading, body}) {
+    const [isShown, setShown]= useState(true);
 
-    render() { 
-        if (this.state.isShown) {
-            return ( 
-                <Alert variant={this.props.variant} onClose={() => this.setState({isShown : false})} dismissible>
-                    <Alert.Heading>{this.props.heading}</Alert.Heading>
-                    <p>{this.props.body}</p>
-                </Alert>
-             );
-        }
-        return null;
+    if (isShown) {
+        return ( 
+            <Alert variant={variant} onClose={() => setShown(false)} dismissible>
+                <Alert.Heading>{heading}</Alert.Heading>
+                <p>{body}</p>
+            </Alert>
+        );
     }
+    return null;
 }

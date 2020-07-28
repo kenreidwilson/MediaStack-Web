@@ -19,16 +19,11 @@ export default class ThumbnailPageComponent extends Component {
     state = { 
         collapseAlbums : true,
         mediaList : null,
+        albumList : null,
         alerts : []
     }
 
-    addAlert = (alert) => {
-        let alerts = this.state.alerts.concat(alert);
-        this.setState({ alerts })
-    }
-
-    componentDidMount = async () => {
-
+    sortFunction = async (mediaAndAlbumList) => {
         function responseToDict(response) {
             if (response === null) {
                 return null;
@@ -56,6 +51,34 @@ export default class ThumbnailPageComponent extends Component {
             albums = responseToDict(response);
         })
 
+        mediaAndAlbumList.sort((a, b) => {
+            if (a.category_id !== b.category_id) {
+                return categories[a.category_id].name > categories[b.category_id].name ? 1 : -1;
+            } else if (a.artist_id !== b.artist_id) {
+                let a_artist = artists[a.artist_id]
+                let b_artist = artists[b.artist_id]
+                if (typeof a_artist === 'undefined') return -1
+                if (typeof b_artist === 'undefined') return 1
+                return artists[a.artist_id].name > artists[b.artist_id].name ? 1 : -1;
+            } else if (a.album_id !== b.album_id) {
+                let a_album = albums[a.album_id]
+                let b_album = albums[b.album_id]
+                if (typeof a_album === 'undefined') return -1
+                if (typeof b_album === 'undefined') return 1
+                return albums[a.album_id].name > albums[b.album_id].name ? 1 : -1;
+            }
+            return 1;
+        });
+        return mediaAndAlbumList;
+    }
+
+    addAlert = (alert) => {
+        let alerts = this.state.alerts.concat(alert);
+        this.setState({ alerts })
+    }
+
+    componentDidMount = async () => {
+        
         let request;
         if (typeof this.props.location.state === 'undefined') {
             request = new SearchAllRequest();
@@ -64,30 +87,10 @@ export default class ThumbnailPageComponent extends Component {
         }
 
         await request.send().then(response => {
-            let media = response.media;
-            let result = media.concat(response.albums);
-            if (result.length === 0) {
+            if (response.media.length === 0 && response.albums.length === 0) {
                 this.addAlert(<BannerAlert variant="warning" heading="API Response:" body="Nothing was found."/>);
             }
-            result.sort((a, b) => {
-                if (a.category_id !== b.category_id) {
-                    return categories[a.category_id].name > categories[b.category_id].name;
-                } else if (a.artist_id !== b.artist_id) {
-                    let a_artist = artists[a.artist_id]
-                    let b_artist = artists[b.artist_id]
-                    if (typeof a_artist === 'undefined') return false
-                    if (typeof b_artist === 'undefined') return true
-                    return artists[a.artist_id].name > artists[b.artist_id].name;
-                } else if (a.album_id !== b.album_id) {
-                    let a_album = albums[a.album_id]
-                    let b_album = albums[b.album_id]
-                    if (typeof a_album === 'undefined') return false
-                    if (typeof b_album === 'undefined') return true
-                    return albums[a.album_id].name > albums[b.album_id].name;
-                }
-                return true;
-            });
-            this.setState({mediaList : result })
+            this.setState({mediaList : response.media, albumList : response.albums });
         }).catch(error => { 
             this.addAlert(<BannerAlert variant="danger" heading="API Error: " body={error.message}/>);
         });
@@ -98,7 +101,13 @@ export default class ThumbnailPageComponent extends Component {
             <React.Fragment>
                 <Navigation />
                 {this.state.alerts.map(errorComponent => errorComponent)}
-                {this.state.mediaList ? <MediaThumbnails collapseAlbums={this.state.collapseAlbums} mediaList={this.state.mediaList}/> : null}
+                {this.state.mediaList ? 
+                    <MediaThumbnails 
+                        showAlbumCoverOnly={true} 
+                        mediaList={this.state.mediaList}
+                        albumList={this.state.albumList}
+                        sortFunction={this.sortFunction}/> 
+                : null}
             </React.Fragment>
          );
     }
