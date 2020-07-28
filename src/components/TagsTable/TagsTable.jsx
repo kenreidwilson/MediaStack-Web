@@ -93,7 +93,7 @@ export default class TagsTable extends Component {
                             {this.props.tags ? this.props.tags.slice(this.tagsPerPage * this.state.pageNumber, this.tagsPerPage * (this.state.pageNumber + 1)).map(tag =>
                                 <tr>
                                     <th scope="row">{tag.id}</th>
-                                    <td>{tag.name}</td>
+                                    <td><a style={{cursor: 'pointer'}} onClick={() => this.props.onTagClick({'whitelist_tags':[tag.id]})}>{tag.name}</a></td>
                                     <td>{this.state.tagsInfo[tag.id] ? 
                                         this.state.tagsInfo[tag.id].media.length : 
                                         <div class="spinner-border spinner-border-sm" role="status">

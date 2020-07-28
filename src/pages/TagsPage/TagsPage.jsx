@@ -44,6 +44,11 @@ export default class TagsPage extends Component {
             }
         })
     }
+
+    onTagClick = (searchQuery) => {
+        console.log(searchQuery);
+        this.props.history.push('/search', { searchQuery : searchQuery });
+    }
     
     render() { 
         if (this.state.tags === null) {
@@ -57,6 +62,7 @@ export default class TagsPage extends Component {
                     tags={this.state.tags}
                     onDeleteTag={this.onDeleteTag}
                     onEditTag={this.onEditTag}
+                    onTagClick={this.onTagClick}
                 />
             </React.Fragment>
          );
