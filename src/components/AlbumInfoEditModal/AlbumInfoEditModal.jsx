@@ -29,14 +29,18 @@ export default class AlbumInfoEditModal extends Component {
 
     getAlbumSource = () => {
         let albumSource = null;
-        this.props.album.media.forEach(media => {
-            if (media.source !== null) {
-                if (albumSource !== null && media.source !== albumSource) {
-                    return "Multiple Sources.";
+        try {
+            this.props.album.media.forEach(media => {
+                if (media.source !== null) {
+                    if (albumSource !== null && media.source !== albumSource) {
+                        throw "Different Sources.";
+                    }
+                    albumSource = media.source;      
                 }
-                albumSource = media.source;      
-            }
-        })
+            })
+        } catch (error) {
+            albumSource = null;
+        }
         return albumSource;
     }
 
