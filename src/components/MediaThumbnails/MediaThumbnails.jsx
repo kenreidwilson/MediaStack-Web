@@ -10,11 +10,11 @@ export default function MediaThumbnails({showAlbumCoverOnly, mediaList, albumLis
     function determineMediaToShow() {
         let mediaListToShow = [];
         mediaList.forEach(media => {
-            mediaListToShow.push(media);
+            if (typeof media !== 'undefined') mediaListToShow.push(media);
         });
         albumList.forEach(album => {
             if (showAlbumCoverOnly) {
-                mediaListToShow.push(album.media[0]);
+                if (typeof album.media[0] !== 'undefined') mediaListToShow.push(album.media[0]);
             } else {
                 mediaListToShow = mediaListToShow.concat(album.media);
             }

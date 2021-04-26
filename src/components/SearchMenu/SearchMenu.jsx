@@ -14,6 +14,7 @@ export default class SearchMenu extends Component {
     state = { 
         showAdvancedOptions : false,
         tagOptionsSelected : [],
+        blacklistTagOptionsSelected : [],
         albumOptionSelected : null,
         artistOptionSelected : null,
         categoryOptionSelected : null,
@@ -26,6 +27,10 @@ export default class SearchMenu extends Component {
 
         if (this.state.tagOptionsSelected) {
             searchQuery['whitelist_tags'] = this.state.tagOptionsSelected.map((tagOption) => {return tagOption.value});
+        }
+
+        if (this.state.blacklistTagOptionsSelected) {
+            searchQuery['blacklist_tags'] = this.state.blacklistTagOptionsSelected.map((tagOption) => {return tagOption.value});
         }
 
         if (this.state.artistOptionSelected) {
@@ -57,6 +62,12 @@ export default class SearchMenu extends Component {
                     </div>
                 </div>
                 {this.state.showAdvancedOptions ? <div id="advanced_options">
+                    <div className="search_menu_item">
+                        <p>Blacklist Tags: </p>
+                        <div className="selector">
+                            <TagSelector onChange={(selectedOptions) => {this.setState({blacklistTagOptionsSelected : selectedOptions})}}/>
+                        </div>
+                    </div>
                     <div className="search_menu_item">
                         <p>Category: </p>
                         <div className="selector">
@@ -97,7 +108,7 @@ export default class SearchMenu extends Component {
                     </div>
                 </div> : null}
                 <div>
-                    <button class="btn btn-primary" id="search_button" onClick={this.onSearch}>Search</button>
+                    <button className="btn btn-primary" id="search_button" onClick={this.onSearch}>Search</button>
                     <a 
                         onClick={() => {this.setState(prevState => ({showAdvancedOptions : !prevState.showAdvancedOptions}))}} 
                         id="show_advanced_options_element">

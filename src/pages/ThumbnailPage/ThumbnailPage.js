@@ -52,6 +52,14 @@ export default class ThumbnailPageComponent extends Component {
         })
 
         mediaAndAlbumList.sort((a, b) => {
+            if (a.category_id == null) {
+                return 1;
+            }
+
+            if (b.category_id == null) {
+                return -1;
+            }
+
             if (a.category_id !== b.category_id) {
                 return categories[a.category_id].name > categories[b.category_id].name ? 1 : -1;
             } else if (a.artist_id !== b.artist_id) {

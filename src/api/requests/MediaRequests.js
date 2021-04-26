@@ -33,7 +33,7 @@ class MediaFileRequest extends BaseRequest {
     }
 
     send() {
-        return API.get(`${this.baseURL}${primaryResource}${this.mediaHash}/file`);
+        return API.get(`${this.baseURL}${primaryResource}${this.mediaHash}`);
     }
 }
 
