@@ -1,6 +1,6 @@
 class BaseRequest {
     constructor() {
-        this.baseURL = `${process.env.REACT_APP_API}/api`;
+        this.baseURL = `${process.env.REACT_APP_API}`;
     }
 
     send() {

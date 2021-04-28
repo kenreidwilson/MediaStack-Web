@@ -18,7 +18,7 @@ export default class MediaThumbnail extends Component {
         return (
             <img 
                 className={this.props.classes}
-                src={`${process.env.REACT_APP_API}/api/media/${this.props.mediaId}/thumbnail`}>
+                src={`${process.env.REACT_APP_API}/media/${this.props.mediaId}/thumbnail`}>
             </img>
         );
     }

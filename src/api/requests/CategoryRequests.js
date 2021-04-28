@@ -18,7 +18,7 @@ class CategoryInfoRequest extends BaseRequest {
     }
 
     send() {
-        return API.get(`${this.baseURL}/categories/${this.categoryId}/info`)
+        return API.get(`${this.baseURL}/categories/${this.categoryId}`)
     }
 }
 

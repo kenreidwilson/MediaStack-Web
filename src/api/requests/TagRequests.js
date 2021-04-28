@@ -18,7 +18,7 @@ class TagInfoRequest extends BaseRequest {
     }
 
     send() {
-        return API.get(`${this.baseURL}/tags/${this.tagId}/info`);
+        return API.get(`${this.baseURL}/tags/${this.tagId}`);
     }
 }
 

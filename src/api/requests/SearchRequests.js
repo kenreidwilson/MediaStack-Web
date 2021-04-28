@@ -1,7 +1,7 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
 
-const primaryResource = "/search"
+const primaryResource = "/media"
 
 class SearchRequest extends BaseRequest {
     constructor(searchQuery) {
@@ -20,7 +20,7 @@ class SearchAllRequest extends BaseRequest {
     }
 
     send() {
-        return API.get(`${this.baseURL}${primaryResource}`);
+        return API.post(`${this.baseURL}${primaryResource}`, {"count": 99});
     }
 }
 

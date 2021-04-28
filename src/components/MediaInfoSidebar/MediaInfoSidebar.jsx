@@ -23,20 +23,20 @@ export default class MediaInfoSidebar extends Component {
         let artistName = null;
         let albumName = null;
 
-        if (this.props.media.category_id !== null) {
-            await new CategoryInfoRequest(this.props.media.category_id).send().then(response => {
+        if (this.props.media.categoryID !== null) {
+            await new CategoryInfoRequest(this.props.media.categoryID).send().then(response => {
                 categoryName = response.name;
             });
         }
         
-        if (this.props.media.artist_id !== null) {
-            await new ArtistInfoRequest(this.props.media.artist_id).send().then(response => {
+        if (this.props.media.artistID !== null) {
+            await new ArtistInfoRequest(this.props.media.artistID).send().then(response => {
                 artistName = response.name;
             });
         }
         
-        if (this.props.media.album_id !== null) {
-            await new AlbumInfoRequest(this.props.media.album_id).send().then(response => {
+        if (this.props.media.albumID !== null) {
+            await new AlbumInfoRequest(this.props.media.albumID).send().then(response => {
                 albumName = response.name;
             });
         }

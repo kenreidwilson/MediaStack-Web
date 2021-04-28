@@ -10,7 +10,7 @@ class MediaInfoRequest extends BaseRequest {
     }
 
     send() {
-        return API.get(`${this.baseURL}${primaryResource}${this.mediaHash}/info`);
+        return API.get(`${this.baseURL}${primaryResource}${this.mediaHash}`);
     }
 }
 
@@ -22,7 +22,7 @@ class MediaInfoChangeRequest extends BaseRequest {
     }
 
     send() {
-        return API.put(`${this.baseURL}${primaryResource}${this.mediaHash}/info`, this.newMediaInfo);
+        return API.put(`${this.baseURL}${primaryResource}${this.mediaHash}/edit`, this.newMediaInfo);
     }
 }
 
@@ -33,7 +33,7 @@ class MediaFileRequest extends BaseRequest {
     }
 
     send() {
-        return API.get(`${this.baseURL}${primaryResource}${this.mediaHash}`);
+        return API.get(`${this.baseURL}${primaryResource}${this.mediaHash}/file`);
     }
 }
 

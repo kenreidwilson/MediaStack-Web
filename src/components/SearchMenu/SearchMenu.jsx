@@ -26,19 +26,19 @@ export default class SearchMenu extends Component {
         let searchQuery = {};
 
         if (this.state.tagOptionsSelected) {
-            searchQuery['whitelist_tags'] = this.state.tagOptionsSelected.map((tagOption) => {return tagOption.value});
+            searchQuery['whitelistTagIDs'] = this.state.tagOptionsSelected.map((tagOption) => {return tagOption.value});
         }
 
         if (this.state.blacklistTagOptionsSelected) {
-            searchQuery['blacklist_tags'] = this.state.blacklistTagOptionsSelected.map((tagOption) => {return tagOption.value});
+            searchQuery['blacklistCategoryIDs'] = this.state.blacklistTagOptionsSelected.map((tagOption) => {return tagOption.value});
         }
 
         if (this.state.artistOptionSelected) {
-            searchQuery['artist'] = this.state.artistOptionSelected.value;
+            searchQuery['artistID'] = this.state.artistOptionSelected.value;
         }
 
         if (this.state.categoryOptionSelected) {
-            searchQuery['category'] = this.state.categoryOptionSelected.value;
+            searchQuery['categoryID'] = this.state.categoryOptionSelected.value;
         }
 
         if (this.state.typeOptionSelected) {

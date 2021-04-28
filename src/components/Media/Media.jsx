@@ -8,19 +8,19 @@ import './Media.css'
 export default class Media extends Component {
     getMediaComponent = () => {
         switch(this.props.media.type) {
-            case "image":
+            case 0:
                 return <MediaImage 
                     onImageLoad={this.props.onLoad}
                     onImageClick={this.props.onImageClick}
                     media={this.props.media}
                 />;
-            case "animated_image":
+            case 1:
                 return <MediaImage 
                     onImageLoad={this.props.onLoad}
                     onImageClick={this.props.onImageClick}
                     media={this.props.media}
                 />;
-            case "video":
+            case 2:
                 return <MediaVideo 
                     onLoad={this.props.onLoad}
                     media={this.props.media}

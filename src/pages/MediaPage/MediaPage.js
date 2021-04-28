@@ -25,6 +25,7 @@ export default class MediaPageComponent extends Component {
 
     componentDidMount = () => {
         new MediaInfoRequest(new URL(window.location.href).searchParams.get("id")).send().then(response => {
+            console.log(response);
             this.setState({ mediaInfo : response });
         }).catch(error => { 
             this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)

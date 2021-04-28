@@ -3,7 +3,7 @@ import MediaThumbnail from '../MediaThumbnail/MediaThumbnail'
 
 import './MediaThumbnails.css'
 
-export default function MediaThumbnails({showAlbumCoverOnly, mediaList, albumList, sortFunction}) {
+export default function MediaThumbnails({showAlbumCoverOnly, mediaList}) {
 
     const [shownMediaList, setShownMediaList] = useState([]);
 
@@ -12,21 +12,12 @@ export default function MediaThumbnails({showAlbumCoverOnly, mediaList, albumLis
         mediaList.forEach(media => {
             if (typeof media !== 'undefined') mediaListToShow.push(media);
         });
-        albumList.forEach(album => {
-            if (showAlbumCoverOnly) {
-                if (typeof album.media[0] !== 'undefined') mediaListToShow.push(album.media[0]);
-            } else {
-                mediaListToShow = mediaListToShow.concat(album.media);
-            }
-        });
         return mediaListToShow;
     }
 
     useEffect(() => {
         let mediaListToShow = determineMediaToShow();
-        sortFunction(mediaListToShow).then(() => {
-            setShownMediaList(mediaListToShow);
-        })
+        setShownMediaList(mediaListToShow);
     }, []);
     
     return ( 

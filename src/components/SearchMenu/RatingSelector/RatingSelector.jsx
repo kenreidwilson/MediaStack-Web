@@ -14,8 +14,8 @@ export default class RatingSelector extends Component {
       options = [
         {'label': "Any", 'value':null},
         {'label': "Equal", 'value':"score"},
-        {'label': "Greater than", 'value':'score_greater_than'},
-        {'label': "Less than", 'value':'score_less_than'}
+        {'label': "Greater than", 'value':'greaterThanScore'},
+        {'label': "Less than", 'value':'lessThanScore'}
       ]
 
       onStarClick(nextValue) {

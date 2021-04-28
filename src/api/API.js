@@ -29,7 +29,7 @@ class API {
     static post(url, data) {
         return Axios.post(url, data)
         .then(response => {
-            if (response.status === 201) {
+            if (response.status === 201 || response.status === 200) {
                 return response.data[API_RESPONSE_DATA_KEY];
             }
             throw { 'response' : { 'status' : response.status }, 'message' : "Invalid response status." };
