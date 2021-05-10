@@ -12,7 +12,9 @@ class CategoriesRequest extends BaseRequest {
 }
 
 class CategoryInfoRequest extends BaseRequest {
-    constructor(categoryId) {
+    categoryId: Number
+
+    constructor(categoryId: Number) {
         super();
         this.categoryId = categoryId
     }

@@ -12,13 +12,15 @@ class ArtistsRequest extends BaseRequest {
 }
 
 class ArtistInfoRequest extends BaseRequest {
-    constructor(artistId) {
+    artistId: Number;
+
+    constructor(artistId: Number) {
         super();
         this.artistId = artistId
     }
 
     send() {
-        return API.get(`${this.baseURL}/artists/${this.artistId}/info`);
+        return API.get(`${this.baseURL}/artists/${this.artistId}`);
     }
 }
 

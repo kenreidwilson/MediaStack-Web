@@ -1,4 +1,6 @@
 class BaseRequest {
+    baseURL: string;
+
     constructor() {
         this.baseURL = `${process.env.REACT_APP_API}`;
     }

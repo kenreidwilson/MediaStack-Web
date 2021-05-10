@@ -14,18 +14,23 @@ class AlbumsRequest extends BaseRequest {
 }
 
 class AlbumInfoRequest extends BaseRequest {
-    constructor(albumId) {
+    albumId: Number;
+
+    constructor(albumId: Number) {
         super();
-        this.albumName = albumId;
+        this.albumId = albumId;
     }
 
     send() {
-        return API.get(`${this.baseURL}${primaryResource}${this.albumName}/info`);
+        return API.get(`${this.baseURL}${primaryResource}${this.albumId}`);
     }
 }
 
 class AlbumInfoChangeRequest extends BaseRequest {
-    constructor(albumId, albumInfo) {
+    albumId: Number;
+    albumInfo: object;
+
+    constructor(albumId: Number, albumInfo: object) {
         super();
         this.albumId = albumId;
         this.albumInfo = albumInfo

@@ -2,17 +2,15 @@ import BaseRequest from './BaseRequest'
 import API from '../API';
 
 class TagsRequest extends BaseRequest {
-    constructor() {
-        super();
-    }
-
     send() {
         return API.get(`${this.baseURL}/tags`);
     }
 }
 
 class TagInfoRequest extends BaseRequest {
-    constructor(tagId) {
+    tagId: Number;
+
+    constructor(tagId: Number) {
         super();
         this.tagId = tagId;
     }
@@ -23,18 +21,22 @@ class TagInfoRequest extends BaseRequest {
 }
 
 class TagCreationRequest extends BaseRequest {
-    constructor(tagName) {
+    tagName: string;
+
+    constructor(tagName: string) {
         super();
         this.tagName = tagName;
     }
 
     send() {
-        return API.post(`${this.baseURL}/tags/${this.tagName}`)
+        return API.post(`${this.baseURL}/tags/${this.tagName}`);
     }
 }
 
 class TagDeletionRequest extends BaseRequest {
-    constructor(tagId) {
+    tagId: Number;
+
+    constructor(tagId: Number) {
         super();
         this.tagId = tagId;
     }
@@ -45,7 +47,10 @@ class TagDeletionRequest extends BaseRequest {
 }
 
 class TagNameChangeRequest extends BaseRequest {
-    constructor(tagId, newTagName) {
+    tagId: Number;
+    newTagName: string;
+
+    constructor(tagId: Number, newTagName: string) {
         super();
         this.tagId = tagId;
         this.newTagName = newTagName;

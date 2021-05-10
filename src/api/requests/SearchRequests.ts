@@ -4,7 +4,9 @@ import API from '../API';
 const primaryResource = "/media"
 
 class SearchRequest extends BaseRequest {
-    constructor(searchQuery) {
+    searchQuery: object;
+
+    constructor(searchQuery: object) {
         super();
         this.searchQuery = searchQuery;
     }
@@ -15,10 +17,6 @@ class SearchRequest extends BaseRequest {
 }
 
 class SearchAllRequest extends BaseRequest {
-    constructor() {
-        super();
-    }
-
     send() {
         return API.post(`${this.baseURL}${primaryResource}`, {"count": 99});
     }

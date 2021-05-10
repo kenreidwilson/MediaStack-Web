@@ -6,7 +6,7 @@ const API_RESPONSE_MESSAGE_KEY = "message";
 
 class API {
 
-    static get(url) {
+    static get(url: string) {
         return Axios.get(url)
         .then(response => {
             if (response.status === 200) {
@@ -26,7 +26,7 @@ class API {
         });
     }
 
-    static post(url, data) {
+    static post(url: string, data?: object) {
         return Axios.post(url, data)
         .then(response => {
             if (response.status === 201 || response.status === 200) {
@@ -47,7 +47,7 @@ class API {
         });
     }
 
-    static delete(url) {
+    static delete(url: string) {
         return Axios.delete(url)
         .then(response => {
             if (response.status === 200) {
@@ -68,7 +68,7 @@ class API {
         });
     }
 
-    static put(url, data) {
+    static put(url: string, data?: object) {
         return Axios.put(url, data)
         .then(response => {
             if (response.status === 200) {
