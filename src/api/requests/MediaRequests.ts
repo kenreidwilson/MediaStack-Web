@@ -1,26 +1,27 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
+import Media from '../../model/Media';
 
 const primaryResource = "/media/"
 
 class MediaInfoRequest extends BaseRequest {
-    mediaId: Number;
+    mediaId: number;
 
-    constructor(mediaId: Number) {
+    constructor(mediaId: number) {
         super();
         this.mediaId = mediaId;
     }
 
     send() {
-        return API.get(`${this.baseURL}${primaryResource}${this.mediaId}`);
+        return API.get<Media>(`${this.baseURL}${primaryResource}${this.mediaId}`);
     }
 }
 
 class MediaInfoChangeRequest extends BaseRequest {
-    mediaId: Number;
+    mediaId: number;
     newMediaInfo: object;
 
-    constructor(mediaId: Number, mediaInfo: object) {
+    constructor(mediaId: number, mediaInfo: object) {
         super();
         this.mediaId = mediaId;
         this.newMediaInfo = mediaInfo
@@ -28,14 +29,14 @@ class MediaInfoChangeRequest extends BaseRequest {
 
     send() {
         console.log(this.newMediaInfo);
-        return API.put(`${this.baseURL}${primaryResource}${this.mediaId}/edit`, this.newMediaInfo);
+        return API.put<Media>(`${this.baseURL}${primaryResource}${this.mediaId}/edit`, this.newMediaInfo);
     }
 }
 
 class MediaFileRequest extends BaseRequest {
-    mediaId: Number;
+    mediaId: number;
 
-    constructor(mediaId: Number) {
+    constructor(mediaId: number) {
         super();
         this.mediaId = mediaId;
     }

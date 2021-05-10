@@ -1,5 +1,6 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
+import Media from '../../model/Media';
 
 const primaryResource = "/media"
 
@@ -12,13 +13,13 @@ class SearchRequest extends BaseRequest {
     }
 
     send() {
-        return API.post(`${this.baseURL}${primaryResource}`, this.searchQuery);
+        return API.post<Media[]>(`${this.baseURL}${primaryResource}`, this.searchQuery);
     }
 }
 
 class SearchAllRequest extends BaseRequest {
     send() {
-        return API.post(`${this.baseURL}${primaryResource}`, {"count": 99});
+        return API.post<Media[]>(`${this.baseURL}${primaryResource}`, {"count": 99});
     }
 }
 

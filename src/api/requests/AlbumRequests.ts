@@ -1,43 +1,40 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
+import Album from '../../model/Album';
 
 const primaryResource = "/albums/"
 
 class AlbumsRequest extends BaseRequest {
-    constructor() {
-        super();
-    }
-
     send() {
-        return  API.get(`${this.baseURL}/albums`);
+        return  API.get<Album[]>(`${this.baseURL}/albums`);
     }
 }
 
 class AlbumInfoRequest extends BaseRequest {
-    albumId: Number;
+    albumId: number;
 
-    constructor(albumId: Number) {
+    constructor(albumId: number) {
         super();
         this.albumId = albumId;
     }
 
     send() {
-        return API.get(`${this.baseURL}${primaryResource}${this.albumId}`);
+        return API.get<Album>(`${this.baseURL}${primaryResource}${this.albumId}`);
     }
 }
 
 class AlbumInfoChangeRequest extends BaseRequest {
-    albumId: Number;
+    albumId: number;
     albumInfo: object;
 
-    constructor(albumId: Number, albumInfo: object) {
+    constructor(albumId: number, albumInfo: object) {
         super();
         this.albumId = albumId;
         this.albumInfo = albumInfo
     }
 
     send() {
-        return API.put(`${this.baseURL}${primaryResource}${this.albumId}/info`, this.albumInfo);
+        return API.put<Album>(`${this.baseURL}${primaryResource}${this.albumId}/info`, this.albumInfo);
     }
 }
 

@@ -1,16 +1,13 @@
-import { APINetworkError, APINotFoundError, APIBadRequestError, APIUnexpectedResponseError } from './APIErrors';
 import Axios from 'axios';
-
-const API_RESPONSE_DATA_KEY = "data";
-const API_RESPONSE_MESSAGE_KEY = "message";
+import { APINetworkError, APINotFoundError, APIBadRequestError, APIUnexpectedResponseError } from './APIErrors';
+import BaseResponse from './responses/BaseResponse';
 
 class API {
-
-    static get(url: string) {
-        return Axios.get(url)
+    static get<T>(url: string) {
+        return Axios.get<BaseResponse<T>>(url)
         .then(response => {
             if (response.status === 200) {
-                return response.data[API_RESPONSE_DATA_KEY];
+                return response.data.data;
             }
             throw { 'response' : { 'status' : response.status }, 'message' : "Invalid response status." };
         }).catch(error => {
@@ -19,18 +16,18 @@ class API {
             }
             switch (error.response.status) {
                 case (404):
-                    throw new APINotFoundError(error.response.data[API_RESPONSE_MESSAGE_KEY]);
+                    throw new APINotFoundError(error.response.data.message);
                 default:
                     throw new APIUnexpectedResponseError("Server responded unexpectedly.");
             }
         });
     }
 
-    static post(url: string, data?: object) {
-        return Axios.post(url, data)
+    static post<T>(url: string, data?: any) {
+        return Axios.post<BaseResponse<T>>(url, data)
         .then(response => {
             if (response.status === 201 || response.status === 200) {
-                return response.data[API_RESPONSE_DATA_KEY];
+                return response.data.data;
             }
             throw { 'response' : { 'status' : response.status }, 'message' : "Invalid response status." };
         })
@@ -40,18 +37,18 @@ class API {
             }
             switch (error.response.status) {
                 case (400):
-                    throw new APIBadRequestError(error.response.data[API_RESPONSE_MESSAGE_KEY]);
+                    throw new APIBadRequestError(error.response.data.message);
                 default:
                     throw new APIUnexpectedResponseError("Server responded unexpectedly.");
             }
         });
     }
 
-    static delete(url: string) {
-        return Axios.delete(url)
+    static delete<T>(url: string) {
+        return Axios.delete<BaseResponse<T>>(url)
         .then(response => {
             if (response.status === 200) {
-                return response.data[API_RESPONSE_DATA_KEY];
+                return response.data.data;
             }
             throw { 'response' : { 'status' : response.status }, 'message' : "Invalid response status." };
         })
@@ -61,18 +58,18 @@ class API {
             }
             switch (error.response.status) {
                 case (404):
-                    throw new APINotFoundError(error.response.data[API_RESPONSE_MESSAGE_KEY]);
+                    throw new APINotFoundError(error.response.data.message);
                 default:
                     throw new APIUnexpectedResponseError("Server responded unexpectedly.");
             }
         });
     }
 
-    static put(url: string, data?: object) {
-        return Axios.put(url, data)
+    static put<T>(url: string, data?: any) {
+        return Axios.put<BaseResponse<T>>(url, data)
         .then(response => {
             if (response.status === 200) {
-                return response.data[API_RESPONSE_DATA_KEY];
+                return response.data.data;
             }
             throw { 'response' : { 'status' : response.status }, 'message' : "Invalid response status." };
         })
@@ -82,7 +79,7 @@ class API {
             }
             switch (error.response.status) {
                 case (400):
-                    throw new APIBadRequestError(error.response.data[API_RESPONSE_MESSAGE_KEY]);
+                    throw new APIBadRequestError(error.response.data.message);
                 default:
                     throw new APIUnexpectedResponseError("Server responded unexpectedly.");
             }

@@ -1,4 +1,4 @@
-class BaseRequest {
+abstract class BaseRequest {
     baseURL: string;
 
     constructor() {

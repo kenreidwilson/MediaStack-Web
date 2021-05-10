@@ -1,5 +1,6 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
+import Category from '../../model/Category';
 
 class CategoriesRequest extends BaseRequest {
     constructor() {
@@ -7,20 +8,20 @@ class CategoriesRequest extends BaseRequest {
     }
 
     send() {
-        return API.get(`${this.baseURL}/categories`);
+        return API.get<Category[]>(`${this.baseURL}/categories`);
     }
 }
 
 class CategoryInfoRequest extends BaseRequest {
-    categoryId: Number
+    categoryId: number
 
-    constructor(categoryId: Number) {
+    constructor(categoryId: number) {
         super();
         this.categoryId = categoryId
     }
 
     send() {
-        return API.get(`${this.baseURL}/categories/${this.categoryId}`)
+        return API.get<Category>(`${this.baseURL}/categories/${this.categoryId}`);
     }
 }
 
