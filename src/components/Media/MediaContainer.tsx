@@ -1,23 +1,28 @@
-import React, { Component } from 'react';
-
+import React, { Component, ReactEventHandler } from 'react';
 import MediaVideo from './MediaVideo/MediaVideo'
 import MediaImage from './MediaImage/MediaImage'
+import Media from '../../model/Media';
+import './MediaContainer.css'
 
-import './Media.css'
+type Props = {
+    media: Media,
+    onLoad: ReactEventHandler,
+    onClick: Function
+}
 
-export default class Media extends Component {
+export default class MediaContainer extends Component<Props> {
     getMediaComponent = () => {
-        switch(this.props.media.type) {
+        switch(this.props.media.Type) {
             case 0:
                 return <MediaImage 
                     onImageLoad={this.props.onLoad}
-                    onImageClick={this.props.onImageClick}
+                    onImageClick={this.props.onClick}
                     media={this.props.media}
                 />;
             case 1:
                 return <MediaImage 
                     onImageLoad={this.props.onLoad}
-                    onImageClick={this.props.onImageClick}
+                    onImageClick={this.props.onClick}
                     media={this.props.media}
                 />;
             case 2:

@@ -1,15 +1,15 @@
 import Tag from './Tag';
 
 export default interface Media {
-    ID: Number,
-    CategoryID?: Number,
-    ArtistID?: Number,
-    AlbumID?: Number,
+    ID: number,
+    CategoryID?: number,
+    ArtistID?: number,
+    AlbumID?: number,
     Tags: Tag[],
-    Hash: String,
-    Type: Number,
-    Created: String,
-    AlbumOrder: Number,
-    Score: Number,
-    Source: String
+    Hash: string,
+    Type: number,
+    Created: string,
+    AlbumOrder: number,
+    Score: number,
+    Source: string
 }

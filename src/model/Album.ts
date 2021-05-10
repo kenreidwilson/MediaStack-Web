@@ -1,5 +1,5 @@
 export default interface Album {
-    ID: Number,
-    ArtistID: Number,
-    Name: String
+    ID: number,
+    ArtistID: number,
+    Name: string
 }

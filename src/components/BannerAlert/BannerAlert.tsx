@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { Alert } from 'react-bootstrap';
 
-export default function BannerAlert({variant, heading, body}) {
+type Props = {
+    variant?:'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'dark' | 'light',
+    heading: string,
+    body: string
+}
+
+export default function BannerAlert({variant, heading, body}: Props) {
     const [isShown, setShown]= useState(true);
 
     if (isShown) {

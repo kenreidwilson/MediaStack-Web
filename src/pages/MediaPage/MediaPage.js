@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Spinner from 'react-bootstrap/Spinner'
 
 import Navigation from '../../components/Navigation/Nav';
-import Media from '../../components/Media/Media';
+import Media from '../../components/Media/MediaContainer';
 import MediaInfoSidebar from '../../components/MediaInfoSidebar/MediaInfoSidebar'
 import BannerAlert from '../../components/BannerAlert/BannerAlert';
 import MediaInfoEditModal from '../../components/MediaInfoEditModal/MediaInfoEditModal'
