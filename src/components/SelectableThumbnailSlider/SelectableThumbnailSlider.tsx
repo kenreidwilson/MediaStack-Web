@@ -1,20 +1,29 @@
 import React, { Component } from 'react';
 import $ from 'jquery'
-
 import SelectableThumbnails from '../SelectableThumbnails/SelectableThumbnails';
-
 import './SelectableThumbnailSlider.css'
+import Media from '../../model/Media';
 
-export default class SelectableThumbnailSlider extends Component {
+type Props = {
+    onThumbnailClick: Function,
+    mediaList: Media[],
+    mediaNumber: number
+}
+
+export default class SelectableThumbnailSlider extends Component<Props> {
 
     componentDidMount = () => {
         this.scroll = this.scroll.bind(this);
     }
 
-    scroll = (direction) => {
-        let far = $('#thumbnailslider-image-container').width()/2*direction;
-        let pos = $('#thumbnailslider-image-container').scrollLeft() + far;
-        $('#thumbnailslider-image-container').animate( { scrollLeft: pos }, 1000)
+    scroll = (direction: number) => {
+        let element: JQuery<HTMLElement>
+        element = $('#thumbnailslider-image-container');
+        if (element !== undefined) {
+            let far = element.width()! / 2 * direction;
+            let pos = element.scrollLeft()! + far;
+            element.animate( { scrollLeft: pos }, 1000)
+        }
     }
 
     render() { 

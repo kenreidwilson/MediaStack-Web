@@ -24,8 +24,8 @@ export default class MediaImage extends Component<Props> {
             <div>
                 <img id="mediaImage"
                     onLoad={this.props.onImageLoad} 
-                    alt={this.props.media.Tags.toString()} 
-                    src={`${process.env.REACT_APP_API}/media/${this.props.media.ID}/file`}/>
+                    alt={this.props.media.tags.toString()} 
+                    src={`${process.env.REACT_APP_API}/media/${this.props.media.id}/file`}/>
             </div>
         );
     }

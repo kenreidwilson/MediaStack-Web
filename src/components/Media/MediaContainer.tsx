@@ -12,7 +12,7 @@ type Props = {
 
 export default class MediaContainer extends Component<Props> {
     getMediaComponent = () => {
-        switch(this.props.media.Type) {
+        switch(this.props.media.type) {
             case 0:
                 return <MediaImage 
                     onImageLoad={this.props.onLoad}
