@@ -9,8 +9,16 @@ import { ArtistInfoRequest } from '../../api/requests/ArtistRequests';
 import { AlbumInfoRequest } from '../../api/requests/AlbumRequests';
 
 import './MediaInfoSidebar.css'
+import Media from '../../model/Media';
+import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
 
-export default class MediaInfoSidebar extends Component {
+type Props = {
+    media: Media,
+    onSidebarNavClick: Function,
+    handleScoreEdit: Function
+}
+
+export default class MediaInfoSidebar extends Component<Props> {
 
     state = {
         categoryName : null,
@@ -24,19 +32,19 @@ export default class MediaInfoSidebar extends Component {
         let albumName = null;
 
         if (this.props.media.categoryID !== null) {
-            await new CategoryInfoRequest(this.props.media.categoryID).send().then(response => {
+            await new CategoryInfoRequest(this.props.media.categoryID as number).send().then(response => {
                 categoryName = response.name;
             });
         }
         
         if (this.props.media.artistID !== null) {
-            await new ArtistInfoRequest(this.props.media.artistID).send().then(response => {
+            await new ArtistInfoRequest(this.props.media.artistID as number).send().then(response => {
                 artistName = response.name;
             });
         }
         
         if (this.props.media.albumID !== null) {
-            await new AlbumInfoRequest(this.props.media.albumID).send().then(response => {
+            await new AlbumInfoRequest(this.props.media.albumID as number).send().then(response => {
                 albumName = response.name;
             });
         }
@@ -45,27 +53,27 @@ export default class MediaInfoSidebar extends Component {
     }
 
     onTypeClick = () => {
-        this.props.onSidebarNavClick({'type':this.props.media.type});
+        this.props.onSidebarNavClick(new MediaSearchQuery({type: this.props.media.type}));
     }
 
     onCategoryClick = () => {
-        this.props.onSidebarNavClick({'category':this.props.media.category_id});
+        this.props.onSidebarNavClick(new MediaSearchQuery({categoryID: this.props.media.categoryID}));
     }
 
     onArtistClick = () => {
-        this.props.onSidebarNavClick({'artist':this.props.media.artist_id});
+        this.props.onSidebarNavClick(new MediaSearchQuery({artistID: this.props.media.artistID}));
     }
 
     onAlbumClick = () => {
-        this.props.onSidebarNavClick({'album':this.props.media.album_id});
+        this.props.onSidebarNavClick(new MediaSearchQuery({albumID: this.props.media.albumID}));
     }
 
     onSourceClick = () => {
 
     }
 
-    onTagClick = (tagId) => {
-        this.props.onSidebarNavClick({'whitelist_tags':[tagId]});
+    onTagClick = (tagId: number) => {
+        this.props.onSidebarNavClick(new MediaSearchQuery({whitelistTagIDs: [tagId]}));
     }
 
     render() { 

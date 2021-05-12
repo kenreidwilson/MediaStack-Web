@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 
-export default class RatingSidebarElement extends Component {
+type Props = {
+    handleEdit: Function,
+    rating: number
+}
 
-    onStarClick(nextValue) {
+export default class RatingSidebarElement extends Component<Props> {
+
+    onStarClick(nextValue: number) {
         let newValue = nextValue !== this.props.rating ? nextValue : 0;
         this.props.handleEdit(newValue)
     }

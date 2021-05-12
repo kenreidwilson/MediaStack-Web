@@ -4,19 +4,35 @@ import RatingSidebarElement from './RatingSidebarElement/RatingSidebarElement';
 import TagsSidebarElement from './TagSidebarElement/TagSidebarElement';
 
 import './MediaInfoSidebar.css'
+import Media from '../../model/Media';
+import Album from '../../model/Album';
+import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
+import Tag from '../../model/Tag';
 
-export default class AlbumInfoSidebar extends Component {
+type Props = {
+    album: Album,
+    mediaList: Media[],
+    onSidebarNavClick: Function,
+    handleScoreEdit: Function
+}
 
-    onTagClick = (tagId) => {
-        this.props.onSidebarNavClick({'whitelist_tags':[tagId]});
+export default class AlbumInfoSidebar extends Component<Props> {
+
+    onTagClick = (tagId: number) => {
+        this.props.onSidebarNavClick(new MediaSearchQuery({whitelistTagIDs: [tagId]}));
     }
 
     getAlbumScore = () => {
         let score = 0;
-        this.props.album.media.forEach(media => {
+        this.props.mediaList.forEach(media => {
             score += media.score;
         })
-        return score === 0 ? 0 : Math.round(score / this.props.album.media.length);
+        return score === 0 ? 0 : Math.round(score / this.props.mediaList.length);
+    }
+
+    getAlbumTags = () => {
+        // TODO: Implement
+        return Array<Tag>();
     }
 
     render() { 
@@ -29,7 +45,7 @@ export default class AlbumInfoSidebar extends Component {
                         handleEdit={this.props.handleScoreEdit}/>
 
                     <TagsSidebarElement
-                        tags={this.props.album.tags}
+                        tags={this.getAlbumTags()}
                         onClick={this.onTagClick}/>
                 </div>
             </React.Fragment>
