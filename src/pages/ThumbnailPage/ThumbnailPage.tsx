@@ -4,10 +4,9 @@ import Navigation from '../../components/Navigation/Nav';
 import MediaThumbnails from '../../components/MediaThumbnails/MediaThumbnails';
 import BannerAlert from '../../components/BannerAlert/BannerAlert';
 
-import { CategoriesRequest } from '../../api/requests/CategoryRequests';
-import { ArtistsRequest } from '../../api/requests/ArtistRequests';
-import { AlbumsRequest } from '../../api/requests/AlbumRequests';
-import { SearchRequest, SearchAllRequest } from '../../api/requests/SearchRequests';
+import { SearchRequest } from '../../api/requests/SearchRequests';
+import Media from '../../model/Media';
+import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
 
 const ThumbnailPage = () => {
     return (
@@ -15,32 +14,30 @@ const ThumbnailPage = () => {
     );
 }
 
-export default class ThumbnailPageComponent extends Component {
+type State = {
+    collapseAlbums: boolean,
+    mediaList: Media[],
+    alerts: object[]
+}
+
+export default class ThumbnailPageComponent extends Component<{}, State> {
     state = { 
         collapseAlbums : true,
-        mediaList : null,
-        alerts : []
+        mediaList : Array<Media>(),
+        alerts : Array<object>()
     }
 
-    addAlert = (alert) => {
+    addAlert = (alert: object) => {
         let alerts = this.state.alerts.concat(alert);
         this.setState({ alerts })
     }
 
     componentDidMount = async () => {
-        
-        let request;
-        if (typeof this.props.location.state === 'undefined') {
-            request = new SearchAllRequest();
-        } else {
-            request = new SearchRequest(this.props.location.state.searchQuery);
-        }
-
-        await request.send().then(response => {
-            if (response.data === 0) {
+        await new SearchRequest(new MediaSearchQuery()).send().then(mediaList => {
+            if (mediaList.length === 0) {
                 this.addAlert(<BannerAlert variant="warning" heading="API Response:" body="Nothing was found."/>);
             }
-            this.setState({mediaList : response });
+            this.setState({ mediaList });
         }).catch(error => { 
             this.addAlert(<BannerAlert variant="danger" heading="API Error: " body={error.message}/>);
         });
@@ -52,7 +49,8 @@ export default class ThumbnailPageComponent extends Component {
                 <Navigation />
                 {this.state.alerts.map(errorComponent => errorComponent)}
                 {this.state.mediaList ? 
-                    <MediaThumbnails 
+                    <MediaThumbnails
+                        showAlbumCoverOnly={true}
                         mediaList={this.state.mediaList}/> 
                 : null}
             </React.Fragment>

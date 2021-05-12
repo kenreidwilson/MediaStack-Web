@@ -1,6 +1,7 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
 import Media from '../../model/Media';
+import MediaEditRequest from './RequestModels/MediaEditRequest';
 
 const primaryResource = "/media/"
 
@@ -19,9 +20,9 @@ class MediaInfoRequest extends BaseRequest {
 
 class MediaInfoChangeRequest extends BaseRequest {
     mediaId: number;
-    newMediaInfo: object;
+    newMediaInfo: MediaEditRequest;
 
-    constructor(mediaId: number, mediaInfo: object) {
+    constructor(mediaId: number, mediaInfo: MediaEditRequest) {
         super();
         this.mediaId = mediaId;
         this.newMediaInfo = mediaInfo

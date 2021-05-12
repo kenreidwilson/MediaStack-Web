@@ -1,13 +1,14 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
 import Media from '../../model/Media';
+import MediaSearchQuery from './RequestModels/MediaSearchQuery';
 
 const primaryResource = "/media"
 
 class SearchRequest extends BaseRequest {
-    searchQuery: object;
+    searchQuery: MediaSearchQuery;
 
-    constructor(searchQuery: object) {
+    constructor(searchQuery: MediaSearchQuery) {
         super();
         this.searchQuery = searchQuery;
     }
@@ -19,7 +20,7 @@ class SearchRequest extends BaseRequest {
 
 class SearchAllRequest extends BaseRequest {
     send() {
-        return API.post<Media[]>(`${this.baseURL}${primaryResource}`, {"count": 99});
+        return API.post<Media[]>(`${this.baseURL}${primaryResource}`, new MediaSearchQuery());
     }
 }
 

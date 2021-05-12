@@ -1,6 +1,7 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
 import Album from '../../model/Album';
+import AlbumEditRequest from './RequestModels/AlbumEditRequest';
 
 const primaryResource = "/albums/"
 
@@ -25,16 +26,16 @@ class AlbumInfoRequest extends BaseRequest {
 
 class AlbumInfoChangeRequest extends BaseRequest {
     albumId: number;
-    albumInfo: object;
+    albumInfo: AlbumEditRequest;
 
-    constructor(albumId: number, albumInfo: object) {
+    constructor(albumId: number, albumInfo: AlbumEditRequest) {
         super();
         this.albumId = albumId;
         this.albumInfo = albumInfo
     }
 
     send() {
-        return API.put<Album>(`${this.baseURL}${primaryResource}${this.albumId}/info`, this.albumInfo);
+        return API.put<Album>(`${this.baseURL}${primaryResource}${this.albumId}`, this.albumInfo);
     }
 }
 
