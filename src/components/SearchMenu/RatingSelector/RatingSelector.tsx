@@ -3,38 +3,43 @@ import StarRatingComponent from 'react-star-rating-component';
 
 import './RatingSelector.css';
 
-export default class RatingSelector extends Component {
+type RatingComparator = {
+  value?: string,
+  label: string
+}
+
+type Props = {
+  ratingValue: number,
+  onChange: Function
+}
+
+type State = {
+  isOpen: boolean,
+  dropdownLabel: string,
+  selectedComparator: RatingComparator
+}
+
+export default class RatingSelector extends Component<Props, State> {
+    options: RatingComparator[] = [
+      {'label': "Any", 'value': undefined},
+      {'label': "Equal", 'value':"score"},
+      {'label': "Greater than", 'value':'greaterThanScore'},
+      {'label': "Less than", 'value':'lessThanScore'}
+    ]
+
     state = {
         isOpen: false,
-        ratingValue: 0,
-        ratingComparator: null,
-        dropdownLabel: "Any"
+        dropdownLabel: "Any",
+        selectedComparator: this.options[0]
       };
 
-      options = [
-        {'label': "Any", 'value':null},
-        {'label': "Equal", 'value':"score"},
-        {'label': "Greater than", 'value':'greaterThanScore'},
-        {'label': "Less than", 'value':'lessThanScore'}
-      ]
-
-      onStarClick(nextValue) {
+      onStarClick(nextValue: number) {
         let newValue = nextValue === this.props.ratingValue ? 0 : nextValue;
-        let ratingOption = this.state.ratingComparator ? {'label': this.state.dropdownLabel, 'value': this.state.ratingComparator} : {'label': "Equal", 'value':"score"};
-        this.setState({ ratingValue : newValue, ratingComparator : ratingOption.value, dropdownLabel : ratingOption.label }, () => {
-          this.props.onChange(this.getRatingQuery());
-        })
+        this.props.onChange(newValue, this.state.selectedComparator.value);
       }
 
-      onComparatorClick(comparatorOption) {
-        let ratingValue = comparatorOption.value ? this.state.ratingValue : 0;
-        this.setState({ ratingComparator : comparatorOption.value, dropdownLabel : comparatorOption.label, ratingValue}, () => {
-          this.props.onChange(this.getRatingQuery());
-        })
-      }
-
-      getRatingQuery = () => {
-        return this.state.ratingComparator ? {'comparator': this.state.ratingComparator, 'value': this.state.ratingValue} : null;
+      onComparatorClick(comparatorOption: RatingComparator) {
+        this.setState({ selectedComparator : comparatorOption, dropdownLabel : comparatorOption.label});
       }
     
       render() {
@@ -53,7 +58,7 @@ export default class RatingSelector extends Component {
                 <div className={`dropdown-menu${this.state.isOpen ? " show" : ""}`} aria-labelledby="dropdownMenuButton">
                     {this.options.map(option => 
                       <a 
-                        key={option.value}
+                        key={option.value as string}
                         className="dropdown-item" 
                         onClick={() => this.onComparatorClick(option)} 
                         href="#nogo">
@@ -64,8 +69,9 @@ export default class RatingSelector extends Component {
             </div>
             <div id="rating_selector_stars">
               <StarRatingComponent 
+                  name="rating"
                   starCount={5}
-                  value={this.state.ratingValue}
+                  value={this.props.ratingValue}
                   onStarClick={this.onStarClick.bind(this)}
               />
             </div>

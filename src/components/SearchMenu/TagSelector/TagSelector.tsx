@@ -3,10 +3,24 @@ import Select from 'react-select';
 
 import { TagsRequest } from '../../../api/requests/TagRequests'
 
-export default class TagSelector extends Component {
+type TagOption = {
+    label: string,
+    value?: number
+}
+
+type State = {
+    isLoading: boolean,
+    tagOptions?: TagOption[]
+}
+
+type Props = {
+    onChange: Function
+}
+
+export default class TagSelector extends Component<Props, State> {
     state = { 
         isLoading : false,
-        tagOptions : null,
+        tagOptions : undefined,
      }
 
     getTagOptions = () => {
@@ -15,7 +29,7 @@ export default class TagSelector extends Component {
         }
         this.setState({ isLoading : true })
         new TagsRequest().send().then(response => {
-            let tagOptions = [];
+            let tagOptions: TagOption[] = [];
             response.forEach((tag, index) => {
                 tagOptions.push({ value: tag.id, label: tag.name });
             });
@@ -26,12 +40,16 @@ export default class TagSelector extends Component {
         })
     }
 
+    handleOptionChange = (option: any) => {
+        this.props.onChange(option);
+    }
+
     render() { 
         return ( 
             <Select 
                 placeholder="Enter Tags..."
                 options={this.state.tagOptions === null ? [] : this.state.tagOptions}
-                onChange={this.props.onChange}
+                onChange={this.handleOptionChange}
                 cacheOptions
                 isSearchable
                 isMulti

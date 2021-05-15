@@ -1,35 +1,57 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
-import PropTypes from 'prop-types';
 
-export default class UniqueQuerySelector extends Component {
+type Item = {
+    id: number,
+    name: string
+}
 
-    static propTypes = {
-        request : PropTypes.object.isRequired,
-        onChange : PropTypes.func.isRequired,
-        placeholder : PropTypes.string
-    }
+type Option = {
+    label: string,
+    value: any
+}
+
+type Request = {
+    send: Function
+}
+
+type Props = {
+    request: Request,
+    onChange: Function,
+    placeholder: string
+}
+
+type State = {
+    isLoading: boolean,
+    options?: Option[]
+}
+
+export default class UniqueQuerySelector extends Component<Props, State> {
 
     state = { 
         isLoading : false,
-        options : null,
+        options : undefined,
      }
 
     getOptions = () => {
-        if (this.state.options !== null || this.state.isLoading) {
+        if (this.state.options !== undefined || this.state.isLoading) {
             return;
         }
-        this.setState({ isLoading : true })
-        this.props.request.send().then(response => {
-            let options = [];
+        this.setState({ isLoading : true });
+        this.props.request.send().then((response: Item[]) => {
+            let options: Option[] = [];
             response.forEach((optionItem, index) => {
                 options.push({ value: optionItem.id, label: optionItem.name });
             });
             this.setState({ options, isLoading : false });
-        }).catch(error => {
+        }).catch((error: any) => {
             console.log(error);
             this.setState({ isLoading : false })
         })
+    }
+
+    handleOptionChange = (option: any) => {
+        this.props.onChange(option);
     }
 
     render() { 
@@ -37,7 +59,7 @@ export default class UniqueQuerySelector extends Component {
             <Select 
                 placeholder={this.props.placeholder || ""}
                 options={this.state.options === null ? [] : this.state.options}
-                onChange={this.props.onChange}
+                onChange={this.handleOptionChange}
                 isSearchable
                 isClearable
                 isLoading={this.state.isLoading}

@@ -7,10 +7,32 @@ import RatingSelector from './RatingSelector/RatingSelector';
 
 import { ArtistsRequest } from '../../api/requests/ArtistRequests';
 import { CategoriesRequest } from '../../api/requests/CategoryRequests';
+import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
 
 import './SearchMenu.css';
 
-export default class SearchMenu extends Component {
+type Option = {
+    label: string,
+    value: any | null
+}
+
+type Props = {
+    onSearch: Function
+}
+
+type State = {
+    showAdvancedOptions: boolean,
+    tagOptionsSelected: Option[],
+    blacklistTagOptionsSelected: Option[],
+    albumOptionSelected: Option | null,
+    artistOptionSelected: Option | null,
+    categoryOptionSelected: Option | null,
+    typeOptionSelected: Option | null,
+    ratingComparator: string | null,
+    ratingValue: number
+}
+
+export default class SearchMenu extends Component<Props, State> {
     state = { 
         showAdvancedOptions : false,
         tagOptionsSelected : [],
@@ -19,37 +41,54 @@ export default class SearchMenu extends Component {
         artistOptionSelected : null,
         categoryOptionSelected : null,
         typeOptionSelected : null,
-        ratingOptionSelected : null
+        ratingComparator : null,
+        ratingValue : 0
      }
 
     onSearch = () => {
-        let searchQuery = {};
+        let searchQuery = new MediaSearchQuery();
 
         if (this.state.tagOptionsSelected) {
-            searchQuery['whitelistTagIDs'] = this.state.tagOptionsSelected.map((tagOption) => {return tagOption.value});
+            searchQuery.whitelistTagIDs = this.state.tagOptionsSelected.map((tagOption) => {return tagOption!['value']});
         }
 
         if (this.state.blacklistTagOptionsSelected) {
-            searchQuery['blacklistCategoryIDs'] = this.state.blacklistTagOptionsSelected.map((tagOption) => {return tagOption.value});
+            searchQuery.blacklistTagIDs = this.state.blacklistTagOptionsSelected.map((tagOption) => {return tagOption!['value']});
         }
 
-        if (this.state.artistOptionSelected) {
-            searchQuery['artistID'] = this.state.artistOptionSelected.value;
+        if (this.state.artistOptionSelected != null) {
+            searchQuery.artistID = this.state.artistOptionSelected!['value']; 
         }
 
         if (this.state.categoryOptionSelected) {
-            searchQuery['categoryID'] = this.state.categoryOptionSelected.value;
+            searchQuery.categoryID = this.state.categoryOptionSelected!['value'];
         }
 
         if (this.state.typeOptionSelected) {
-            searchQuery['type'] = this.state.typeOptionSelected.value;
+            searchQuery.type = this.state.typeOptionSelected!['value'];
         }
 
-        if (this.state.ratingOptionSelected) {
-            searchQuery[this.state.ratingOptionSelected.comparator] = this.state.ratingOptionSelected.value;
+        if (this.state.ratingComparator) {
+            if (this.state.ratingComparator == 'greaterThan') {
+                searchQuery.greaterThanScore = this.state.ratingValue;
+            }
+            if (this.state.ratingComparator == 'lessThan') {
+                searchQuery.lessThanScore = this.state.ratingValue;
+            }
+            else {
+                searchQuery.score = this.state.ratingValue;
+            }
         }
 
         this.props.onSearch(searchQuery);
+    }
+
+    ratingFunction = (newRating: number, ratingComparator: string) => {
+        this.setState({ratingValue: newRating, ratingComparator: ratingComparator});
+    }
+
+    handleSelectChange = (option: any) => {
+        this.setState({ typeOptionSelected: option });
     }
 
     render() { 
@@ -58,14 +97,14 @@ export default class SearchMenu extends Component {
                 <div className="search_menu_item">
                     <p>Tags: </p>
                     <div className="selector">
-                        <TagSelector onChange={(selectedOptions) => {this.setState({tagOptionsSelected : selectedOptions})}}/>
+                        <TagSelector onChange={(selectedOptions: Option[]) => {this.setState({tagOptionsSelected : selectedOptions})}}/>
                     </div>
                 </div>
                 {this.state.showAdvancedOptions ? <div id="advanced_options">
                     <div className="search_menu_item">
                         <p>Blacklist Tags: </p>
                         <div className="selector">
-                            <TagSelector onChange={(selectedOptions) => {this.setState({blacklistTagOptionsSelected : selectedOptions})}}/>
+                            <TagSelector onChange={(selectedOptions: Option[]) => {this.setState({blacklistTagOptionsSelected : selectedOptions})}}/>
                         </div>
                     </div>
                     <div className="search_menu_item">
@@ -74,7 +113,7 @@ export default class SearchMenu extends Component {
                             <UniqueQuerySelector 
                                 placeholder="Enter Category name..." 
                                 request={new CategoriesRequest()} 
-                                onChange={(selectedOption) => {this.setState({categoryOptionSelected : selectedOption})}}/>
+                                onChange={(selectedOption: Option) => {this.setState({categoryOptionSelected : selectedOption})}}/>
                         </div>
                     </div>
                     <div className="search_menu_item">
@@ -83,7 +122,7 @@ export default class SearchMenu extends Component {
                             <UniqueQuerySelector 
                                 placeholder="Enter Artist name..." 
                                 request={new ArtistsRequest()} 
-                                onChange={(selectedOption) => {this.setState({artistOptionSelected : selectedOption})}}/>
+                                onChange={(selectedOption: Option) => {this.setState({artistOptionSelected : selectedOption})}}/>
                         </div>
                     </div>
                     <div className="search_menu_item">
@@ -93,7 +132,7 @@ export default class SearchMenu extends Component {
                             placeholder={"Choose a media type..."}
                             options={[{ 'label': 'image', value: 'image'}, { 'label': 'animated_image', value: 'animated_image'}, { 'label': 'video', value: 'video'}]}
                             value={this.state.typeOptionSelected}
-                            onChange={(selectedOption) => this.setState({ typeOptionSelected : selectedOption })}
+                            onChange={(selectedOption: any) => this.setState({ typeOptionSelected : selectedOption })}
                             isSearchable
                             isClearable
                         />
@@ -102,8 +141,7 @@ export default class SearchMenu extends Component {
                     <div className="search_menu_item">
                         <p>Rating: </p>
                         <div className="selector">
-                            <RatingSelector 
-                                onChange={(selectedOption) => this.setState({ ratingOptionSelected : selectedOption })}/>
+                            <RatingSelector ratingValue={this.state.ratingValue} onChange={this.ratingFunction}/>
                         </div>
                     </div>
                 </div> : null}
