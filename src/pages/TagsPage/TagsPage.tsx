@@ -23,18 +23,7 @@ export default function TagsPage() {
         <React.Fragment>
             <Navigation />
             {alerts.map(errorComponent => errorComponent)}
-            <TagsTable 
-                tags={tags}
-                onDeleteTag={(deletedTag: Tag) => setTags(tags.filter((tag) => {return tag.id !== deletedTag.id}))}
-                onEditTag={(edittedTag: Tag) => {
-                    tags.map(tag => {
-                        if (tag.id === edittedTag.id) {
-                            tag.name = edittedTag.name;
-                        }
-                    });
-                }}
-                onTagClick={(searchQuery: MediaSearchQuery) => console.log(searchQuery)}
-            />
+            <TagsTable onTagClick={(searchQuery: MediaSearchQuery) => console.log(searchQuery)}/>
         </React.Fragment>
      );
 }
