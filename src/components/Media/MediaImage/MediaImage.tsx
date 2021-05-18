@@ -1,32 +1,33 @@
-import React, { Component, ReactEventHandler } from 'react';
+import React, { useEffect } from 'react';
 import Media from '../../../model/Media';
 import $ from 'jquery';
 import './MediaImage.css';
 
 type Props = {
-    onImageClick: Function,
-    onImageLoad: ReactEventHandler,
+    onImageClick?: Function,
+    onImageLoad: Function,
     media: Media
 }
 
-export default class MediaImage extends Component<Props> {
-    
-    componentDidMount = () => {
-        if (typeof this.props.onImageClick !== 'undefined') {
+export default function MediaImage({onImageClick, onImageLoad, media}: Props) {
+    useEffect(() => {
+        if (typeof onImageClick !== 'undefined') {
             $("#mediaImage").on("click", (event) => {
-                this.props.onImageClick(event);
+                onImageClick(event);
             });
         }
+    }, []);
+
+    const onLoadEventHanlder = () => {
+        onImageLoad();
     }
 
-    render() { 
-        return (
-            <div>
-                <img id="mediaImage"
-                    onLoad={this.props.onImageLoad} 
-                    alt={this.props.media.tags.toString()} 
-                    src={`${process.env.REACT_APP_API}/media/${this.props.media.id}/file`}/>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <img id="mediaImage"
+                onLoad={onLoadEventHanlder} 
+                alt={media.tags.toString()} 
+                src={`${process.env.REACT_APP_API}/media/${media.id}/file`}/>
+        </div>
+    );
 }

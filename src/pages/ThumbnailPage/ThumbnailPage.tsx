@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Navigation from '../../components/Navigation/Nav';
 import MediaThumbnails from '../../components/MediaThumbnails/MediaThumbnails';
@@ -8,52 +8,31 @@ import { SearchRequest } from '../../api/requests/SearchRequests';
 import Media from '../../model/Media';
 import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
 
-const ThumbnailPage = () => {
-    return (
-        <ThumbnailPageComponent />
-    );
-}
+export default function ThumbnailPageComponent() {
+    const [collapseAlbums, setCollapseAlbums] = useState<boolean>(true);
+    const [mediaList, setMediaList] = useState<Media[]>([]);
+    const [alerts, setAlerts] = useState<any[]>([]);
 
-type State = {
-    collapseAlbums: boolean,
-    mediaList: Media[],
-    alerts: object[]
-}
-
-export default class ThumbnailPageComponent extends Component<{}, State> {
-    state = { 
-        collapseAlbums : true,
-        mediaList : Array<Media>(),
-        alerts : Array<object>()
-    }
-
-    addAlert = (alert: object) => {
-        let alerts = this.state.alerts.concat(alert);
-        this.setState({ alerts })
-    }
-
-    componentDidMount = async () => {
-        await new SearchRequest(new MediaSearchQuery()).send().then(mediaList => {
+    useEffect(() => {
+        new SearchRequest(new MediaSearchQuery()).send().then(mediaList => {
             if (mediaList.length === 0) {
-                this.addAlert(<BannerAlert variant="warning" heading="API Response:" body="Nothing was found."/>);
+                setAlerts([...alerts, <BannerAlert variant="warning" heading="API Response:" body="Nothing was found."/>]);
             }
-            this.setState({ mediaList });
+            setMediaList(mediaList);
         }).catch(error => { 
-            this.addAlert(<BannerAlert variant="danger" heading="API Error: " body={error.message}/>);
+            setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error: " body={error.message}/>]);
         });
-    }
+    }, [])
 
-    render() { 
-        return ( 
-            <React.Fragment>
-                <Navigation />
-                {this.state.alerts.map(errorComponent => errorComponent)}
-                {this.state.mediaList ? 
-                    <MediaThumbnails
-                        showAlbumCoverOnly={true}
-                        mediaList={this.state.mediaList}/> 
-                : null}
-            </React.Fragment>
-         );
-    }
+    return ( 
+        <React.Fragment>
+            <Navigation />
+            {alerts.map(errorComponent => errorComponent)}
+            {mediaList ? 
+                <MediaThumbnails
+                    showAlbumCoverOnly={collapseAlbums}
+                    mediaList={mediaList}/> 
+            : null}
+        </React.Fragment>
+     );
 }

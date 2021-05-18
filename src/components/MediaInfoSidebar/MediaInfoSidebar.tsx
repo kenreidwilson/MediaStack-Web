@@ -15,7 +15,8 @@ import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery'
 type Props = {
     media: Media,
     onSidebarNavClick: Function,
-    handleScoreEdit: Function
+    handleScoreEdit: Function,
+    handleEdit: Function
 }
 
 export default class MediaInfoSidebar extends Component<Props> {

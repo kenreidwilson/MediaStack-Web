@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 
 type Props = {
@@ -6,24 +6,16 @@ type Props = {
     rating: number
 }
 
-export default class RatingSidebarElement extends Component<Props> {
-
-    onStarClick(nextValue: number) {
-        let newValue = nextValue !== this.props.rating ? nextValue : 0;
-        this.props.handleEdit(newValue)
-    }
-
-    render() { 
-        return (
-            <React.Fragment>
-                <p>Rating: </p>
-                <StarRatingComponent 
-                    name="mediaScore" 
-                    starCount={5}
-                    value={this.props.rating}
-                    onStarClick={this.onStarClick.bind(this)}
-                    />
-            </React.Fragment>
-         );
-    }
+export default function RatingSidebarElement ({handleEdit, rating}: Props) {
+    return (
+        <React.Fragment>
+            <p>Rating: </p>
+            <StarRatingComponent 
+                name="mediaScore" 
+                starCount={5}
+                value={rating}
+                onStarClick={(nextValue: number) => handleEdit(nextValue !== rating ? nextValue : 0)}
+                />
+        </React.Fragment>
+     );
 }

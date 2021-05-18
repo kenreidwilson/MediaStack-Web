@@ -13,7 +13,8 @@ type Props = {
     album: Album,
     mediaList: Media[],
     onSidebarNavClick: Function,
-    handleScoreEdit: Function
+    handleScoreEdit: Function,
+    handleEdit: Function
 }
 
 export default class AlbumInfoSidebar extends Component<Props> {

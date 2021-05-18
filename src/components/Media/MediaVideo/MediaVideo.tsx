@@ -1,22 +1,27 @@
-import React, { ReactEventHandler } from 'react';
+import React from 'react';
 import Media from '../../../model/Media';
 
 import './MediaVideo.css'
 
 type Props = {
-    onLoad: ReactEventHandler,
+    onLoad: Function,
     media: Media
 }
 
-const MediaVideo = ({media, onLoad}: Props) => ( 
-    <video id="mediaVideo" 
+export default function MediaVideo({media, onLoad}: Props) {
+
+    const onLoadEventHandler = () => {
+        onLoad();
+    }
+
+    return (
+        <video id="mediaVideo" 
                 src={`${process.env.REACT_APP_API}/media/${media.id}/file`} 
-                onLoadStart={onLoad} 
+                onLoadStart={onLoadEventHandler} 
                 autoPlay
                 controls 
                 loop
                 muted 
                 key={media.id}/>
-)
-
-export default MediaVideo;
+    );
+}

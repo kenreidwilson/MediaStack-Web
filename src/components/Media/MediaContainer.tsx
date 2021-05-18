@@ -1,4 +1,4 @@
-import React, { Component, ReactEventHandler } from 'react';
+import React from 'react';
 import MediaVideo from './MediaVideo/MediaVideo'
 import MediaImage from './MediaImage/MediaImage'
 import Media from '../../model/Media';
@@ -6,43 +6,47 @@ import './MediaContainer.css'
 
 type Props = {
     media: Media,
-    onLoad: ReactEventHandler,
-    onClick: Function
+    onLoad: Function,
+    onClick?: Function
 }
 
-export default class MediaContainer extends Component<Props> {
-    getMediaComponent = () => {
-        switch(this.props.media.type) {
+export default function MediaContainer({media, onLoad, onClick}: Props) {
+ 
+    const onLoadFunction = () => {
+        onLoad();
+    }
+
+    const getMediaComponent = ({media, onLoad, onClick}: Props) => {
+        switch(media.type) {
             case 0:
                 return <MediaImage 
-                    onImageLoad={this.props.onLoad}
-                    onImageClick={this.props.onClick}
-                    media={this.props.media}
+                    onImageLoad={onLoad}
+                    onImageClick={onClick}
+                    media={media}
                 />;
             case 1:
                 return <MediaImage 
-                    onImageLoad={this.props.onLoad}
-                    onImageClick={this.props.onClick}
-                    media={this.props.media}
+                    onImageLoad={onLoad}
+                    onImageClick={onClick}
+                    media={media}
                 />;
             case 2:
                 return <MediaVideo 
-                    onLoad={this.props.onLoad}
-                    media={this.props.media}
+                    onLoad={onLoad}
+                    media={media}
                 />;
             default:
                 return null;
         }
     }
 
-    render() { 
-        if (this.props.media === null) {
-            return null;
-        }
-        return (
-            <div id="media">
-                {this.getMediaComponent()}
-            </div>
-        );
+    if (media === null) {
+        return null;
     }
+
+    return (
+        <div id="media">
+            {getMediaComponent({media, onLoad: onLoadFunction, onClick})}
+        </div>
+    );
 }

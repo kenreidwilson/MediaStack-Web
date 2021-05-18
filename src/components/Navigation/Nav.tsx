@@ -1,9 +1,8 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 
-export default function Navigation() {
-    return (
-        <Navbar collapseOnSelect expand="xl" bg="" variant="dark">
+const Navigation = () => (
+    <Navbar collapseOnSelect expand="xl" bg="" variant="dark">
             <Navbar.Brand href="/">MediaStack</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
@@ -23,5 +22,6 @@ export default function Navigation() {
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
-    );
-}
+);
+
+export default Navigation;
