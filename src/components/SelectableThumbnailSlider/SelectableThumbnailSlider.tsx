@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import $ from 'jquery'
 import SelectableThumbnails from '../SelectableThumbnails/SelectableThumbnails';
 import './SelectableThumbnailSlider.css'
@@ -10,13 +10,9 @@ type Props = {
     mediaNumber: number
 }
 
-export default class SelectableThumbnailSlider extends Component<Props> {
+export default function SelectableThumbnailSlider({mediaList, mediaNumber, onThumbnailClick}: Props) {
 
-    componentDidMount = () => {
-        this.scroll = this.scroll.bind(this);
-    }
-
-    scroll = (direction: number) => {
+    const scroll = (direction: number) => {
         let element: JQuery<HTMLElement>
         element = $('#thumbnailslider-image-container');
         if (element !== undefined) {
@@ -26,19 +22,17 @@ export default class SelectableThumbnailSlider extends Component<Props> {
         }
     }
 
-    render() { 
-        return (
-            <div id="thumbnail-slider">
-                <a href="/#" id="thumbnailslider-nav-next" onClick={this.scroll.bind(null,-1)}>&#10094;&#10094;&#10094;</a>
-                <div id="thumbnailslider-image-container">
-                    <SelectableThumbnails 
-                        mediaNumber={this.props.mediaNumber}
-                        onThumbnailClick={this.props.onThumbnailClick}
-                        mediaList={this.props.mediaList}
-                    />
-                </div>
-                <a href="/#" id="thumbnailslider-nav-prev" onClick={this.scroll.bind(null,1)}>&#10095;&#10095;&#10095;</a>
+    return (
+        <div id="thumbnail-slider">
+            <a href="/#" id="thumbnailslider-nav-next" onClick={scroll.bind(null,-1)}>&#10094;&#10094;&#10094;</a>
+            <div id="thumbnailslider-image-container">
+                <SelectableThumbnails 
+                    mediaNumber={mediaNumber}
+                    onThumbnailClick={onThumbnailClick}
+                    mediaList={mediaList}
+                />
             </div>
-        )
-    }
+            <a href="/#" id="thumbnailslider-nav-prev" onClick={scroll.bind(null,1)}>&#10095;&#10095;&#10095;</a>
+        </div>
+    );
 }

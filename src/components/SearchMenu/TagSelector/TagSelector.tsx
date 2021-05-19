@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
 
 import { TagsRequest } from '../../../api/requests/TagRequests'
@@ -8,54 +8,40 @@ type TagOption = {
     value?: number
 }
 
-type State = {
-    isLoading: boolean,
-    tagOptions?: TagOption[]
-}
-
 type Props = {
     onChange: Function
 }
 
-export default class TagSelector extends Component<Props, State> {
-    state = { 
-        isLoading : false,
-        tagOptions : undefined,
-     }
+export default function TagSelector({ onChange }: Props) {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [tagOptions, setTagOptions] = useState<TagOption[] | null>(null);
 
-    getTagOptions = () => {
-        if (this.state.tagOptions !== null || this.state.isLoading) {
+    const loadTagOptions = () => {
+        if (isLoading || tagOptions !== null) {
             return;
         }
-        this.setState({ isLoading : true })
+
+        setIsLoading(true);
         new TagsRequest().send().then(response => {
-            let tagOptions: TagOption[] = [];
-            response.forEach((tag, index) => {
-                tagOptions.push({ value: tag.id, label: tag.name });
+            let _tagOptions: TagOption[] = [];
+            response.forEach((tag) => {
+                _tagOptions.push({ value: tag.id, label: tag.name });
             });
-            this.setState({ tagOptions, isLoading : false });
-        }).catch(error => {
-            console.log(error);
-            this.setState({ isLoading : false });
-        })
-    }
+            setTagOptions(_tagOptions);
+        });
+        setIsLoading(false);
+    };
 
-    handleOptionChange = (option: any) => {
-        this.props.onChange(option);
-    }
-
-    render() { 
-        return ( 
-            <Select 
-                placeholder="Enter Tags..."
-                options={this.state.tagOptions === null ? [] : this.state.tagOptions}
-                onChange={this.handleOptionChange}
-                cacheOptions
-                isSearchable
-                isMulti
-                isLoading={this.state.isLoading}
-                onFocus={this.getTagOptions}
-            />
-         );
-    }
+    return (
+        <Select 
+            placeholder="Enter Tags..."
+            options={tagOptions ? tagOptions as TagOption[] : []}
+            onChange={(selectedTagOptions: any) => onChange(selectedTagOptions)}
+            cacheOptions
+            isSearchable
+            isMulti
+            isLoading={isLoading}
+            onFocus={() => loadTagOptions}
+        />
+     );
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
 
 type Item = {
@@ -18,53 +18,39 @@ type Request = {
 type Props = {
     request: Request,
     onChange: Function,
-    placeholder: string
+    placeHolder: string
 }
 
-type State = {
-    isLoading: boolean,
-    options?: Option[]
-}
+export default function UniqueQuerySelector({ request, onChange, placeHolder }: Props) {
 
-export default class UniqueQuerySelector extends Component<Props, State> {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [options, setOptions] = useState<Option[] | null>(null);
 
-    state = { 
-        isLoading : false,
-        options : undefined,
-     }
-
-    getOptions = () => {
-        if (this.state.options !== undefined || this.state.isLoading) {
+    const loadOptions = () => {
+        if (isLoading || options !== null) {
             return;
         }
-        this.setState({ isLoading : true });
-        this.props.request.send().then((response: Item[]) => {
+
+        setIsLoading(true);
+        request.send().then((response: Item[]) => {
             let options: Option[] = [];
-            response.forEach((optionItem, index) => {
+            response.forEach((optionItem) => {
                 options.push({ value: optionItem.id, label: optionItem.name });
             });
-            this.setState({ options, isLoading : false });
-        }).catch((error: any) => {
-            console.log(error);
-            this.setState({ isLoading : false })
-        })
+            setOptions(options);
+        });
+        setIsLoading(false);
     }
 
-    handleOptionChange = (option: any) => {
-        this.props.onChange(option);
-    }
-
-    render() { 
-        return ( 
-            <Select 
-                placeholder={this.props.placeholder || ""}
-                options={this.state.options === null ? [] : this.state.options}
-                onChange={this.handleOptionChange}
-                isSearchable
-                isClearable
-                isLoading={this.state.isLoading}
-                onFocus={this.getOptions}
-            />
-         );
-    }
+    return ( 
+        <Select 
+            placeholder={placeHolder || ""}
+            options={options ? options as Option[] : []}
+            onChange={() => onChange()}
+            isSearchable
+            isClearable
+            isLoading={isLoading}
+            onFocus={() => loadOptions()}
+        />
+     );
 }

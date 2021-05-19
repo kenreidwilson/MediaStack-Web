@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
 
 import TagSelector from './TagSelector/TagSelector';
@@ -20,141 +20,123 @@ type Props = {
     onSearch: Function
 }
 
-type State = {
-    showAdvancedOptions: boolean,
-    tagOptionsSelected: Option[],
-    blacklistTagOptionsSelected: Option[],
-    albumOptionSelected: Option | null,
-    artistOptionSelected: Option | null,
-    categoryOptionSelected: Option | null,
-    typeOptionSelected: Option | null,
-    ratingComparator: string | null,
-    ratingValue: number
-}
+export default function SearchMenu({ onSearch }: Props) {
 
-export default class SearchMenu extends Component<Props, State> {
-    state = { 
-        showAdvancedOptions : false,
-        tagOptionsSelected : [],
-        blacklistTagOptionsSelected : [],
-        albumOptionSelected : null,
-        artistOptionSelected : null,
-        categoryOptionSelected : null,
-        typeOptionSelected : null,
-        ratingComparator : null,
-        ratingValue : 0
-     }
+    const [showAdvancedOptions, setShowAdvancedOptions] = useState<boolean>(false);
+    const [tagOptionsSelected, setTagOptionsSelected] = useState<Option[]>([]);
+    const [blacklistTagOptionsSelected, setBlacklistTagOptionsSelected] = useState<Option[]>([]);
+    const [albumOptionSelected, setAlbumOptionSelected] = useState<Option | undefined>(undefined);
+    const [artistOptionSelected, setArtistOptionSelected] = useState<Option | undefined>(undefined);
+    const [categoryOptionSelected, setCategoryOptionSelected] = useState<Option | undefined>(undefined);
+    const [typeOptionSelected, setTypeOptionSelected] = useState<Option | undefined>(undefined);
+    const [ratingComparator, setRatingComparator] = useState<string | undefined>(undefined);
+    const [ratingValue, setRatingValue] = useState<number | undefined>(undefined);
 
-    onSearch = () => {
+    const handleSearch = () => {
         let searchQuery = new MediaSearchQuery();
 
-        if (this.state.tagOptionsSelected) {
-            searchQuery.whitelistTagIDs = this.state.tagOptionsSelected.map((tagOption) => {return tagOption!['value']});
+        if (tagOptionsSelected) {
+            searchQuery.whitelistTagIDs = tagOptionsSelected.map((tagOption) => {return tagOption!['value']});
         }
 
-        if (this.state.blacklistTagOptionsSelected) {
-            searchQuery.blacklistTagIDs = this.state.blacklistTagOptionsSelected.map((tagOption) => {return tagOption!['value']});
+        if (blacklistTagOptionsSelected) {
+            searchQuery.blacklistTagIDs = blacklistTagOptionsSelected.map((tagOption) => {return tagOption!['value']});
         }
 
-        if (this.state.artistOptionSelected != null) {
-            searchQuery.artistID = this.state.artistOptionSelected!['value']; 
+        if (artistOptionSelected != null) {
+            searchQuery.artistID = artistOptionSelected!['value']; 
         }
 
-        if (this.state.categoryOptionSelected) {
-            searchQuery.categoryID = this.state.categoryOptionSelected!['value'];
+        if (categoryOptionSelected) {
+            searchQuery.categoryID = categoryOptionSelected!['value'];
         }
 
-        if (this.state.typeOptionSelected) {
-            searchQuery.type = this.state.typeOptionSelected!['value'];
+        if (typeOptionSelected) {
+            searchQuery.type = typeOptionSelected!['value'];
         }
 
-        if (this.state.ratingComparator) {
-            if (this.state.ratingComparator === 'greaterThan') {
-                searchQuery.greaterThanScore = this.state.ratingValue;
+        if (ratingComparator) {
+            if (ratingComparator === 'greaterThan') {
+                searchQuery.greaterThanScore = ratingValue;
             }
-            if (this.state.ratingComparator === 'lessThan') {
-                searchQuery.lessThanScore = this.state.ratingValue;
+            if (ratingComparator === 'lessThan') {
+                searchQuery.lessThanScore = ratingValue;
             }
             else {
-                searchQuery.score = this.state.ratingValue;
+                searchQuery.score = ratingValue;
             }
         }
 
-        this.props.onSearch(searchQuery);
+        onSearch(searchQuery);
     }
 
-    ratingFunction = (newRating: number, ratingComparator: string) => {
-        this.setState({ratingValue: newRating, ratingComparator: ratingComparator});
+    const setRatingQuery = (newRating: number, ratingComparator: string) => {
+        setRatingValue(newRating);
+        setRatingComparator(ratingComparator);
     }
 
-    handleSelectChange = (option: any) => {
-        this.setState({ typeOptionSelected: option });
-    }
-
-    render() { 
-        return (
-            <div id="search_menu">
-                <div className="search_menu_item">
-                    <p>Tags: </p>
-                    <div className="selector">
-                        <TagSelector onChange={(selectedOptions: Option[]) => {this.setState({tagOptionsSelected : selectedOptions})}}/>
-                    </div>
-                </div>
-                {this.state.showAdvancedOptions ? <div id="advanced_options">
-                    <div className="search_menu_item">
-                        <p>Blacklist Tags: </p>
-                        <div className="selector">
-                            <TagSelector onChange={(selectedOptions: Option[]) => {this.setState({blacklistTagOptionsSelected : selectedOptions})}}/>
-                        </div>
-                    </div>
-                    <div className="search_menu_item">
-                        <p>Category: </p>
-                        <div className="selector">
-                            <UniqueQuerySelector 
-                                placeholder="Enter Category name..." 
-                                request={new CategoriesRequest()} 
-                                onChange={(selectedOption: Option) => {this.setState({categoryOptionSelected : selectedOption})}}/>
-                        </div>
-                    </div>
-                    <div className="search_menu_item">
-                        <p>Artist: </p>
-                        <div className="selector">
-                            <UniqueQuerySelector 
-                                placeholder="Enter Artist name..." 
-                                request={new ArtistsRequest()} 
-                                onChange={(selectedOption: Option) => {this.setState({artistOptionSelected : selectedOption})}}/>
-                        </div>
-                    </div>
-                    <div className="search_menu_item">
-                        <p>Type: </p>
-                        <div className="selector">
-                        <Select 
-                            placeholder={"Choose a media type..."}
-                            options={[{ 'label': 'image', value: 'image'}, { 'label': 'animated_image', value: 'animated_image'}, { 'label': 'video', value: 'video'}]}
-                            value={this.state.typeOptionSelected}
-                            onChange={(selectedOption: any) => this.setState({ typeOptionSelected : selectedOption })}
-                            isSearchable
-                            isClearable
-                        />
-                        </div>
-                    </div>
-                    <div className="search_menu_item">
-                        <p>Rating: </p>
-                        <div className="selector">
-                            <RatingSelector ratingValue={this.state.ratingValue} onChange={this.ratingFunction}/>
-                        </div>
-                    </div>
-                </div> : null}
-                <div>
-                    <button className="btn btn-primary" id="search_button" onClick={this.onSearch}>Search</button>
-                    <a 
-                        href="/#"
-                        onClick={() => {this.setState(prevState => ({showAdvancedOptions : !prevState.showAdvancedOptions}))}} 
-                        id="show_advanced_options_element">
-                            {this.state.showAdvancedOptions ? "hide advanced options" : "show advanced options"}
-                    </a>
+    return (
+        <div id="search_menu">
+            <div className="search_menu_item">
+                <p>Tags: </p>
+                <div className="selector">
+                    <TagSelector onChange={(selectedOptions: Option[]) => setTagOptionsSelected(selectedOptions)}/>
                 </div>
             </div>
-        );
-    }
+            {showAdvancedOptions ? <div id="advanced_options">
+                <div className="search_menu_item">
+                    <p>Blacklist Tags: </p>
+                    <div className="selector">
+                        <TagSelector onChange={(selectedOptions: Option[]) => setBlacklistTagOptionsSelected(selectedOptions)}/>
+                    </div>
+                </div>
+                <div className="search_menu_item">
+                    <p>Category: </p>
+                    <div className="selector">
+                        <UniqueQuerySelector 
+                            placeHolder="Enter Category name..." 
+                            request={new CategoriesRequest()} 
+                            onChange={(selectedOption: Option) => setCategoryOptionSelected(selectedOption)}/>
+                    </div>
+                </div>
+                <div className="search_menu_item">
+                    <p>Artist: </p>
+                    <div className="selector">
+                        <UniqueQuerySelector 
+                            placeHolder="Enter Artist name..." 
+                            request={new ArtistsRequest()} 
+                            onChange={(selectedOption: Option) => setArtistOptionSelected(selectedOption)}/>
+                    </div>
+                </div>
+                <div className="search_menu_item">
+                    <p>Type: </p>
+                    <div className="selector">
+                    <Select 
+                        placeholder={"Choose a media type..."}
+                        options={[{ 'label': 'image', value: 'image'}, { 'label': 'animated_image', value: 'animated_image'}, { 'label': 'video', value: 'video'}]}
+                        value={typeOptionSelected}
+                        onChange={(selectedOption: any) => setTypeOptionSelected(selectedOption)}
+                        isSearchable
+                        isClearable
+                    />
+                    </div>
+                </div>
+                <div className="search_menu_item">
+                    <p>Rating: </p>
+                    <div className="selector">
+                        <RatingSelector ratingValue={ratingValue ? ratingValue as number : 0} onChange={setRatingQuery}/>
+                    </div>
+                </div>
+            </div> : null}
+            <div>
+                <button className="btn btn-primary" id="search_button" onClick={handleSearch}>Search</button>
+                <a 
+                    href="/#"
+                    onClick={() => setShowAdvancedOptions(!showAdvancedOptions)} 
+                    id="show_advanced_options_element">
+                        {showAdvancedOptions ? "hide advanced options" : "show advanced options"}
+                </a>
+            </div>
+        </div>
+    );
 }
