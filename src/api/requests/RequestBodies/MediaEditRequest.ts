@@ -1,4 +1,4 @@
-export default class MediaEditRequest {
+export default class MediaEditRequestBody {
     categoryID?: number;
     artistID?: number;
     albumID?: number;

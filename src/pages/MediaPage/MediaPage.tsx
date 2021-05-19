@@ -9,7 +9,7 @@ import BannerAlert from '../../components/BannerAlert/BannerAlert';
 import MediaInfoEditModal from '../../components/MediaInfoEditModal/MediaInfoEditModal';
 
 import { MediaInfoRequest, MediaInfoChangeRequest } from '../../api/requests/MediaRequests';
-import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
+import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 
 import './MediaPage.css';
 

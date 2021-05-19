@@ -6,7 +6,7 @@ import BannerAlert from '../../components/BannerAlert/BannerAlert';
 
 import { SearchRequest } from '../../api/requests/SearchRequests';
 import Media from '../../model/Media';
-import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
+import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 
 export default function ThumbnailPageComponent() {
     const [collapseAlbums, setCollapseAlbums] = useState<boolean>(true);

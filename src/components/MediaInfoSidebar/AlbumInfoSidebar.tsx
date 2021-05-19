@@ -6,7 +6,7 @@ import TagsSidebarElement from './TagSidebarElement/TagSidebarElement';
 import './MediaInfoSidebar.css'
 import Media from '../../model/Media';
 import Album from '../../model/Album';
-import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
+import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 import Tag from '../../model/Tag';
 
 type Props = {

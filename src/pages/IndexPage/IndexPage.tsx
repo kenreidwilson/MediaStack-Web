@@ -1,5 +1,5 @@
 import React from 'react';
-import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
+import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 import Navigation from '../../components/Navigation/Nav';
 import SearchMenu from '../../components/SearchMenu/SearchMenu'
 

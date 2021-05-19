@@ -14,7 +14,7 @@ import Media from '../../model/Media';
 
 import { AlbumInfoRequest, AlbumInfoChangeRequest } from '../../api/requests/AlbumRequests'
 import { MediaInfoChangeRequest } from '../../api/requests/MediaRequests'
-import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
+import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 
 export default function AlbumMediaPage() {
     const [albumInfo, setAlbumInfo] = useState<Album>();
@@ -117,10 +117,10 @@ export default function AlbumMediaPage() {
             {showEditModal ? 
                 <AlbumInfoEditModal 
                     isShown={showEditModal} 
-                    handleClose={() => setShowEditModel(false)}
-                    handleSave={() => console.log("SAVE NOT IMPLEMENTED.")}
-                    media={mediaList[mediaNumber]}
-                    album={albumInfo}
+                    onClose={() => setShowEditModel(false)}
+                    onSave={(album: Album) => console.log("SAVE NOT IMPLEMENTED.")}
+                    mediaList={mediaList}
+                    album={albumInfo as Album}
                 /> 
                 : null}
             <Navigation />

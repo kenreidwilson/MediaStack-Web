@@ -3,7 +3,7 @@ import { Modal, Button }from "react-bootstrap";
 import CreatableSelect from 'react-select/creatable';
 import { TagsRequest, TagCreationRequest } from '../../api/requests/TagRequests'
 import Media from '../../model/Media';
-import MediaEditRequest from '../../api/requests/RequestModels/MediaEditRequest';
+import MediaEditRequest from '../../api/requests/RequestBodies/MediaEditRequest';
 import { MediaInfoChangeRequest } from '../../api/requests/MediaRequests';
 
 type Props = {

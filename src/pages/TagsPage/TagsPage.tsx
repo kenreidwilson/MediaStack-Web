@@ -5,7 +5,7 @@ import TagsTable from '../../components/TagsTable/TagsTable';
 import BannerAlert from '../../components/BannerAlert/BannerAlert';
 import Navigation from '../../components/Navigation/Nav';
 import Tag from '../../model/Tag';
-import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
+import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 
 export default function TagsPage() {
     const [tags, setTags] = useState<Tag[]>([]);

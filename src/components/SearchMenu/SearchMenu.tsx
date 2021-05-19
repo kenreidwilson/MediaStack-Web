@@ -7,7 +7,7 @@ import RatingSelector from './RatingSelector/RatingSelector';
 
 import { ArtistsRequest } from '../../api/requests/ArtistRequests';
 import { CategoriesRequest } from '../../api/requests/CategoryRequests';
-import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
+import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 
 import './SearchMenu.css';
 

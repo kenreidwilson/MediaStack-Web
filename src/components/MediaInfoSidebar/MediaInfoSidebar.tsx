@@ -10,7 +10,7 @@ import { AlbumInfoRequest } from '../../api/requests/AlbumRequests';
 
 import './MediaInfoSidebar.css'
 import Media from '../../model/Media';
-import MediaSearchQuery from '../../api/requests/RequestModels/MediaSearchQuery';
+import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 
 type Props = {
     media: Media,

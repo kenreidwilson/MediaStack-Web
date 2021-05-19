@@ -1,7 +1,7 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
 import Album from '../../model/Album';
-import AlbumEditRequest from './RequestModels/AlbumEditRequest';
+import AlbumEditRequest from './RequestBodies/AlbumEditRequestBody';
 
 const primaryResource = "/albums/"
 

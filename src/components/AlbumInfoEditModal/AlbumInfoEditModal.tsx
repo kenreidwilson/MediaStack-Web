@@ -3,7 +3,7 @@ import { Modal, Button }from "react-bootstrap";
 import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select'
 import { TagsRequest, TagCreationRequest } from '../../api/requests/TagRequests'
-import AlbumEditRequest from '../../api/requests/RequestModels/AlbumEditRequest';
+import AlbumEditRequest from '../../api/requests/RequestBodies/AlbumEditRequestBody';
 import { AlbumInfoChangeRequest } from '../../api/requests/AlbumRequests';
 import Album from '../../model/Album';
 import Media from '../../model/Media';

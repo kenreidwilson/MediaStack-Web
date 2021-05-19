@@ -1,7 +1,7 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
 import Media from '../../model/Media';
-import MediaSearchQuery from './RequestModels/MediaSearchQuery';
+import MediaSearchQuery from './RequestBodies/MediaSearchQuery';
 
 const primaryResource = "/media"
 
