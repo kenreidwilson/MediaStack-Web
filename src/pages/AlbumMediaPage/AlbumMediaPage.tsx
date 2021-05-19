@@ -40,7 +40,7 @@ export default function AlbumMediaPage() {
     }
 
     const handleEditMediaScore = async (score: number) => {
-        let newScore = score == mediaList[mediaNumber].score ? 0 : score;
+        let newScore = score === mediaList[mediaNumber].score ? 0 : score;
         await new MediaInfoChangeRequest(mediaList[mediaNumber].id, {'score' : newScore }).send().then((response: Media) => {
             mediaList[mediaNumber] = response;
             setMediaList(mediaList);
@@ -58,7 +58,7 @@ export default function AlbumMediaPage() {
     }
 
     const handleEditAlbumScore = async (score: number) => {
-        let newScore = score == getAlbumScore() ? 0 : score;
+        let newScore = score === getAlbumScore() ? 0 : score;
         let album = albumInfo as Album;
         await new AlbumInfoChangeRequest(album.id, {'score' : newScore}).send().then(response => {
             setAlbumInfo(response);
@@ -96,7 +96,7 @@ export default function AlbumMediaPage() {
     */
     
     const handleThumbnailClick = (index: number) => {
-        if (mediaNumber == index) {
+        if (mediaNumber === index) {
             return;
         }
         setMediaNumber(index);
@@ -105,9 +105,9 @@ export default function AlbumMediaPage() {
 
     const handleMediaClick = (event: any) => {
         if (event.originalEvent.x - event.target.offsetLeft >= event.target.width / 2) {
-            setMediaNumber(mediaNumber == mediaList.length - 1 ? 0 : mediaNumber + 1);
+            setMediaNumber(mediaNumber === mediaList.length - 1 ? 0 : mediaNumber + 1);
         } else {
-            setMediaNumber(mediaNumber == 0 ? mediaList.length - 1 : mediaNumber - 1);
+            setMediaNumber(mediaNumber === 0 ? mediaList.length - 1 : mediaNumber - 1);
         }
         setIsMediaLoading(true);
     }

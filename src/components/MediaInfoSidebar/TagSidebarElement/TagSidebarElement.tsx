@@ -12,7 +12,7 @@ const TagsSidebarElement = ({ tags, onClick }: Props) => (
         <ul>
             {tags.map(tag => 
             <li key={tag.id}>
-                <a onClick={() => {onClick(tag.id)}}>{tag.name}</a>
+                <a href="/#" onClick={() => {onClick(tag.id)}}>{tag.name}</a>
             </li>
             )}
         </ul>

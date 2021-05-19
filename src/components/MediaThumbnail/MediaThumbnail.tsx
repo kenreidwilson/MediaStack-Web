@@ -6,11 +6,19 @@ type Props = {
     media: Media
 }
 
-const MediaThumbnail = ({media}: Props) => (
-    <img 
-        className={"thumbnail"}
-        src={`${process.env.REACT_APP_API}/media/${media.id}/thumbnail`}>
-    </img>
-)
+export default function MediaThumbnail({media}: Props) {
 
-export default MediaThumbnail;
+    const getAlt = () => {
+        let alt: string = "";
+        media.tags.forEach(tag => alt += `${tag.name} `);
+        return alt;
+    }
+
+    return (
+        <img 
+            alt={getAlt()}
+            className={"thumbnail"}
+            src={`${process.env.REACT_APP_API}/media/${media.id}/thumbnail`}>
+        </img>
+    );
+}

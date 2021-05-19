@@ -29,7 +29,7 @@ export default class SelectableThumbnailSlider extends Component<Props> {
     render() { 
         return (
             <div id="thumbnail-slider">
-                <a id="thumbnailslider-nav-next" onClick={this.scroll.bind(null,-1)}>&#10094;&#10094;&#10094;</a>
+                <a href="/#" id="thumbnailslider-nav-next" onClick={this.scroll.bind(null,-1)}>&#10094;&#10094;&#10094;</a>
                 <div id="thumbnailslider-image-container">
                     <SelectableThumbnails 
                         mediaNumber={this.props.mediaNumber}
@@ -37,7 +37,7 @@ export default class SelectableThumbnailSlider extends Component<Props> {
                         mediaList={this.props.mediaList}
                     />
                 </div>
-                <a id="thumbnailslider-nav-prev" onClick={this.scroll.bind(null,1)}>&#10095;&#10095;&#10095;</a>
+                <a href="/#" id="thumbnailslider-nav-prev" onClick={this.scroll.bind(null,1)}>&#10095;&#10095;&#10095;</a>
             </div>
         )
     }

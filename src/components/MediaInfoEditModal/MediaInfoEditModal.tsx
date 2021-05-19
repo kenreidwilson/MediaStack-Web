@@ -29,7 +29,7 @@ export default function MediaInfoEditModal({ media, isShown, onSave, onClose }: 
         setIsTagOptionsLoading(true);
         new TagsRequest().send().then(response => {
             let _tagOptions: TagOption[] = [];
-            response.map(tag => {
+            response.forEach(tag => {
                 _tagOptions.push({ value: tag.id, label: tag.name });
             });
             setTagOptions(_tagOptions);

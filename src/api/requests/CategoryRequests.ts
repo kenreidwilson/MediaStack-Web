@@ -3,10 +3,6 @@ import API from '../API';
 import Category from '../../model/Category';
 
 class CategoriesRequest extends BaseRequest {
-    constructor() {
-        super();
-    }
-
     send() {
         return API.get<Category[]>(`${this.baseURL}/categories`);
     }

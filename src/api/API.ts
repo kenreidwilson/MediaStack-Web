@@ -9,7 +9,7 @@ class API {
             if (response.status === 200) {
                 return response.data.data;
             }
-            throw { 'response' : { 'status' : response.status }, 'message' : "Invalid response status." };
+            throw new APIUnexpectedResponseError(`Invalid response status: ${response.status}`);
         }).catch(error => {
             if (typeof error.response === 'undefined') {
                 throw new APINetworkError("API sent no response.");
@@ -29,7 +29,7 @@ class API {
             if (response.status === 201 || response.status === 200) {
                 return response.data.data;
             }
-            throw { 'response' : { 'status' : response.status }, 'message' : "Invalid response status." };
+            throw new APIUnexpectedResponseError(`Invalid response status: ${response.status}`);
         })
         .catch(error => {
             if (typeof error.response === 'undefined') {
@@ -50,7 +50,7 @@ class API {
             if (response.status === 200) {
                 return response.data.data;
             }
-            throw { 'response' : { 'status' : response.status }, 'message' : "Invalid response status." };
+            throw new APIUnexpectedResponseError(`Invalid response status: ${response.status}`);
         })
         .catch(error => {
             if (typeof error.response === 'undefined') {
@@ -71,7 +71,7 @@ class API {
             if (response.status === 200) {
                 return response.data.data;
             }
-            throw { 'response' : { 'status' : response.status }, 'message' : "Invalid response status." };
+            throw new APIUnexpectedResponseError(`Invalid response status: ${response.status}`);
         })
         .catch(error => {
             if (typeof error.response === 'undefined') {

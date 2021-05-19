@@ -35,7 +35,7 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
 
     useEffect(() => {
         setNewAlbumSource(getAlbumSource());
-
+        
         setIsTagOptionsLoading(true);
         let tagOptions: TagOption[] = [];
         new TagsRequest().send().then(response => {
@@ -43,18 +43,18 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
         });
 
         let _removeTagOptions: TagOption[] = [];
-        mediaList.map(media => {
-            media.tags.map(tag => {
+        mediaList.forEach(media => {
+            media.tags.forEach(tag => {
                 let tagOption: TagOption | null = getTagOptionForTag(tagOptions, tag);
                 if (tagOption !== null && !_removeTagOptions.includes(tagOption)) {
                     _removeTagOptions.push(tagOption);
                 }
             });
-        });
+        }, []);
         setRemoveTagOptions(_removeTagOptions);
 
         let _addTagOptions: TagOption[] = [];
-        tagOptions.map(tagOption => {
+        tagOptions.forEach(tagOption => {
             if (!removeTagOptions.includes(tagOption)) {
                 _addTagOptions.push(tagOption);
             }
@@ -62,11 +62,11 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
         setAddTagOptions(_addTagOptions);
 
         setIsTagOptionsLoading(false);
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const getTagOptionForTag = (tagOptions: TagOption[], tag: Tag) => {
-        tagOptions.map(tagOption => {
-            if (tagOption.value == tag.id) {
+        tagOptions.forEach(tagOption => {
+            if (tagOption.value === tag.id) {
                 return tagOption;
             };
         })

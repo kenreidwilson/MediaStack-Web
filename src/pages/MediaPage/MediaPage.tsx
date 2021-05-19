@@ -27,7 +27,7 @@ export default function MediaPage() {
         }).catch(error => { 
             setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
         });
-    }, [])
+    }, []);
 
     const handleScoreEdit = async (newScore: number) => {
         let media = mediaInfo as Media;

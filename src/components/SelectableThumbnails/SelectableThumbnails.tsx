@@ -14,7 +14,7 @@ const SelectableThumbnails = ({mediaList, onThumbnailClick, mediaNumber}: Props)
     return ( 
         <div>
             {mediaList.map((media, index) => 
-                <a key={index} onClick={() => onThumbnailClick(mediaList.indexOf(media))}>
+                <a href="/#" key={index} onClick={() => onThumbnailClick(mediaList.indexOf(media))}>
                     <div className={index === mediaNumber ? "selected-thumbnail" : ""}>
                         <MediaThumbnail media={media}/>
                     </div>

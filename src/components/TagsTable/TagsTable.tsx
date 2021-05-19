@@ -20,7 +20,7 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
         new TagsRequest().send()
             .then(response => {
                 setTags(response);
-                tags.map(tag => {
+                tags.forEach(tag => {
                     new TagInfoRequest(tag.id).send().then(tagInfo => {
                         let newTagsInfo: any = Object.assign({}, tagsInfo);
                         newTagsInfo[tag.id] = tagInfo;
@@ -37,7 +37,7 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
         for (let i = 0; i < numberOfPages(); i++) {
             listItems.push(
                 <li className={pageNumber === i ? "page-item active" : "page-item"}>
-                    <a className="page-link" onClick={() => setPageNumber(i)}>{i + 1} <span className="sr-only">(current)</span></a>
+                    <a href="/#" className="page-link" onClick={() => setPageNumber(i)}>{i + 1} <span className="sr-only">(current)</span></a>
                 </li>
             );
         }
@@ -83,7 +83,7 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
                         {tags ? tags.slice(tagsPerPage * pageNumber, tagsPerPage * (pageNumber + 1)).map(tag =>
                             <tr>
                                 <th scope="row">{tag.id}</th>
-                                <td><a style={{cursor: 'pointer'}} onClick={() => onTagClick({'whitelist_tags':[tag.id]})}>{tag.name}</a></td>
+                                <td><a href="/#" style={{cursor: 'pointer'}} onClick={() => onTagClick({'whitelist_tags':[tag.id]})}>{tag.name}</a></td>
                                 <td>{true ? 
                                     "N/A" : 
                                     <div className="spinner-border spinner-border-sm" role="status">
@@ -91,8 +91,8 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
                                     </div>}
                                 </td>
                                 <td>
-                                    <a className="edit_a" onClick={() => { setSelectedTag(tag); setShowEditModal(true); }}>Edit</a> |
-                                    <a className="delete_a" onClick={() => { setSelectedTag(tag); setShowDeleteModal(true); }}> Delete</a>
+                                    <a href="/#" className="edit_a" onClick={() => { setSelectedTag(tag); setShowEditModal(true); }}>Edit</a> |
+                                    <a href="/#" className="delete_a" onClick={() => { setSelectedTag(tag); setShowDeleteModal(true); }}> Delete</a>
                                 </td>
                             </tr>
                         ) : null}
@@ -103,11 +103,11 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
                 <nav aria-label="...">
                     <ul className="pagination">
                         <li className={pageNumber === 1 ? "page-item disabled" : "page-item"}>
-                            <a className="page-link" onClick={() => setPageNumber(pageNumber - 1)}>Previous</a>
+                            <a href="/#" className="page-link" onClick={() => setPageNumber(pageNumber - 1)}>Previous</a>
                         </li>
                         {getPageListItems()}
                         <li className={pageNumber === numberOfPages() ? "page-item disabled" : "page-item"}>
-                            <a className="page-link" onClick={() => setPageNumber(pageNumber + 1)}>Next</a>
+                            <a href="/#" className="page-link" onClick={() => setPageNumber(pageNumber + 1)}>Next</a>
                         </li>
                     </ul>
                 </nav>

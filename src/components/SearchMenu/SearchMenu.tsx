@@ -69,10 +69,10 @@ export default class SearchMenu extends Component<Props, State> {
         }
 
         if (this.state.ratingComparator) {
-            if (this.state.ratingComparator == 'greaterThan') {
+            if (this.state.ratingComparator === 'greaterThan') {
                 searchQuery.greaterThanScore = this.state.ratingValue;
             }
-            if (this.state.ratingComparator == 'lessThan') {
+            if (this.state.ratingComparator === 'lessThan') {
                 searchQuery.lessThanScore = this.state.ratingValue;
             }
             else {
@@ -148,6 +148,7 @@ export default class SearchMenu extends Component<Props, State> {
                 <div>
                     <button className="btn btn-primary" id="search_button" onClick={this.onSearch}>Search</button>
                     <a 
+                        href="/#"
                         onClick={() => {this.setState(prevState => ({showAdvancedOptions : !prevState.showAdvancedOptions}))}} 
                         id="show_advanced_options_element">
                             {this.state.showAdvancedOptions ? "hide advanced options" : "show advanced options"}

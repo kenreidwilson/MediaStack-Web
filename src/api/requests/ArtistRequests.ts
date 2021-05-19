@@ -3,10 +3,6 @@ import API from '../API';
 import Artist from '../../model/Artist';
 
 class ArtistsRequest extends BaseRequest {
-    constructor() {
-        super();
-    }
-
     send() {
         return API.get<Artist[]>(`${this.baseURL}/artists`);
     }
