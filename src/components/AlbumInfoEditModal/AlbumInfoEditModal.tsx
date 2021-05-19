@@ -62,7 +62,7 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
         setAddTagOptions(_addTagOptions);
 
         setIsTagOptionsLoading(false);
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []);
 
     const getTagOptionForTag = (tagOptions: TagOption[], tag: Tag) => {
         tagOptions.forEach(tagOption => {

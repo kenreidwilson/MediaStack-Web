@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import InfoSideBarElement from './InfoSidebarElement/InfoSidebarElement';
 import RatingSidebarElement from './RatingSidebarElement/RatingSidebarElement';
@@ -19,101 +19,71 @@ type Props = {
     handleEdit: Function
 }
 
-export default class MediaInfoSidebar extends Component<Props> {
+export default function MediaInfoSidebar({media, onSidebarNavClick, handleScoreEdit, handleEdit}: Props) {
 
-    state = {
-        categoryName : null,
-        artistName : null,
-        albumName : null
-    }
+    const [categoryName, setCategoryName] = useState<string | undefined>(undefined);
+    const [artistName, setArtistName] = useState<string | undefined>(undefined);
+    const [albumName, setAlbumName] = useState<string | undefined>(undefined);
 
-    componentDidMount = async () => {
-        let categoryName = null;
-        let artistName = null;
-        let albumName = null;
+    useEffect(() => {
+        if (media.categoryID) {
+            new CategoryInfoRequest(media.categoryID as number).send().then(response => {
+                setCategoryName(response.name);
+            });
+        } else {
+            return;
+        }
 
-        if (this.props.media.categoryID !== null) {
-            await new CategoryInfoRequest(this.props.media.categoryID as number).send().then(response => {
-                categoryName = response.name;
+        if (media.artistID) {
+            new ArtistInfoRequest(media.artistID as number).send().then(response => {
+                setArtistName(response.name);
+            });
+        } else {
+            return;
+        }
+
+        if (media.albumID) {
+            new AlbumInfoRequest(media.albumID as number).send().then(response => {
+                setAlbumName(response.name);
             });
         }
-        
-        if (this.props.media.artistID !== null) {
-            await new ArtistInfoRequest(this.props.media.artistID as number).send().then(response => {
-                artistName = response.name;
-            });
-        }
-        
-        if (this.props.media.albumID !== null) {
-            await new AlbumInfoRequest(this.props.media.albumID as number).send().then(response => {
-                albumName = response.name;
-            });
-        }
-        
-        this.setState({ categoryName, artistName, albumName });
-    }
+    }, []);
 
-    onTypeClick = () => {
-        this.props.onSidebarNavClick(new MediaSearchQuery({type: this.props.media.type}));
-    }
+    return (
+        <div id="media_info">
+            <p id="media_info_title">{`Media Info  `}</p>
+            <InfoSideBarElement 
+                label={"Type: "} 
+                value={media.type}
+                onClick={() => onSidebarNavClick(new MediaSearchQuery({type: media.type}))}/>
+            
+            <InfoSideBarElement 
+                label={"Category: "} 
+                value={categoryName}
+                onClick={() => onSidebarNavClick(new MediaSearchQuery({categoryID: media.categoryID}))}/>
 
-    onCategoryClick = () => {
-        this.props.onSidebarNavClick(new MediaSearchQuery({categoryID: this.props.media.categoryID}));
-    }
+            <InfoSideBarElement 
+                label={"Artist: "} 
+                value={artistName}
+                onClick={() => onSidebarNavClick(new MediaSearchQuery({artistID: media.artistID}))}/>
 
-    onArtistClick = () => {
-        this.props.onSidebarNavClick(new MediaSearchQuery({artistID: this.props.media.artistID}));
-    }
+            <InfoSideBarElement 
+                label={"Album: "} 
+                value={albumName}
+                onClick={() => onSidebarNavClick(new MediaSearchQuery({albumID: media.albumID}))}/>
 
-    onAlbumClick = () => {
-        this.props.onSidebarNavClick(new MediaSearchQuery({albumID: this.props.media.albumID}));
-    }
+            <InfoSideBarElement 
+                label={"Source: "} 
+                value={media.source}
+                onClick={() => console.log("NOT IMPLEMENTED")}/>
+            
+            <RatingSidebarElement 
+                rating={media.score}
+                handleEdit={handleScoreEdit}/>
 
-    onSourceClick = () => {
-
-    }
-
-    onTagClick = (tagId: number) => {
-        this.props.onSidebarNavClick(new MediaSearchQuery({whitelistTagIDs: [tagId]}));
-    }
-
-    render() { 
-        return (
-                <div id="media_info">
-                    <p id="media_info_title">{`Media Info  `}</p>
-                    <InfoSideBarElement 
-                        label={"Type: "} 
-                        value={this.props.media.type}
-                        onClick={this.onTypeClick}/>
-                    
-                    <InfoSideBarElement 
-                        label={"Category: "} 
-                        value={this.state.categoryName}
-                        onClick={this.onCategoryClick}/>
-
-                    <InfoSideBarElement 
-                        label={"Artist: "} 
-                        value={this.state.artistName}
-                        onClick={this.onArtistClick}/>
-
-                    <InfoSideBarElement 
-                        label={"Album: "} 
-                        value={this.state.albumName}
-                        onClick={this.onAlbumClick}/>
-
-                    <InfoSideBarElement 
-                        label={"Source: "} 
-                        value={this.props.media.source}
-                        onClick={this.onSourceClick}/>
-                    
-                    <RatingSidebarElement 
-                        rating={this.props.media.score}
-                        handleEdit={this.props.handleScoreEdit}/>
-
-                    <TagsSidebarElement
-                        tags={this.props.media.tags}
-                        onClick={this.onTagClick}/>
-                </div>
-         );
-    }
+            <TagsSidebarElement
+                tags={media.tags}
+                onClick={(tagID: number) => onSidebarNavClick(new MediaSearchQuery({whitelistTagIDs: [tagID]}))}/>
+        </div>
+ );
 }
