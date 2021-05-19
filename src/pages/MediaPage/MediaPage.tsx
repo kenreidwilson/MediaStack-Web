@@ -57,9 +57,9 @@ export default function MediaPage() {
             {showEditModal ? 
                 <MediaInfoEditModal 
                     isShown={showEditModal} 
-                    handleClose={() => setShowEditModal(false)}
-                    handleSave={handleModalSave}
-                    media={mediaInfo}/> 
+                    onClose={() => setShowEditModal(false)}
+                    onSave={handleModalSave}
+                    media={mediaInfo as Media}/> 
                 : null}
             <Navigation />
             {alerts.map(errorComponent => errorComponent)}
