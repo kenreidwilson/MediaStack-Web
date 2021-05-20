@@ -46,7 +46,7 @@ export default function UniqueQuerySelector({ request, onChange, placeHolder }: 
         <Select 
             placeholder={placeHolder || ""}
             options={options ? options as Option[] : []}
-            onChange={() => onChange()}
+            onChange={(option: any) => onChange(option)}
             isSearchable
             isClearable
             isLoading={isLoading}
