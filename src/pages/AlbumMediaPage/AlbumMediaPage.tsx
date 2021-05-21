@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
 import Navigation from '../../components/Navigation/Nav';
@@ -15,6 +15,7 @@ import Media from '../../model/Media';
 import { AlbumInfoRequest, AlbumInfoChangeRequest } from '../../api/requests/AlbumRequests'
 import { MediaInfoChangeRequest } from '../../api/requests/MediaRequests'
 import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
+import { SearchRequest } from '../../api/requests/SearchRequests';
 
 export default function AlbumMediaPage() {
     const [albumInfo, setAlbumInfo] = useState<Album>();
@@ -24,6 +25,9 @@ export default function AlbumMediaPage() {
     const [isMediaLoading, setIsMediaLoading] = useState<boolean>(true);
     const [alerts, setAlerts] = useState<any[]>([]);
 
+    const mediaNumberRef = useRef(-1);
+    mediaNumberRef.current = mediaNumber;
+
     useEffect(() => {
         let albumIDString = new URL(window.location.href).searchParams.get("id") as string;
         let albumID = +albumIDString;
@@ -32,7 +36,9 @@ export default function AlbumMediaPage() {
         }).catch(error => { 
             setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
         });
-        // TODO: Get media list.
+        new SearchRequest(new MediaSearchQuery({ albumID })).send().then(response => {
+            setMediaList(response);
+        });
     }, []);
 
     const onSidebarNavClick = (searchQuery: MediaSearchQuery) => {
@@ -103,11 +109,11 @@ export default function AlbumMediaPage() {
         setIsMediaLoading(true);
     }
 
-    const handleMediaClick = (event: any) => {
-        if (event.originalEvent.x - event.target.offsetLeft >= event.target.width / 2) {
-            setMediaNumber(mediaNumber === mediaList.length - 1 ? 0 : mediaNumber + 1);
+    const handleMediaClick = (event: JQuery.ClickEvent) => {
+        if (event!.originalEvent!.x - event.target.offsetLeft >= event.target.width / 2) {
+            setMediaNumber(mediaNumberRef.current === mediaList.length - 1 ? 0 : mediaNumberRef.current + 1);
         } else {
-            setMediaNumber(mediaNumber === 0 ? mediaList.length - 1 : mediaNumber - 1);
+            setMediaNumber(mediaNumberRef.current === 0 ? mediaList.length - 1 : mediaNumberRef.current + 1);
         }
         setIsMediaLoading(true);
     }
@@ -130,29 +136,29 @@ export default function AlbumMediaPage() {
                     {typeof albumInfo !== 'undefined' && mediaNumber !== null ? 
                         <div>
                             <button className="edit_button btn btn-primary" onClick={() => setShowEditModel(true)}>Edit</button>
+                            {mediaList.length > 0 ? 
                             <MediaInfoSidebar 
                                 onSidebarNavClick={onSidebarNavClick}
                                 handleEdit={() => setShowEditModel(true)}
                                 handleScoreEdit={handleEditMediaScore}
                                 media={mediaList[mediaNumber]}
-                            />
+                            /> : null }
                             <AlbumInfoSidebar
                                 onSidebarNavClick={onSidebarNavClick}
                                 handleEdit={() => setShowEditModel(true)}
                                 handleScoreEdit={handleEditAlbumScore}
                                 album={albumInfo}
-                                // TODO: Implement
-                                mediaList={[]}
+                                mediaList={mediaList}
                             />
                         </div> : null}
                 </div>
                 <div id="mediapage-content">
-                    {typeof albumInfo !== 'undefined' && mediaNumber !== null ? 
+                    {typeof albumInfo !== 'undefined' && mediaList.length > 0 ? 
                         <div>
                             {isMediaLoading ? <Spinner id="imageLoadingSpinner" animation="border" variant="primary" /> : null}
                             <MediaContainer 
                                 onLoad={() => setIsMediaLoading(false)}
-                                onClick={handleMediaClick}
+                                onClick={(event: JQuery.ClickEvent) => handleMediaClick(event)}
                                 media={mediaList[mediaNumber]}
                             />
                         </div>

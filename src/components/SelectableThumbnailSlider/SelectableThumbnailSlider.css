@@ -1,15 +1,15 @@
   @import '../../css/style.css';
  
   #thumbnail-slider {
+    display: flex;
+    flex-direction: row;
     margin-top: 5px;
     text-align: center;
-    flex-direction: column;
-    justify-content: space-around;
   }
 
   #thumbnailslider-image-container {
-    vertical-align: middle;
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
     width: 80%;
     white-space: nowrap;
     overflow-x: auto;

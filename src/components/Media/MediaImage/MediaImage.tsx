@@ -11,21 +11,15 @@ type Props = {
 
 export default function MediaImage({onImageClick, onImageLoad, media}: Props) {
     useEffect(() => {
-        if (typeof onImageClick !== 'undefined') {
-            $("#mediaImage").on("click", (event) => {
-                onImageClick(event);
-            });
+        if (onImageClick !== undefined) {
+            $("#mediaImage").on("click", (event: any) => onImageClick(event));
         }
     }, []);
-
-    const onLoadEventHanlder = () => {
-        onImageLoad();
-    }
 
     return (
         <div>
             <img id="mediaImage"
-                onLoad={onLoadEventHanlder} 
+                onLoad={() => onImageLoad()} 
                 alt={media.tags.toString()} 
                 src={`${process.env.REACT_APP_API}/media/${media.id}/file`}/>
         </div>

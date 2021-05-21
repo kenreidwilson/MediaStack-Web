@@ -24,7 +24,7 @@ export default function SelectableThumbnailSlider({mediaList, mediaNumber, onThu
 
     return (
         <div id="thumbnail-slider">
-            <a href="/#" id="thumbnailslider-nav-next" onClick={scroll.bind(null,-1)}>&#10094;&#10094;&#10094;</a>
+            <a id="thumbnailslider-nav-next" onClick={scroll.bind(null,-1)}>&#10094;&#10094;&#10094;</a>
             <div id="thumbnailslider-image-container">
                 <SelectableThumbnails 
                     mediaNumber={mediaNumber}
@@ -32,7 +32,7 @@ export default function SelectableThumbnailSlider({mediaList, mediaNumber, onThu
                     mediaList={mediaList}
                 />
             </div>
-            <a href="/#" id="thumbnailslider-nav-prev" onClick={scroll.bind(null,1)}>&#10095;&#10095;&#10095;</a>
+            <a id="thumbnailslider-nav-prev" onClick={scroll.bind(null,1)}>&#10095;&#10095;&#10095;</a>
         </div>
     );
 }
