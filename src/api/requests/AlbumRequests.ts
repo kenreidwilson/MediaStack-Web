@@ -48,7 +48,7 @@ class AlbumInfoChangeRequest extends BaseRequest {
                 let newTagIDs: number[] = [];
 
                 tags.forEach(tag => {
-                    if (this.requestBody.removeTagIDs?.find(tID => tID === tag.id)) {
+                    if (!this.requestBody.removeTagIDs?.find(tID => tID === tag.id)) {
                         newTagIDs.push(tag.id);
                     }
                 });

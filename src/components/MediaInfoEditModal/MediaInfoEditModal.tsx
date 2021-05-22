@@ -9,8 +9,8 @@ import { MediaInfoChangeRequest } from '../../api/requests/MediaRequests';
 type Props = {
     media: Media,
     isShown: boolean,
-    onSave: Function,
-    onClose: Function
+    onClose: Function,
+    onSave: Function
 }
 
 type TagOption = {
@@ -18,9 +18,9 @@ type TagOption = {
     value?: any
 }
 
-export default function MediaInfoEditModal({ media, isShown, onSave, onClose }: Props) {
+export default function MediaInfoEditModal({ media, isShown, onClose, onSave }: Props) {
 
-    const [newSource, setNewSource] = useState<string>("");
+    const [newSource, setNewSource] = useState<string>(media.source);
     const [tagOptions, setTagOptions] = useState<TagOption[]>([]);
     const [selectedTagOptions, setSelectedTagOptions] = useState<TagOption[]>([]);
     const [isTagOptionsLoading, setIsTagOptionsLoading] = useState<boolean>(false);
@@ -33,9 +33,24 @@ export default function MediaInfoEditModal({ media, isShown, onSave, onClose }: 
                 _tagOptions.push({ value: tag.id, label: tag.name });
             });
             setTagOptions(_tagOptions);
+
+            let selectedTags: TagOption[] = [];
+            media.tags.forEach(tag => {
+                selectedTags.push(_tagOptions.find(to => to.value === tag.id) as TagOption);
+            });
+            setSelectedTagOptions(selectedTags);
+            setIsTagOptionsLoading(false);
+        }).then(() => setIsTagOptionsLoading(false));
+    }, []);
+
+    const createTag = async (tagName: string) => {
+        setIsTagOptionsLoading(true);
+        await new TagCreationRequest(tagName).send().then(newTag => {
+            setTagOptions([...tagOptions, { value: newTag.id, label: newTag.name }]);
+            setSelectedTagOptions([...selectedTagOptions, { value: newTag.id, label: newTag.name }]);
         });
         setIsTagOptionsLoading(false);
-    }, []);
+    }
 
     const handleSaveClick = () => {
         let mediaEditRequest: MediaEditRequest = new MediaEditRequest();
@@ -46,15 +61,6 @@ export default function MediaInfoEditModal({ media, isShown, onSave, onClose }: 
         mediaEditRequest.source = newSource;
 
         new MediaInfoChangeRequest(media.id, mediaEditRequest).send().then(updatedMedia => onSave(updatedMedia));
-    }
-
-    const createTag = (tagName: string) => {
-        setIsTagOptionsLoading(true);
-        new TagCreationRequest(tagName).send().then(newTag => {
-            setTagOptions([...tagOptions, { value: newTag.id, label: newTag.name }]);
-            setSelectedTagOptions([...selectedTagOptions, { value: newTag.id, label: newTag.name }]);
-        });
-        setIsTagOptionsLoading(false);
     }
 
     return (

@@ -13,7 +13,7 @@ import { MediaInfoRequest, MediaInfoChangeRequest } from '../../api/requests/Med
 import './MediaPage.css';
 
 export default function MediaPage() {
-    const [mediaInfo, setMediaInfo] = useState<Media | null>(null);
+    const [media, setMedia] = useState<Media | null>(null);
     const [showEditModal, setShowEditModal] = useState(false);
     const [isMediaLoading, setIsMediaLoading] = useState(true);
     const [alerts, setAlerts] = useState<any[]>([]);
@@ -22,50 +22,38 @@ export default function MediaPage() {
         var mediaIDString: string = new URL(window.location.href).searchParams.get("id") as string;
         var mediaID: number = +mediaIDString;
         new MediaInfoRequest(mediaID).send().then((response: Media) => {
-            setMediaInfo(response);
+            setMedia(response);
         }).catch(error => { 
             setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
         });
     }, []);
 
-    const handleModalSave = async (newMediaInfo: Media) => {
-        let media = mediaInfo as Media;
-        if (Object.keys(newMediaInfo).length > 0) {
-            await new MediaInfoChangeRequest(media.id, newMediaInfo).send().then(response => {
-                setMediaInfo(response);
-            }).catch(error => {
-                setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
-            })
-        }
-        setShowEditModal(false);
-    }
-
     return ( 
         <React.Fragment>
             {showEditModal ? 
                 <MediaInfoEditModal 
+                    media={media as Media}
                     isShown={showEditModal} 
                     onClose={() => setShowEditModal(false)}
-                    onSave={handleModalSave}
-                    media={mediaInfo as Media}/> 
+                    onSave={(updatedMedia: Media) => {setMedia(updatedMedia); setShowEditModal(false)}}/>
                 : null}
             <Navigation />
             {alerts.map(errorComponent => errorComponent)}
             <div id="mediapage">
                 <div id="mediapage-sidebar">
-                    {mediaInfo !== null ? 
+                    {media !== null ? 
                         <div>
                             <button className="edit_button btn btn-primary" onClick={() => setShowEditModal(true)}>Edit</button>
                             <MediaInfoSidebar
-                                media={mediaInfo}
-                                setMedia={setMediaInfo}
+                                media={media}
+                                setMedia={setMedia}
                             /> 
                         </div>
                         : null}
                 </div>
                 <div id="mediapage-content">
                     {isMediaLoading ? <Spinner id="imageLoadingSpinner" animation="border" variant="primary" /> : null}
-                    <MediaContainer media={mediaInfo as Media} onLoad={() => setIsMediaLoading(false)}/>
+                    <MediaContainer media={media as Media} onLoad={() => setIsMediaLoading(false)}/>
                 </div>
             </div>
         </React.Fragment>

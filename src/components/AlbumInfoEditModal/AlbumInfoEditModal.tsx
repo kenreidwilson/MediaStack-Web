@@ -7,7 +7,6 @@ import AlbumEditRequest from '../../api/requests/RequestBodies/AlbumEditRequestB
 import { AlbumInfoChangeRequest } from '../../api/requests/AlbumRequests';
 import Album from '../../model/Album';
 import Media from '../../model/Media';
-import Tag from '../../model/Tag';
 
 import './AlbumInfoEditModal.css'
 
@@ -26,7 +25,7 @@ type TagOption = {
 
 export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, onSave}: Props) {
 
-    const [newAlbumSource, setNewAlbumSource] = useState<string | undefined>(undefined);
+    const [newAlbumSource, setNewAlbumSource] = useState<string>("");
     const [addTagOptions, setAddTagOptions] = useState<TagOption[]>([]);
     const [selectedAddTagOptions, setSelectedAddTagOptions] = useState<TagOption[]>([]);
     const [removeTagOptions, setRemoveTagOptions] = useState<TagOption[]>([]);
@@ -37,49 +36,35 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
         setNewAlbumSource(getAlbumSource());
         
         setIsTagOptionsLoading(true);
-        let tagOptions: TagOption[] = [];
         new TagsRequest().send().then(response => {
-            response.map(tag => tagOptions.push({ label: tag.name, value: tag.id }));
-        });
-
-        let _removeTagOptions: TagOption[] = [];
-        mediaList.forEach(media => {
-            media.tags.forEach(tag => {
-                let tagOption: TagOption | null = getTagOptionForTag(tagOptions, tag);
-                if (tagOption !== null && !_removeTagOptions.includes(tagOption)) {
-                    _removeTagOptions.push(tagOption);
+            let _removeTagOptions: TagOption[] = [];
+            let _addTagOptions: TagOption[] = [];
+            response.forEach(tag => {
+                let tagFound = false;
+                mediaList.forEach(media => {
+                    if (!tagFound && media.tags.find(t => t.id === tag.id)) {
+                        _removeTagOptions.push({label: tag.name, value: tag.id});
+                        tagFound = true;
+                    }
+                });
+                if (!tagFound) {
+                    _addTagOptions.push({label: tag.name, value: tag.id});
                 }
             });
-        }, []);
-        setRemoveTagOptions(_removeTagOptions);
+            setAddTagOptions(_addTagOptions);
+            setRemoveTagOptions(_removeTagOptions);
+            setIsTagOptionsLoading(false);
 
-        let _addTagOptions: TagOption[] = [];
-        tagOptions.forEach(tagOption => {
-            if (!removeTagOptions.includes(tagOption)) {
-                _addTagOptions.push(tagOption);
-            }
-        });
-        setAddTagOptions(_addTagOptions);
-
-        setIsTagOptionsLoading(false);
+        }).catch(() => setIsTagOptionsLoading(false));
     }, []);
 
-    const getTagOptionForTag = (tagOptions: TagOption[], tag: Tag) => {
-        tagOptions.forEach(tagOption => {
-            if (tagOption.value === tag.id) {
-                return tagOption;
-            };
-        })
-        return null;
-    };
-
     const getAlbumSource = () => {
-        let albumSource: string | undefined = undefined;
+        let albumSource: string = "";
 
         mediaList.forEach(media => {
             if (media.source !== null) {
                 if (albumSource !== null && media.source !== albumSource) {
-                    return undefined;
+                    return "";
                 }
                 albumSource = media.source;
             }
@@ -128,7 +113,7 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
                     <div className="info_edit_modal_element">
                         <p>Source: </p>
                         <form className="info_edit_modal_source_form">
-                            <input type="text" value={newAlbumSource} onChange={(value: any) => setNewAlbumSource(value as string)} />
+                            <input type="text" value={newAlbumSource} onChange={(value) => setNewAlbumSource(value.target.value)} />
                         </form>
                     </div>
                     <div className="info_edit_modal_element">

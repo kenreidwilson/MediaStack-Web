@@ -17,7 +17,7 @@ import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery'
 import { SearchRequest } from '../../api/requests/SearchRequests';
 
 export default function AlbumMediaPage() {
-    const [albumInfo, setAlbumInfo] = useState<Album>();
+    const [album, setAlbum] = useState<Album>();
     const [mediaNumber, setMediaNumber] = useState<number>(0);
     const [mediaList, setMediaList] = useState<Media[]>([]);
     const [showEditModal, setShowEditModel] = useState<boolean>(false);
@@ -31,42 +31,13 @@ export default function AlbumMediaPage() {
         let albumIDString = new URL(window.location.href).searchParams.get("id") as string;
         let albumID = +albumIDString;
         new AlbumInfoRequest(albumID).send().then(response => {
-            setAlbumInfo(response);
+            setAlbum(response);
+            updateMediaList(response);
         }).catch(error => { 
             setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
         });
-        new SearchRequest(new MediaSearchQuery({ albumID })).send().then(response => {
-            setMediaList(response);
-        });
+        
     }, []);
-
-    /*
-    handleModalSave = async (newInfo: Album) => {
-        let newMediaInfo = newInfo['media'];
-
-        if (Object.keys(newMediaInfo).length > 0) {
-            await new MediaInfoChangeRequest(this.getCurrentMediaInfo().id, newMediaInfo).send().then(response => {
-                let albumInfo = this.state.albumInfo
-                albumInfo.media[this.state.mediaNumber] = response
-                this.setState({ albumInfo })
-            }).catch(error => {
-                this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
-            })
-        }
-
-        let newAlbumInfo = newInfo['album'];
-
-        if (Object.keys(newAlbumInfo).length > 0) {
-            await new AlbumInfoChangeRequest(this.state.albumInfo.id, newAlbumInfo).send().then(response => {
-                this.setState({ albumInfo : response });
-            }).catch(error => {
-                this.addAlert(<BannerAlert variant="danger" heading="API Error:" body={error.message}/>)
-            })
-        }
-
-        this.setState({ showEditModal : false});
-    }
-    */
     
     const handleThumbnailClick = (index: number) => {
         if (mediaNumber === index) {
@@ -85,10 +56,21 @@ export default function AlbumMediaPage() {
         setIsMediaLoading(true);
     }
 
-    const setMedia = (media: Media) => {
+    const setSelectedMediaObject = (media: Media) => {
         let newMediaList: Media[] = [...mediaList];
         newMediaList[mediaNumber] = media;
         setMediaList(newMediaList);
+    }
+
+    const updateMediaList = (album: Album) => {
+
+        if (album === undefined) {
+            return;
+        }
+
+        new SearchRequest(new MediaSearchQuery({ albumID: album!.id })).send().then(response => {
+            setMediaList(response);
+        });
     }
 
     return ( 
@@ -97,33 +79,33 @@ export default function AlbumMediaPage() {
                 <AlbumInfoEditModal 
                     isShown={showEditModal} 
                     onClose={() => setShowEditModel(false)}
-                    onSave={(album: Album) => console.log("SAVE NOT IMPLEMENTED.")}
+                    onSave={(album: Album) => {setAlbum(album); updateMediaList(album); setShowEditModel(false);}}
                     mediaList={mediaList}
-                    album={albumInfo as Album}
+                    album={album as Album}
                 /> 
                 : null}
             <Navigation />
             {alerts.map(errorComponent => errorComponent)}
             <div id="mediapage">
                 <div id="mediapage-sidebar">
-                    {typeof albumInfo !== 'undefined' && mediaNumber !== null ? 
+                    {typeof album !== 'undefined' && mediaNumber !== null ? 
                         <div>
                             <button className="edit_button btn btn-primary" onClick={() => setShowEditModel(true)}>Edit</button>
                             {mediaList.length > 0 ? 
                             <MediaInfoSidebar
                                 media={mediaList[mediaNumber]}
-                                setMedia={setMedia}
+                                setMedia={setSelectedMediaObject}
                             /> : null }
                             <AlbumInfoSidebar
-                                album={albumInfo}
-                                setAlbum={setAlbumInfo}
+                                album={album}
+                                setAlbum={setAlbum}
                                 mediaList={mediaList}
                                 setMedialist={setMediaList}
                             />
                         </div> : null}
                 </div>
                 <div id="mediapage-content">
-                    {typeof albumInfo !== 'undefined' && mediaList.length > 0 ? 
+                    {typeof album !== 'undefined' && mediaList.length > 0 ? 
                         <div>
                             {isMediaLoading ? <Spinner id="imageLoadingSpinner" animation="border" variant="primary" /> : null}
                             <MediaContainer 
@@ -133,7 +115,7 @@ export default function AlbumMediaPage() {
                             />
                         </div>
                     : null}
-                    {typeof albumInfo !== 'undefined' ? 
+                    {typeof album !== 'undefined' ? 
                         (global.matchMedia(`(min-width: 768px)`).matches ?
                             <SelectableThumbnailSlider 
                                 mediaNumber={mediaNumber}
