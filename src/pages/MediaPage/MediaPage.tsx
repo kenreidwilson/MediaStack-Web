@@ -8,7 +8,7 @@ import MediaInfoSidebar from '../../components/MediaInfoSidebar/MediaInfoSidebar
 import BannerAlert from '../../components/BannerAlert/BannerAlert';
 import MediaInfoEditModal from '../../components/MediaInfoEditModal/MediaInfoEditModal';
 
-import { MediaInfoRequest, MediaInfoChangeRequest } from '../../api/requests/MediaRequests';
+import { MediaInfoRequest } from '../../api/requests/MediaRequests';
 
 import './MediaPage.css';
 

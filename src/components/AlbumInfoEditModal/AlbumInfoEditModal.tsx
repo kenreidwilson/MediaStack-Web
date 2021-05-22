@@ -122,7 +122,7 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
                             placeholder="Enter Tags..."
                             value={selectedAddTagOptions}
                             options={addTagOptions}
-                            onChange={(newSelectedTagOptions: any) => setSelectedAddTagOptions(newSelectedTagOptions as TagOption[])}
+                            onChange={(newSelectedTagOptions: any) => setSelectedAddTagOptions(newSelectedTagOptions ? newSelectedTagOptions as TagOption[] : [])}
                             onCreateOption={(tagName: any) => createTag(tagName as string)}
                             isSearchable
                             isMulti
@@ -135,7 +135,7 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
                             placeholder="Enter Tags..."
                             value={selectedRemoveTagOptions}
                             options={removeTagOptions}
-                            onChange={(newSelectedTagOptions: any) => setSelectedRemoveTagOptions(newSelectedTagOptions as TagOption[])}
+                            onChange={(newSelectedTagOptions: any) => setSelectedRemoveTagOptions(newSelectedTagOptions ? newSelectedTagOptions as TagOption[] : [])}
                             isSearchable
                             isMulti
                             isLoading={isTagOptionsLoading}

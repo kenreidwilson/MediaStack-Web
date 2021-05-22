@@ -83,7 +83,7 @@ export default function MediaInfoEditModal({ media, isShown, onClose, onSave }: 
                             placeholder="Enter Tags..."
                             value={selectedTagOptions}
                             options={tagOptions}
-                            onChange={(newTagOptions: any) => setSelectedTagOptions(newTagOptions)}
+                            onChange={(newTagOptions: any) => setSelectedTagOptions(newTagOptions ? newTagOptions : [])}
                             onCreateOption={(inputValue: any) => createTag(inputValue as string)}
                             isSearchable
                             isMulti
