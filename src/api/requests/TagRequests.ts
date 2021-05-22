@@ -30,7 +30,7 @@ class TagCreationRequest extends BaseRequest {
     }
 
     send() {
-        return API.post<Tag>(`${this.baseURL}/tags/${this.tagName}`);
+        return API.post<Tag>(`${this.baseURL}/tags`, {name: this.tagName});
     }
 }
 

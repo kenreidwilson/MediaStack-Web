@@ -11,7 +11,7 @@ const InfoSideBarElement = ({onClick, label, value}: Props) => (
     {
         value === null ? "" : typeof onClick === 'undefined' ? 
         value :
-        <a href="/#" onClick={onClick}>{value}</a>
+        <a href="#" onClick={onClick}>{value}</a>
     }
     </p>
 )

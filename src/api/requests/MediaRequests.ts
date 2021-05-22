@@ -29,7 +29,6 @@ class MediaInfoChangeRequest extends BaseRequest {
     }
 
     send() {
-        console.log(this.newMediaInfo);
         return API.put<Media>(`${this.baseURL}${primaryResource}${this.mediaId}/edit`, this.newMediaInfo);
     }
 }

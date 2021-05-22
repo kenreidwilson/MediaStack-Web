@@ -9,7 +9,6 @@ import BannerAlert from '../../components/BannerAlert/BannerAlert';
 import MediaInfoEditModal from '../../components/MediaInfoEditModal/MediaInfoEditModal';
 
 import { MediaInfoRequest, MediaInfoChangeRequest } from '../../api/requests/MediaRequests';
-import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 
 import './MediaPage.css';
 
@@ -28,17 +27,6 @@ export default function MediaPage() {
             setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
         });
     }, []);
-
-    const handleScoreEdit = async (newScore: number) => {
-        let media = mediaInfo as Media;
-        if (media.score !== newScore) {
-            await new MediaInfoChangeRequest(media.id, {'score' : newScore }).send().then(response => {
-                setMediaInfo(response);
-            }).catch(error => {
-                setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
-            })
-        }
-    }
 
     const handleModalSave = async (newMediaInfo: Media) => {
         let media = mediaInfo as Media;
@@ -69,10 +57,8 @@ export default function MediaPage() {
                         <div>
                             <button className="edit_button btn btn-primary" onClick={() => setShowEditModal(true)}>Edit</button>
                             <MediaInfoSidebar
-                                onSidebarNavClick={(searchQuery: MediaSearchQuery) => console.log(searchQuery)}
-                                handleEdit={() => setShowEditModal(true)}
-                                handleScoreEdit={handleScoreEdit}
                                 media={mediaInfo}
+                                setMedia={setMediaInfo}
                             /> 
                         </div>
                         : null}

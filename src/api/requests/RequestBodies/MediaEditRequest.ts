@@ -6,4 +6,8 @@ export default class MediaEditRequestBody {
     score?: number;
     source?: string;
     albumOrder?: number;
+
+    constructor(init?: Partial<MediaEditRequestBody>) {
+        Object.assign(this, init);
+    }
 }

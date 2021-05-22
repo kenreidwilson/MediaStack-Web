@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import InfoSideBarElement from './InfoSidebarElement/InfoSidebarElement';
 import RatingSidebarElement from './RatingSidebarElement/RatingSidebarElement';
@@ -11,19 +12,25 @@ import { AlbumInfoRequest } from '../../api/requests/AlbumRequests';
 import './MediaInfoSidebar.css'
 import Media from '../../model/Media';
 import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
+import { MediaContext } from '../../MediaContext';
+import { ErrorContext } from '../../pages/ErrorContext';
+import { MediaInfoChangeRequest } from '../../api/requests/MediaRequests';
+import MediaEditRequestBody from '../../api/requests/RequestBodies/MediaEditRequest';
 
 type Props = {
     media: Media,
-    onSidebarNavClick: Function,
-    handleScoreEdit: Function,
-    handleEdit: Function
+    setMedia: Function
 }
 
-export default function MediaInfoSidebar({media, onSidebarNavClick, handleScoreEdit, handleEdit}: Props) {
+export default function MediaInfoSidebar({media, setMedia}: Props) {
 
     const [categoryName, setCategoryName] = useState<string | undefined>(undefined);
     const [artistName, setArtistName] = useState<string | undefined>(undefined);
     const [albumName, setAlbumName] = useState<string | undefined>(undefined);
+
+    const history = useHistory();
+    const { setQuery } = useContext(MediaContext);
+    const { addError } = useContext(ErrorContext);
 
     useEffect(() => {
         if (media.categoryID) {
@@ -48,6 +55,19 @@ export default function MediaInfoSidebar({media, onSidebarNavClick, handleScoreE
             });
         }
     }, []);
+
+    const onSidebarNavClick = (query: MediaSearchQuery) => {
+        setQuery(query);
+        history.push('/search');
+    }
+
+    const handleScoreEdit = async (newScore: number) => {
+        if (media.score !== newScore) {
+            await new MediaInfoChangeRequest(media.id, new MediaEditRequestBody({ score : newScore })).send()
+                .then(response => setMedia(response))
+                .catch(error => addError(error));
+        }
+    }
 
     return (
         <div id="media_info">
@@ -85,5 +105,5 @@ export default function MediaInfoSidebar({media, onSidebarNavClick, handleScoreE
                 tags={media.tags}
                 onClick={(tagID: number) => onSidebarNavClick(new MediaSearchQuery({whitelistTagIDs: [tagID]}))}/>
         </div>
- );
+    );
 }

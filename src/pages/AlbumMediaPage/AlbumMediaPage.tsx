@@ -12,8 +12,7 @@ import BannerAlert from '../../components/BannerAlert/BannerAlert';
 import Album from '../../model/Album';
 import Media from '../../model/Media';
 
-import { AlbumInfoRequest, AlbumInfoChangeRequest } from '../../api/requests/AlbumRequests'
-import { MediaInfoChangeRequest } from '../../api/requests/MediaRequests'
+import { AlbumInfoRequest } from '../../api/requests/AlbumRequests';
 import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 import { SearchRequest } from '../../api/requests/SearchRequests';
 
@@ -40,38 +39,6 @@ export default function AlbumMediaPage() {
             setMediaList(response);
         });
     }, []);
-
-    const onSidebarNavClick = (searchQuery: MediaSearchQuery) => {
-        console.log(searchQuery);
-    }
-
-    const handleEditMediaScore = async (score: number) => {
-        let newScore = score === mediaList[mediaNumber].score ? 0 : score;
-        await new MediaInfoChangeRequest(mediaList[mediaNumber].id, {'score' : newScore }).send().then((response: Media) => {
-            mediaList[mediaNumber] = response;
-            setMediaList(mediaList);
-        }).catch(error => {
-            setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
-        })
-    }
-
-    const getAlbumScore = () => {
-        let score = 0;
-        mediaList.forEach(media => {
-            score += media.score;
-        });
-        return score === 0 ? 0 : score / mediaList.length;
-    }
-
-    const handleEditAlbumScore = async (score: number) => {
-        let newScore = score === getAlbumScore() ? 0 : score;
-        let album = albumInfo as Album;
-        await new AlbumInfoChangeRequest(album.id, {'score' : newScore}).send().then(response => {
-            setAlbumInfo(response);
-        }).catch(error => {
-            setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
-        })
-    }
 
     /*
     handleModalSave = async (newInfo: Album) => {
@@ -113,9 +80,15 @@ export default function AlbumMediaPage() {
         if (event!.originalEvent!.x - event.target.offsetLeft >= event.target.width / 2) {
             setMediaNumber(mediaNumberRef.current === mediaList.length - 1 ? 0 : mediaNumberRef.current + 1);
         } else {
-            setMediaNumber(mediaNumberRef.current === 0 ? mediaList.length - 1 : mediaNumberRef.current + 1);
+            setMediaNumber(mediaNumberRef.current === 0 ? mediaList.length - 1 : mediaNumberRef.current - 1);
         }
         setIsMediaLoading(true);
+    }
+
+    const setMedia = (media: Media) => {
+        let newMediaList: Media[] = [...mediaList];
+        newMediaList[mediaNumber] = media;
+        setMediaList(newMediaList);
     }
 
     return ( 
@@ -137,18 +110,15 @@ export default function AlbumMediaPage() {
                         <div>
                             <button className="edit_button btn btn-primary" onClick={() => setShowEditModel(true)}>Edit</button>
                             {mediaList.length > 0 ? 
-                            <MediaInfoSidebar 
-                                onSidebarNavClick={onSidebarNavClick}
-                                handleEdit={() => setShowEditModel(true)}
-                                handleScoreEdit={handleEditMediaScore}
+                            <MediaInfoSidebar
                                 media={mediaList[mediaNumber]}
+                                setMedia={setMedia}
                             /> : null }
                             <AlbumInfoSidebar
-                                onSidebarNavClick={onSidebarNavClick}
-                                handleEdit={() => setShowEditModel(true)}
-                                handleScoreEdit={handleEditAlbumScore}
                                 album={albumInfo}
+                                setAlbum={setAlbumInfo}
                                 mediaList={mediaList}
+                                setMedialist={setMediaList}
                             />
                         </div> : null}
                 </div>
