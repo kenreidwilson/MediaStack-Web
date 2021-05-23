@@ -31,10 +31,7 @@ export default function MediaPage() {
     return ( 
         <React.Fragment>
             {showEditModal ? 
-                <MediaInfoEditModal 
-                    media={media as Media}
-                    isShown={showEditModal} 
-                    onClose={() => setShowEditModal(false)}
+                <MediaInfoEditModal media={media as Media} isShown={showEditModal} onClose={() => setShowEditModal(false)}
                     onSave={(updatedMedia: Media) => {setMedia(updatedMedia); setShowEditModal(false)}}/>
                 : null}
             <Navigation />
@@ -44,10 +41,7 @@ export default function MediaPage() {
                     {media !== null ? 
                         <div>
                             <button className="edit_button btn btn-primary" onClick={() => setShowEditModal(true)}>Edit</button>
-                            <MediaInfoSidebar
-                                media={media}
-                                setMedia={setMedia}
-                            /> 
+                            <MediaInfoSidebar media={media} setMedia={setMedia}/> 
                         </div>
                         : null}
                 </div>

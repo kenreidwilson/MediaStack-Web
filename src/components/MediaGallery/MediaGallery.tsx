@@ -25,47 +25,45 @@ export default function MediaGallery({ mediaList, onMediaSelect }: Props) {
         setMediaIndex(index);
 
         if (onMediaSelect !== undefined) {
-            onMediaSelect!(index);
+            onMediaSelect(index);
         }
 
         setIsMediaLoading(true);
     }
 
     const handleMediaClick = (event: JQuery.ClickEvent) => {
+        let index = -1;
         if (event!.originalEvent!.x - event.target.offsetLeft >= event.target.width / 2) {
-            setMediaIndex(mediaIndexRef.current === mediaList.length - 1 ? 0 : mediaIndexRef.current + 1);
+            index = mediaIndexRef.current === mediaList.length - 1 ? 0 : mediaIndexRef.current + 1;
         } else {
-            setMediaIndex(mediaIndexRef.current === 0 ? mediaList.length - 1 : mediaIndexRef.current - 1);
+            index = mediaIndexRef.current === 0 ? mediaList.length - 1 : mediaIndexRef.current - 1;
+            
+        }
+        setMediaIndex(index);
+        if (onMediaSelect !== undefined) {
+            onMediaSelect(index);
         }
         setIsMediaLoading(true);
     }
 
     return (
         <div id="mediapage-content">
-                    {mediaList !== undefined && mediaList.length > 0 ? 
-                        <div>
-                            {isMediaLoading ? <Spinner id="imageLoadingSpinner" animation="border" variant="primary" /> : null}
-                            <MediaContainer 
-                                onLoad={() => setIsMediaLoading(false)}
-                                onClick={(event: JQuery.ClickEvent) => handleMediaClick(event)}
-                                media={mediaList[mediaIndex]}
-                            />
-                        </div>
-                    : null}
-                    {mediaList !== undefined ? 
-                        (global.matchMedia(`(min-width: 768px)`).matches ?
-                            <SelectableThumbnailSlider 
-                                mediaNumber={mediaIndex}
-                                onThumbnailClick={handleThumbnailClick} 
-                                mediaList={mediaList}/>
-                            : <div id="thumbnails">
-                                    <SelectableThumbnails
-                                        mediaNumber={mediaIndex}
-                                        onThumbnailClick={handleThumbnailClick} 
-                                        mediaList={mediaList}/>
-                            </div>
-                        ) 
-                        : null}
-                </div>
+        {mediaList !== undefined && mediaList.length > 0 ? 
+            <div>
+                {isMediaLoading ? <Spinner id="imageLoadingSpinner" animation="border" variant="primary" /> : null}
+                <MediaContainer onLoad={() => setIsMediaLoading(false)} 
+                    onClick={(event: JQuery.ClickEvent) => handleMediaClick(event)} media={mediaList[mediaIndex]}/>
+            </div>
+        : null}
+        {mediaList !== undefined ? 
+        (global.matchMedia(`(min-width: 768px)`).matches ?
+            <SelectableThumbnailSlider mediaNumber={mediaIndex} onThumbnailClick={handleThumbnailClick} mediaList={mediaList}/>
+            : 
+            <div id="thumbnails">
+                <SelectableThumbnails mediaNumber={mediaIndex} onThumbnailClick={handleThumbnailClick} mediaList={mediaList}/>
+            </div>
+        ) 
+        : null}
+        </div>
     );
 }

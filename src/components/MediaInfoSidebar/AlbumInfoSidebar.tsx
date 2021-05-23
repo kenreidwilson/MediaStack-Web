@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { MediaContext } from '../../MediaContext';
 import { ErrorContext } from '../../pages/ErrorContext';
 import { AlbumInfoChangeRequest } from '../../api/requests/AlbumRequests';
-import './MediaInfoSidebar.css';
+import './InfoSidebar.css';
 import { SearchRequest } from '../../api/requests/SearchRequests';
 
 type Props = {

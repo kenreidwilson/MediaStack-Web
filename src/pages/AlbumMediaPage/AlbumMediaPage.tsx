@@ -12,12 +12,14 @@ import { AlbumInfoRequest } from '../../api/requests/AlbumRequests';
 import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 import { SearchRequest } from '../../api/requests/SearchRequests';
 import MediaGallery from '../../components/MediaGallery/MediaGallery';
+import MediaInfoEditModal from '../../components/MediaInfoEditModal/MediaInfoEditModal';
 
 export default function AlbumMediaPage() {
     const [album, setAlbum] = useState<Album>();
     const [mediaList, setMediaList] = useState<Media[]>([]);
     const [selectedMediaIndex, setSelectedMediaIndex] = useState<number>(0);
-    const [showEditModal, setShowEditModel] = useState<boolean>(false);
+    const [showMediaEditModal, setShowMediaEditModal] = useState<boolean>(false);
+    const [showAlbumEditModal, setShowAlbumEditModal] = useState<boolean>(false);
     const [alerts, setAlerts] = useState<any[]>([]);
 
     useEffect(() => {
@@ -51,13 +53,21 @@ export default function AlbumMediaPage() {
 
     return ( 
         <React.Fragment>
-            {album !== undefined && showEditModal ? 
+            {album !== undefined && showAlbumEditModal ? 
                 <AlbumInfoEditModal 
-                    isShown={showEditModal} 
-                    onClose={() => setShowEditModel(false)}
-                    onSave={(album: Album) => {setAlbum(album); updateMediaList(album); setShowEditModel(false);}}
+                    isShown={showAlbumEditModal} 
+                    onClose={() => setShowAlbumEditModal(false)}
+                    onSave={(album: Album) => {setAlbum(album); updateMediaList(album); setShowAlbumEditModal(false);}}
                     mediaList={mediaList}
                     album={album}
+                /> 
+                : null}
+            {mediaList !== undefined && showMediaEditModal ?
+                <MediaInfoEditModal
+                    isShown={showMediaEditModal}
+                    media={mediaList[selectedMediaIndex]}
+                    onSave={(updatedMedia: Media) => {updateSelectedMedia(updatedMedia); setShowMediaEditModal(false);}}
+                    onClose={() => setShowMediaEditModal(false)}
                 /> 
                 : null}
             <Navigation />
@@ -66,12 +76,13 @@ export default function AlbumMediaPage() {
                 <div id="mediapage-sidebar">
                     {mediaList !== undefined && mediaList[selectedMediaIndex] !== undefined ? 
                         <div>
-                            <button className="edit_button btn btn-primary" onClick={() => setShowEditModel(true)}>Edit</button>
+                            <button className="edit_button btn btn-primary" onClick={() => setShowMediaEditModal(true)}>Edit Media</button>
                             {mediaList.length > 0 ? 
                             <MediaInfoSidebar
                                 media={mediaList[selectedMediaIndex]}
                                 setMedia={updateSelectedMedia}
                             /> : null }
+                            <button className="edit_button btn btn-primary" onClick={() => setShowAlbumEditModal(true)}>Edit Album</button>
                             <AlbumInfoSidebar
                                 album={album!}
                                 setAlbum={setAlbum}

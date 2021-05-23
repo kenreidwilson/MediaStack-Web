@@ -9,7 +9,7 @@ import { CategoryInfoRequest } from '../../api/requests/CategoryRequests';
 import { ArtistInfoRequest } from '../../api/requests/ArtistRequests';
 import { AlbumInfoRequest } from '../../api/requests/AlbumRequests';
 
-import './MediaInfoSidebar.css'
+import './InfoSidebar.css'
 import Media from '../../model/Media';
 import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 import { MediaContext } from '../../MediaContext';
