@@ -56,10 +56,10 @@ export default function SearchMenu({ onSearch }: Props) {
         }
 
         if (ratingComparator) {
-            if (ratingComparator === 'greaterThan') {
+            if (ratingComparator === 'greaterThanScore') {
                 searchQuery.greaterThanScore = ratingValue;
             }
-            if (ratingComparator === 'lessThan') {
+            if (ratingComparator === 'lessThanScore') {
                 searchQuery.lessThanScore = ratingValue;
             }
             else {

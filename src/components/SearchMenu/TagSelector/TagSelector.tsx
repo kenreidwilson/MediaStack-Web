@@ -14,10 +14,10 @@ type Props = {
 
 export default function TagSelector({ onChange }: Props) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [tagOptions, setTagOptions] = useState<TagOption[] | null>(null);
+    const [tagOptions, setTagOptions] = useState<TagOption[]>();
 
     const loadTagOptions = () => {
-        if (isLoading || tagOptions !== null) {
+        if (isLoading || tagOptions !== undefined) {
             return;
         }
 
@@ -41,7 +41,7 @@ export default function TagSelector({ onChange }: Props) {
             isSearchable
             isMulti
             isLoading={isLoading}
-            onFocus={() => loadTagOptions}
+            onFocus={() => loadTagOptions()}
         />
      );
 }

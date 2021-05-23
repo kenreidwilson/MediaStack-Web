@@ -13,12 +13,12 @@ export default class MediaSearchQuery {
     type?: number
     offset: number;
     count: number ;
-    searchMode: number;
+    mode: number;
 
     constructor(init?: Partial<MediaSearchQuery>) {
         this.offset = 0;
         this.count = 5;
-        this.searchMode = 0;
+        this.mode = 2;
         Object.assign(this, init);
     }
 }

@@ -23,7 +23,19 @@ export default function RatingSelector({ ratingValue, onChange }: Props) {
 	]
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [rating, setRating] = useState<number>(0);
 	const [selectedComparator, setSelectedComparator] = useState<RatingComparator>(options[0]);
+
+	const onRatingSelected = (nextValue: number) => {
+		let comparator: RatingComparator = selectedComparator;
+		if (selectedComparator.label === 'Any') {
+			comparator = options.find(c => c.label === "Equal")!;
+			setSelectedComparator(comparator);
+		};
+		let newRating = nextValue === ratingValue ? 0 : nextValue;
+		setRating(newRating);
+		onChange(newRating, comparator.value);
+	}
 
 	return (
 		<div id="rating_selector">
@@ -40,7 +52,7 @@ export default function RatingSelector({ ratingValue, onChange }: Props) {
 						<a
 							key={option.value as string}
 							className="dropdown-item"
-							onClick={() => setSelectedComparator(option)}
+							onClick={() => { setSelectedComparator(option); onChange(rating, selectedComparator.value);}}
 							href="#nogo">
 							{option.label}
 						</a>
@@ -52,7 +64,7 @@ export default function RatingSelector({ ratingValue, onChange }: Props) {
 					name="rating"
 					starCount={5}
 					value={ratingValue}
-					onStarClick={(nextValue: number) => onChange(nextValue === ratingValue ? 0 : nextValue, selectedComparator.value)}
+					onStarClick={onRatingSelected}
 				/>
 			</div>
 		</div>
