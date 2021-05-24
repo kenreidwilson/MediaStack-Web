@@ -1,22 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 import Navigation from '../../components/Navigation/Nav';
-import MediaThumbnails from '../../components/MediaThumbnails/MediaThumbnails';
 import BannerAlert from '../../components/BannerAlert/BannerAlert';
 
 import { SearchRequest } from '../../api/requests/SearchRequests';
 import Media from '../../model/Media';
 import { MediaContext } from '../../MediaContext';
+import PagedThumbnails from '../../components/PagedThumbnails/PagedThumbnails';
 
 export default function ThumbnailPageComponent() {
     const {getQuery, setQuery} = useContext(MediaContext);
 
-    const [collapseAlbums, setCollapseAlbums] = useState<boolean>(true);
+    const [linkToAlbums, setLinkToAlbums] = useState<boolean>(true);
     const [mediaList, setMediaList] = useState<Media[]>([]);
     const [alerts, setAlerts] = useState<any[]>([]);
 
     useEffect(() => {
-        new SearchRequest(getQuery()).send().then(mediaList => {
+        new SearchRequest(getQuery()).send().then(response => {
+            let mediaList = response.media;
             if (mediaList.length === 0) {
                 setAlerts([...alerts, <BannerAlert variant="warning" heading="API Response:" body="Nothing was found."/>]);
             }
@@ -31,9 +32,10 @@ export default function ThumbnailPageComponent() {
             <Navigation />
             {alerts.map(errorComponent => errorComponent)}
             {mediaList ? 
-                <MediaThumbnails
-                    showAlbumCoverOnly={collapseAlbums}
-                    mediaList={mediaList}/> 
+                <PagedThumbnails
+                    baseQuery={getQuery()}
+                    mediaPerPage={30}
+                    linkToAlbums={linkToAlbums}/> 
             : null}
         </React.Fragment>
      );

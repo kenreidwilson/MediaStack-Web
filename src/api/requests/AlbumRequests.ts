@@ -41,7 +41,7 @@ class AlbumInfoChangeRequest extends BaseRequest {
 
     send() {
         return new SearchRequest(new MediaSearchQuery({albumID: this.albumID})).send().then(async (response) => {
-            for (const media of response) {
+            for (const media of response.media) {
                 let mediaRequestBody: MediaEditRequestBody = 
                     new MediaEditRequestBody({score: this.requestBody.score, source: this.requestBody.source});
                 let tags: Tag[] = [...media.tags];

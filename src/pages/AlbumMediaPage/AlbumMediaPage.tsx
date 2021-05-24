@@ -47,7 +47,7 @@ export default function AlbumMediaPage() {
         }
 
         new SearchRequest(new MediaSearchQuery({ albumID: album!.id })).send().then(response => {
-            setMediaList(response);
+            setMediaList(response.media);
         });
     }
 
