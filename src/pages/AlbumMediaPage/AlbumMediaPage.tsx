@@ -46,7 +46,8 @@ export default function AlbumMediaPage() {
             return;
         }
 
-        new SearchRequest(new MediaSearchQuery({ albumID: album!.id })).send().then(response => {
+        new SearchRequest(new MediaSearchQuery({ albumID: album!.id, mode: 1, count: 999 })).send().then(response => {
+            response.media.sort((a: Media, b: Media) => (a.albumOrder > b.albumOrder) ? 1 : -1);
             setMediaList(response.media);
         });
     }

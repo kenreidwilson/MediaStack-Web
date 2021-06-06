@@ -18,7 +18,7 @@ export default class MediaSearchQuery {
     constructor(init?: Partial<MediaSearchQuery>) {
         this.offset = 0;
         this.count = 5;
-        this.mode = 1;
+        this.mode = 2;
         Object.assign(this, init);
     }
 }
