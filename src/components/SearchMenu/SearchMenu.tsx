@@ -22,8 +22,15 @@ type Props = {
 
 export default function SearchMenu({ onSearch }: Props) {
 
+    const modeOptions: Option[] = [
+		{ label: "All Media", value: 1 },
+		{ label: "Media and Album Cover", value: 2 },
+		{ label: "Media with no Album", value: 3 }
+	];
+
     const [showAdvancedOptions, setShowAdvancedOptions] = useState<boolean>(false);
     const [tagOptionsSelected, setTagOptionsSelected] = useState<Option[]>([]);
+    const [modeSelected, setModeSelected] = useState<Option>(modeOptions[0]);
     const [blacklistTagOptionsSelected, setBlacklistTagOptionsSelected] = useState<Option[]>([]);
     const [albumOptionSelected, setAlbumOptionSelected] = useState<Option | undefined>(undefined);
     const [artistOptionSelected, setArtistOptionSelected] = useState<Option | undefined>(undefined);
@@ -57,15 +64,17 @@ export default function SearchMenu({ onSearch }: Props) {
 
         if (ratingComparator) {
             if (ratingComparator === 'greaterThanScore') {
-                searchQuery.greaterThanScore = ratingValue;
+                searchQuery.greaterThanScore = ratingValue!;
             }
             if (ratingComparator === 'lessThanScore') {
-                searchQuery.lessThanScore = ratingValue;
+                searchQuery.lessThanScore = ratingValue!;
             }
             else {
-                searchQuery.score = ratingValue;
+                searchQuery.score = ratingValue!;
             }
         }
+
+        searchQuery.mode = modeSelected.value;
 
         onSearch(searchQuery);
     }
@@ -77,6 +86,15 @@ export default function SearchMenu({ onSearch }: Props) {
 
     return (
         <div id="search_menu">
+            <div className="search_menu_item">
+                <p>Mode: </p>
+                <div className="selector">
+                    <Select
+                        value={modeSelected}
+                        options={modeOptions}
+                        onChange={(selectedMode: any) => setModeSelected(selectedMode)}/>
+                </div>
+            </div>
             <div className="search_menu_item">
                 <p>Tags: </p>
                 <div className="selector">
@@ -114,7 +132,7 @@ export default function SearchMenu({ onSearch }: Props) {
                     <Select 
                         placeholder={"Choose a media type..."}
                         options={[{ 'label': 'image', value: 'image'}, { 'label': 'animated_image', value: 'animated_image'}, { 'label': 'video', value: 'video'}]}
-                        value={typeOptionSelected}
+                        value={typeOptionSelected!}
                         onChange={(selectedOption: any) => setTypeOptionSelected(selectedOption)}
                         isSearchable
                         isClearable

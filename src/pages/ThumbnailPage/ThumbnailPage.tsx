@@ -7,16 +7,19 @@ import { SearchRequest } from '../../api/requests/SearchRequests';
 import Media from '../../model/Media';
 import { MediaContext } from '../../MediaContext';
 import PagedThumbnails from '../../components/PagedThumbnails/PagedThumbnails';
+import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 
 export default function ThumbnailPageComponent() {
     const {getQuery, setQuery} = useContext(MediaContext);
 
-    const [linkToAlbums, setLinkToAlbums] = useState<boolean>(true);
+    const [linkToAlbums, setLinkToAlbums] = useState<boolean>(false);
     const [mediaList, setMediaList] = useState<Media[]>([]);
     const [alerts, setAlerts] = useState<any[]>([]);
 
     useEffect(() => {
-        new SearchRequest(getQuery()).send().then(response => {
+        let query: MediaSearchQuery = getQuery();
+        new SearchRequest(query).send().then(response => {
+            setLinkToAlbums(query.mode === 2);
             let mediaList = response.media;
             if (mediaList.length === 0) {
                 setAlerts([...alerts, <BannerAlert variant="warning" heading="API Response:" body="Nothing was found."/>]);

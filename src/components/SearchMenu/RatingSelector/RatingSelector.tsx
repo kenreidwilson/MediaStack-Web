@@ -4,7 +4,7 @@ import StarRatingComponent from 'react-star-rating-component';
 import './RatingSelector.css';
 
 type RatingComparator = {
-	value?: string,
+	value: string | undefined,
 	label: string
 }
 
@@ -16,10 +16,10 @@ type Props = {
 export default function RatingSelector({ ratingValue, onChange }: Props) {
 
 	const options: RatingComparator[] = [
-		{ 'label': "Any", 'value': undefined },
-		{ 'label': "Equal", 'value': "score" },
-		{ 'label': "Greater than", 'value': 'greaterThanScore' },
-		{ 'label': "Less than", 'value': 'lessThanScore' }
+		{ label: "Any", value: undefined },
+		{ label: "Equal", value: "score" },
+		{ label: "Greater than", value: 'greaterThanScore' },
+		{ label: "Less than", value: 'lessThanScore' }
 	]
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
