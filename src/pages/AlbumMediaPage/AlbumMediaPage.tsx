@@ -88,7 +88,7 @@ export default function AlbumMediaPage() {
                                 album={album!}
                                 setAlbum={setAlbum}
                                 mediaList={mediaList}
-                                setMedialist={setMediaList}
+                                updateMediaList={updateMediaList}
                             />
                         </div> : null}
                 </div>

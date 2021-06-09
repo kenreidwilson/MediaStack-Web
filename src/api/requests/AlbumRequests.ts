@@ -40,7 +40,7 @@ class AlbumInfoChangeRequest extends BaseRequest {
     }
 
     send() {
-        return new SearchRequest(new MediaSearchQuery({albumID: this.albumID})).send().then(async (response) => {
+        return new SearchRequest(new MediaSearchQuery({ albumID: this.albumID, mode: 1, count: 9999 })).send().then(async (response) => {
             for (const media of response.media) {
                 let mediaRequestBody: MediaEditRequestBody = 
                     new MediaEditRequestBody({score: this.requestBody.score, source: this.requestBody.source});

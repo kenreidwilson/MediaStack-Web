@@ -10,16 +10,15 @@ import { MediaContext } from '../../MediaContext';
 import { ErrorContext } from '../../pages/ErrorContext';
 import { AlbumInfoChangeRequest } from '../../api/requests/AlbumRequests';
 import './InfoSidebar.css';
-import { SearchRequest } from '../../api/requests/SearchRequests';
 
 type Props = {
     album: Album,
     setAlbum: Function,
     mediaList: Media[],
-    setMedialist: Function
+    updateMediaList: Function
 }
 
-export default function AlbumInfoSidebar({album, setAlbum, mediaList, setMedialist }: Props) {
+export default function AlbumInfoSidebar({album, setAlbum, mediaList, updateMediaList }: Props) {
 
     const history = useHistory();
     const { setQuery } = useContext(MediaContext);
@@ -55,11 +54,7 @@ export default function AlbumInfoSidebar({album, setAlbum, mediaList, setMediali
     const handleScoreEdit = async (newScore: number) => {
         let score = newScore === getAlbumScore() ? 0 : newScore;
         await new AlbumInfoChangeRequest(album.id, {'score' : score}).send()
-            .then(() => {
-                new SearchRequest(new MediaSearchQuery({albumID: album.id})).send()
-                    .then(response => {setMedialist(response); console.log("REFRESHING")})
-                    .catch(error => addError(error));
-            }).catch(error => addError(error));
+            .then(() => updateMediaList(album)).catch(error => addError(error));
     }
 
     return ( 
