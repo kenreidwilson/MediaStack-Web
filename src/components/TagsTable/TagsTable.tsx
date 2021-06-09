@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import TagDeleteModal from './TagDeleteModal/TagDeleteModal'; 
 import TagEditModal from './TagEditModal/TagEditModal';
-import { TagsRequest, TagInfoRequest } from '../../api/requests/TagRequests';
+import { TagsRequest, TagInfoRequest, TagNameChangeRequest, TagDeletionRequest } from '../../api/requests/TagRequests';
 import Tag from '../../model/Tag';
+import MSPagination from '../Pagination/MSPagination';
 
 import './TagsTable.css'
+
+type mediaInfo = {
+    count: number
+}
 
 export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
 
     const [tags, setTags] = useState<Tag[]>([]);
-    const [tagsInfo, setTagsInfo] = useState({});
+    const [tagsInfo, setTagsInfo] = useState<{ [id: number]: mediaInfo | undefined }>({});
     const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [tagsPerPage, setTagsPerPage] = useState<number>(15);
@@ -17,39 +22,35 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
     useEffect(() => {
-        new TagsRequest().send()
-            .then(response => {
-                setTags(response);
-                tags.forEach(tag => {
-                    new TagInfoRequest(tag.id).send().then(tagInfo => {
-                        let newTagsInfo: any = Object.assign({}, tagsInfo);
-                        newTagsInfo[tag.id] = tagInfo;
-                        setTagsInfo(newTagsInfo);
-                    });
-                });
-            });
+        refreshTags();
     }, []);
 
+    const refreshTags = () => new TagsRequest().send().then(response => setTags(response));
+    
     const numberOfPages = () => Math.ceil(tags.length / tagsPerPage);
 
-    const getPageListItems = () => {
-        let listItems = []
-        for (let i = 0; i < numberOfPages(); i++) {
-            listItems.push(
-                <li className={pageNumber === i ? "page-item active" : "page-item"}>
-                    <a href="/#" className="page-link" onClick={() => setPageNumber(i)}>{i + 1} <span className="sr-only">(current)</span></a>
-                </li>
-            );
+    const loadTagInfo = (tag: Tag) => {
+        if (tagsInfo[tag.id]) {
+            return;
         }
-        return listItems;
+
+        new TagInfoRequest(tag.id).send().then(tagInfo => {
+            let newTagsInfo: { [id: number]: any } = Object.assign({}, tagsInfo);
+            newTagsInfo[tag.id] = tagInfo;
+            setTagsInfo(newTagsInfo);
+        });
     }
 
     const onTagUpdate = (updatedTag: Tag) => {
-        // TODO: Implement.
+        new TagNameChangeRequest(updatedTag.id, updatedTag.name).send().then(response => {
+            refreshTags();
+        });
     }
 
     const onTagDelete = (deletedTag: Tag) => {
-        // TODO: Implement.
+        new TagDeletionRequest(deletedTag.id).send().then(response => {
+            refreshTags();
+        });
     }
 
     return (
@@ -64,8 +65,8 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
 
             {selectedTag ? <TagDeleteModal
                 isShown={showDeleteModal}
-                onClose={() => setShowEditModal(false)}
-                onDelete={(deletedTag: Tag) => { onTagDelete(deletedTag); setShowEditModal(false); }}
+                onClose={() => setShowDeleteModal(false)}
+                onDelete={(deletedTag: Tag) => { onTagDelete(deletedTag); setShowDeleteModal(false); }}
                 tag={selectedTag}
             /> : null}
             
@@ -80,19 +81,19 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {tags ? tags.slice(tagsPerPage * pageNumber, tagsPerPage * (pageNumber + 1)).map(tag =>
-                            <tr>
+                        {tags ? tags.slice(tagsPerPage * (pageNumber - 1), tagsPerPage * pageNumber).map(tag =>
+                            <tr key={tag.id} onLoad={() => loadTagInfo(tag)}>
                                 <th scope="row">{tag.id}</th>
-                                <td><a href="/#" style={{cursor: 'pointer'}} onClick={() => onTagClick({'whitelist_tags':[tag.id]})}>{tag.name}</a></td>
-                                <td>{true ? 
-                                    "N/A" : 
+                                <td><a href="#" style={{cursor: 'pointer'}} onClick={() => onTagClick({'whitelist_tags':[tag.id]})}>{tag.name}</a></td>
+                                <td>{tagsInfo[tag.id] ? 
+                                    tagsInfo[tag.id]!.count : 
                                     <div className="spinner-border spinner-border-sm" role="status">
                                         <span className="sr-only">Loading...</span>
                                     </div>}
                                 </td>
                                 <td>
-                                    <a href="/#" className="edit_a" onClick={() => { setSelectedTag(tag); setShowEditModal(true); }}>Edit</a> |
-                                    <a href="/#" className="delete_a" onClick={() => { setSelectedTag(tag); setShowDeleteModal(true); }}> Delete</a>
+                                    <a href="#" className="edit_a" onClick={() => { setSelectedTag(tag); setShowEditModal(true); }}>Edit</a> |
+                                    <a href="#" className="delete_a" onClick={() => { setSelectedTag(tag); setShowDeleteModal(true); }}> Delete</a>
                                 </td>
                             </tr>
                         ) : null}
@@ -100,17 +101,7 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
                 </table>
             </div>
             <div id="tags_table_nav">
-                <nav aria-label="...">
-                    <ul className="pagination">
-                        <li className={pageNumber === 1 ? "page-item disabled" : "page-item"}>
-                            <a href="/#" className="page-link" onClick={() => setPageNumber(pageNumber - 1)}>Previous</a>
-                        </li>
-                        {getPageListItems()}
-                        <li className={pageNumber === numberOfPages() ? "page-item disabled" : "page-item"}>
-                            <a href="/#" className="page-link" onClick={() => setPageNumber(pageNumber + 1)}>Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                <MSPagination pageNumber={pageNumber} numberOfPages={numberOfPages()} onNavigate={setPageNumber}/>
             </div>
       </div>
     );

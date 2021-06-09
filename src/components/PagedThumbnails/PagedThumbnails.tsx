@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Pagination, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 import { SearchRequest } from '../../api/requests/SearchRequests';
 import Media from '../../model/Media';
 import MediaThumbnails from '../MediaThumbnails/MediaThumbnails';
+import MSPagination from '../Pagination/MSPagination';
 
 type Props = {
     baseQuery: MediaSearchQuery,
@@ -12,8 +13,6 @@ type Props = {
 };
 
 export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}: Props) {
-
-    const maxPaginationTabs = 5;
 
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [numberOfPages, setNumberOfPages] = useState<number>(0);
@@ -49,24 +48,8 @@ export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}:
         <div>
             {isMediaLoading ? <Spinner animation="border" variant="primary"/> :
             <MediaThumbnails mediaList={mediaList} linkToAlbums={linkToAlbums}/>}
-            <div style={{display: 'flex'}}>
-                <Pagination style={{margin: 'auto'}}>
-                    <Pagination.Prev disabled={pageNumber === 1} onClick={() => goToPage(pageNumber - 1)}/>
-                    
-                    {pageNumber > 3 ? <Pagination.Item key={1} onClick={() => goToPage(1)}>1</Pagination.Item> : null}
-                    {pageNumber > 4 ? <Pagination.Ellipsis /> : null}
-
-                    {pageNumber - 2 > 0 ? <Pagination.Item key={pageNumber - 2} onClick={() => goToPage(pageNumber - 2)}>{pageNumber - 2}</Pagination.Item> : null}
-                    {pageNumber - 1 > 0 ? <Pagination.Item key={pageNumber - 1} onClick={() => goToPage(pageNumber - 1)}>{pageNumber - 1}</Pagination.Item> : null}
-                    <Pagination.Item key={pageNumber} active>{pageNumber}</Pagination.Item>
-                    {pageNumber + 1 <= numberOfPages ? <Pagination.Item key={pageNumber + 1} onClick={() => goToPage(pageNumber + 1)}>{pageNumber + 1}</Pagination.Item> : null}
-                    {pageNumber + 2 <= numberOfPages ? <Pagination.Item key={pageNumber + 2} onClick={() => goToPage(pageNumber + 2)}>{pageNumber + 2}</Pagination.Item> : null}
-
-                    {pageNumber + 4 <= numberOfPages ? <Pagination.Ellipsis /> : null}
-                    {pageNumber + 3 <= numberOfPages ? <Pagination.Item key={numberOfPages} onClick={() => goToPage(numberOfPages)}>{numberOfPages}</Pagination.Item> : null}
-
-                    <Pagination.Next disabled={pageNumber === numberOfPages} onClick={() => goToPage(pageNumber + 1)}/>
-                </Pagination>
+            <div style={{margin: 'auto'}}>
+                <MSPagination pageNumber={pageNumber} numberOfPages={numberOfPages} onNavigate={goToPage}/>
             </div>
         </div>
     );

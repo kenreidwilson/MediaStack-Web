@@ -23,8 +23,8 @@ type Props = {
 export default function SearchMenu({ onSearch }: Props) {
 
     const modeOptions: Option[] = [
-		{ label: "All Media", value: 1 },
 		{ label: "Media and Album Cover", value: 2 },
+        { label: "All Media", value: 1 },
 		{ label: "Media with no Album", value: 3 }
 	];
 

@@ -58,7 +58,7 @@ class TagNameChangeRequest extends BaseRequest {
     }
 
     send() {
-        return API.put<Tag>(`${this.baseURL}/tags/${this.tagId}/info`, {'name': this.newTagName})
+        return API.put<Tag>(`${this.baseURL}/tags/${this.tagId}`, { id: this.tagId, 'name': this.newTagName})
     }
 }
 

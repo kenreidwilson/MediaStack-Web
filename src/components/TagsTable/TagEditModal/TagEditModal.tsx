@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Modal, Button } from "react-bootstrap";
-import { TagNameChangeRequest } from '../../../api/requests/TagRequests';
 import Tag from '../../../model/Tag';
 
 type Props = {
@@ -12,14 +11,18 @@ type Props = {
 
 export default function TagEditModal({ tag, isShown, onClose, onEdit }: Props) {
 
-    const [newTagName, setNewTagName] = useState<string | undefined>(undefined);
+    const [newTagName, setNewTagName] = useState<string>("");
 
-    const onTagEdit = () => {
-        let tagName = newTagName as string;
-        new TagNameChangeRequest(tag.id, tagName).send().then(edittedTag => {
-            onEdit(edittedTag);
-        });
-    };
+    const handleClose = () => {
+        setNewTagName("");
+        onClose();
+    }
+
+    const handleEdit = () => {
+        tag.name = newTagName;
+        setNewTagName("");
+        onEdit(tag);
+    }
 
     return (
         <Modal show={isShown} onHide={onClose}>
@@ -35,8 +38,8 @@ export default function TagEditModal({ tag, isShown, onClose, onEdit }: Props) {
                 </div>
             </Modal.Body>
              <Modal.Footer>
-                <Button variant="secondary" onClick={() => onClose()}>Close</Button>
-                <Button variant="primary" onClick={() => onTagEdit()}>Save Changes</Button>
+                <Button variant="secondary" onClick={() => handleClose()}>Close</Button>
+                <Button variant="primary" onClick={() => handleEdit()}>Save Changes</Button>
             </Modal.Footer>
         </Modal>
     );
