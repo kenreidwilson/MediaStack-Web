@@ -131,7 +131,7 @@ export default function SearchMenu({ onSearch }: Props) {
                     <div className="selector">
                     <Select 
                         placeholder={"Choose a media type..."}
-                        options={[{ 'label': 'image', value: 'image'}, { 'label': 'animated_image', value: 'animated_image'}, { 'label': 'video', value: 'video'}]}
+                        options={[{ 'label': 'Image', value: 0}, { 'label': 'Animated Image', value: 1}, { 'label': 'Video', value: 2}]}
                         value={typeOptionSelected!}
                         onChange={(selectedOption: any) => setTypeOptionSelected(selectedOption)}
                         isSearchable

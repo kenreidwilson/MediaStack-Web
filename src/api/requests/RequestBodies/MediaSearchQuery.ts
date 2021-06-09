@@ -10,7 +10,7 @@ export default class MediaSearchQuery {
     score?: number;
     lessThanScore?: number;
     greaterThanScore?: number;
-    type?: number
+    type?: number;
     offset: number;
     count: number ;
     mode: number;
