@@ -32,6 +32,10 @@ export default function MediaGallery({ mediaList, onMediaSelect }: Props) {
     }
 
     const handleMediaClick = (event: JQuery.ClickEvent) => {
+        if (mediaList.length === 1) {
+            return;
+        }
+
         let index = -1;
         if (event!.originalEvent!.x - event.target.offsetLeft >= event.target.width / 2) {
             index = mediaIndexRef.current === mediaList.length - 1 ? 0 : mediaIndexRef.current + 1;

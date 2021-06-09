@@ -48,8 +48,10 @@ export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}:
         <div>
             {isMediaLoading ? <Spinner animation="border" variant="primary"/> :
             <MediaThumbnails mediaList={mediaList} linkToAlbums={linkToAlbums}/>}
-            <div style={{margin: 'auto'}}>
-                <MSPagination pageNumber={pageNumber} numberOfPages={numberOfPages} onNavigate={goToPage}/>
+            <div style={{display: 'flex', marginTop: '5px'}}>
+                <div style={{margin: 'auto'}}>
+                    <MSPagination pageNumber={pageNumber} numberOfPages={numberOfPages} onNavigate={goToPage}/>
+                </div>
             </div>
         </div>
     );
