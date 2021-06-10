@@ -18,19 +18,19 @@ export default function MediaContainer({media, onLoad, onClick}: Props) {
 
     const getMediaComponent = ({media, onLoad, onClick}: Props) => {
         switch(media.type) {
-            case 0:
-                return <MediaImage 
-                    onImageLoad={onLoad}
-                    onImageClick={onClick}
-                    media={media}
-                />;
             case 1:
                 return <MediaImage 
                     onImageLoad={onLoad}
-                    onImageClick={onClick}
+                    onImageClick={() => { if (onClick) onClick() }}
                     media={media}
                 />;
             case 2:
+                return <MediaImage 
+                    onImageLoad={onLoad}
+                    onImageClick={() => { if (onClick) onClick() }}
+                    media={media}
+                />;
+            case 3:
                 return <MediaVideo 
                     onLoad={onLoad}
                     media={media}
