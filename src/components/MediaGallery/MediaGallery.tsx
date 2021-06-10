@@ -32,7 +32,7 @@ export default function MediaGallery({ mediaList, onMediaSelect }: Props) {
     }
 
     const handleMediaClick = (event: JQuery.ClickEvent) => {
-        if (mediaList.length === 1) {
+        if (event === undefined || mediaList.length === 1) {
             return;
         }
 

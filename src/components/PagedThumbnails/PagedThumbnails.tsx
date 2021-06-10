@@ -24,7 +24,6 @@ export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}:
     }, []);
 
     const fetchMediaList = (pageNumber: number) => {
-        console.log(pageNumber);
         setIsMediaLoading(true);
         let finalQuery = baseQuery;
         finalQuery.offset = (pageNumber - 1) * mediaPerPage;

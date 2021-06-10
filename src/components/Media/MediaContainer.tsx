@@ -7,7 +7,7 @@ import './MediaContainer.css'
 type Props = {
     media: Media,
     onLoad: Function,
-    onClick?: Function
+    onClick?: Function | undefined
 }
 
 export default function MediaContainer({media, onLoad, onClick}: Props) {
@@ -21,13 +21,13 @@ export default function MediaContainer({media, onLoad, onClick}: Props) {
             case 1:
                 return <MediaImage 
                     onImageLoad={onLoad}
-                    onImageClick={() => { if (onClick) onClick() }}
+                    onImageClick={onClick!}
                     media={media}
                 />;
             case 2:
                 return <MediaImage 
                     onImageLoad={onLoad}
-                    onImageClick={() => { if (onClick) onClick() }}
+                    onImageClick={onClick!}
                     media={media}
                 />;
             case 3:
