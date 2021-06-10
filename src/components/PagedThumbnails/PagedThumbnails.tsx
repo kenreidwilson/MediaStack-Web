@@ -14,14 +14,19 @@ type Props = {
 
 export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}: Props) {
 
-    const [pageNumber, setPageNumber] = useState<number>(1);
     const [numberOfPages, setNumberOfPages] = useState<number>(0);
     const [mediaList, setMediaList] = useState<Media[]>([]);
     const [isMediaLoading, setIsMediaLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        fetchMediaList(1);
+        fetchMediaList(getPageNumber());
     }, []);
+
+    const getPageNumber = () => {
+        var url = new URL(window.location.href);
+        let pageNumber = url.searchParams.get("p");
+        return pageNumber ? +pageNumber : 1;
+    }
 
     const fetchMediaList = (pageNumber: number) => {
         setIsMediaLoading(true);
@@ -38,9 +43,9 @@ export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}:
     const determineNumberOfPages = (count: number) => Math.ceil(count / mediaPerPage);
 
     const goToPage = (pageNumber: number) => {
-        setMediaList([]);
-        setPageNumber(pageNumber);
-        fetchMediaList(pageNumber);
+        let urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("p", `${pageNumber}`);
+        window.location.search = urlParams.toString();
     };
     
     return (
@@ -49,7 +54,7 @@ export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}:
             <MediaThumbnails mediaList={mediaList} linkToAlbums={linkToAlbums}/>}
             <div style={{display: 'flex', marginTop: '5px'}}>
                 <div style={{margin: 'auto'}}>
-                    <MSPagination pageNumber={pageNumber} numberOfPages={numberOfPages} onNavigate={goToPage}/>
+                    <MSPagination pageNumber={getPageNumber()} numberOfPages={numberOfPages} onNavigate={goToPage}/>
                 </div>
             </div>
         </div>
