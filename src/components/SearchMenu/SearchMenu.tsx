@@ -36,6 +36,7 @@ export default function SearchMenu({ onSearch }: Props) {
     const [artistOptionSelected, setArtistOptionSelected] = useState<Option | undefined>(undefined);
     const [categoryOptionSelected, setCategoryOptionSelected] = useState<Option | undefined>(undefined);
     const [typeOptionSelected, setTypeOptionSelected] = useState<Option | undefined>(undefined);
+    const [sortByOptionSelected, setSortByOption] = useState<Option | undefined>(undefined);
     const [ratingComparator, setRatingComparator] = useState<string | undefined>(undefined);
     const [ratingValue, setRatingValue] = useState<number | undefined>(undefined);
 
@@ -50,17 +51,11 @@ export default function SearchMenu({ onSearch }: Props) {
             searchQuery.blacklistTagIDs = blacklistTagOptionsSelected.map((tagOption) => {return tagOption!['value']});
         }
 
-        if (artistOptionSelected != null) {
-            searchQuery.artistID = artistOptionSelected!['value']; 
-        }
-
-        if (categoryOptionSelected) {
-            searchQuery.categoryID = categoryOptionSelected!['value'];
-        }
-
-        if (typeOptionSelected) {
-            searchQuery.type = typeOptionSelected!['value'];
-        }
+        searchQuery.artistID = artistOptionSelected?.value;
+        searchQuery.categoryID = categoryOptionSelected?.value;
+        searchQuery.type = typeOptionSelected?.value;
+        searchQuery.sortBy = sortByOptionSelected?.value;
+        searchQuery.mode = modeSelected.value;
 
         if (ratingComparator) {
             if (ratingComparator === 'greaterThanScore') {
@@ -73,8 +68,6 @@ export default function SearchMenu({ onSearch }: Props) {
                 searchQuery.score = ratingValue!;
             }
         }
-
-        searchQuery.mode = modeSelected.value;
 
         onSearch(searchQuery);
     }
@@ -134,6 +127,19 @@ export default function SearchMenu({ onSearch }: Props) {
                         options={[{ 'label': 'Image', value: 1}, { 'label': 'Animated Image', value: 2}, { 'label': 'Video', value: 3}]}
                         value={typeOptionSelected!}
                         onChange={(selectedOption: any) => setTypeOptionSelected(selectedOption)}
+                        isSearchable
+                        isClearable
+                    />
+                    </div>
+                </div>
+                <div className="search_menu_item">
+                    <p>Sort By: </p>
+                    <div className="selector">
+                    <Select 
+                        placeholder={"Sort By Property..."}
+                        options={[{ 'label': 'Category', value: "Category"}, { 'label': 'Score', value: "Score"}]}
+                        value={sortByOptionSelected!}
+                        onChange={(selectedOption: any) => setSortByOption(selectedOption)}
                         isSearchable
                         isClearable
                     />
