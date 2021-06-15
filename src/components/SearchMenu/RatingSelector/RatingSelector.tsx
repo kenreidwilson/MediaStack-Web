@@ -50,9 +50,9 @@ export default function RatingSelector({ ratingValue, onChange }: Props) {
 				<div className={`dropdown-menu${isOpen ? " show" : ""}`} aria-labelledby="dropdownMenuButton">
 					{options.map(option =>
 						<a
-							key={option.value as string}
+							key={option.label as string}
 							className="dropdown-item"
-							onClick={() => { setSelectedComparator(option); onChange(rating, selectedComparator.value);}}
+							onClick={() => { setSelectedComparator(option); onChange(rating, option.value); }}
 							href="#nogo">
 							{option.label}
 						</a>
