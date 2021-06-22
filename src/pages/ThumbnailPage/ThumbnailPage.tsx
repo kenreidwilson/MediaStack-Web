@@ -4,16 +4,14 @@ import Navigation from '../../components/Navigation/Nav';
 import BannerAlert from '../../components/BannerAlert/BannerAlert';
 
 import { SearchRequest } from '../../api/requests/SearchRequests';
-import Media from '../../model/Media';
 import { MediaContext } from '../../MediaContext';
-import PagedThumbnails from '../../components/PagedThumbnails/PagedThumbnails';
 import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
+import PageThumbnails from '../../components/PageThumbnails/PageThumbnails';
 
 export default function ThumbnailPageComponent() {
     const {getQuery, setQuery} = useContext(MediaContext);
 
     const [linkToAlbums, setLinkToAlbums] = useState<boolean>(false);
-    const [mediaList, setMediaList] = useState<Media[]>([]);
     const [alerts, setAlerts] = useState<any[]>([]);
 
     useEffect(() => {
@@ -24,7 +22,6 @@ export default function ThumbnailPageComponent() {
             if (mediaList.length === 0) {
                 setAlerts([...alerts, <BannerAlert variant="warning" heading="API Response:" body="Nothing was found."/>]);
             }
-            setMediaList(mediaList);
         }).catch(error => { 
             setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error: " body={error.message}/>]);
         });
@@ -34,12 +31,10 @@ export default function ThumbnailPageComponent() {
         <React.Fragment>
             <Navigation />
             {alerts.map(errorComponent => errorComponent)}
-            {mediaList ? 
-                <PagedThumbnails
-                    baseQuery={getQuery()}
-                    mediaPerPage={30}
-                    linkToAlbums={linkToAlbums}/> 
-            : null}
+            <PageThumbnails
+                baseQuery={getQuery()}
+                linkToAlbums={linkToAlbums}
+                mediaPerPage={30}/>
         </React.Fragment>
      );
 }

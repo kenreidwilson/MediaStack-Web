@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
-import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
-import { SearchRequest } from '../../api/requests/SearchRequests';
-import Media from '../../model/Media';
-import MediaThumbnails from '../MediaThumbnails/MediaThumbnails';
-import MSPagination from '../Pagination/MSPagination';
+import MediaSearchQuery from '../../../api/requests/RequestBodies/MediaSearchQuery';
+import { SearchRequest } from '../../../api/requests/SearchRequests';
+import Media from '../../../model/Media';
+import MediaThumbnails from '../../MediaThumbnails/MediaThumbnails';
+import MSPagination from '../../Pagination/MSPagination';
 
 type Props = {
     baseQuery: MediaSearchQuery,
