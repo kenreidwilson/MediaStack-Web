@@ -14,7 +14,7 @@ class SearchRequest extends BaseRequest {
     }
 
     send() {
-        return API.post<MediaSearchResponseData>(`${this.baseURL}${primaryResource}`, this.searchQuery);
+        return API.post<MediaSearchResponseData>(`${this.baseURL}${primaryResource}/search`, this.searchQuery);
     }
 }
 

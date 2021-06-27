@@ -45,22 +45,25 @@ class AlbumInfoChangeRequest extends BaseRequest {
             for (const media of response.media) {
                 let mediaRequestBody: MediaEditRequestBody = 
                     new MediaEditRequestBody({score: this.requestBody.score, source: this.requestBody.source});
-                let tags: Tag[] = [...media.tags];
-                let newTagIDs: number[] = [];
 
-                tags.forEach(tag => {
-                    if (!this.requestBody.removeTagIDs?.find(tID => tID === tag.id)) {
-                        newTagIDs.push(tag.id);
-                    }
-                });
-
-                this.requestBody.addTagIDs?.forEach(tagID => {
-                    if (!newTagIDs.find(tID => tID === tagID)) {
-                        newTagIDs.push(tagID);
-                    }
-                })
-
-                mediaRequestBody.tagIDs = newTagIDs;
+                if (this.requestBody.removeTagIDs !== undefined || this.requestBody.addTagIDs !== undefined) {
+                    let tags: Tag[] = [...media.tags];
+                    let newTagIDs: number[] = [];
+    
+                    tags.forEach(tag => {
+                        if (!this.requestBody.removeTagIDs?.find(tID => tID === tag.id)) {
+                            newTagIDs.push(tag.id);
+                        }
+                    });
+    
+                    this.requestBody.addTagIDs?.forEach(tagID => {
+                        if (!newTagIDs.find(tID => tID === tagID)) {
+                            newTagIDs.push(tagID);
+                        }
+                    })
+    
+                    mediaRequestBody.tagIDs = newTagIDs;
+                }
 
                 await new MediaInfoChangeRequest(media.id, mediaRequestBody).send();
             }

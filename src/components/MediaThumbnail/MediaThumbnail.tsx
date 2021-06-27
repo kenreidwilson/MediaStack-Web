@@ -18,7 +18,7 @@ export default function MediaThumbnail({media}: Props) {
         <img 
             alt={getAlt()}
             className={"thumbnail"}
-            src={`${process.env.REACT_APP_API}/media/${media.id}/thumbnail`}>
+            src={`${process.env.REACT_APP_API}/media/thumbnail?id=${media.id}`}>
         </img>
     );
 }

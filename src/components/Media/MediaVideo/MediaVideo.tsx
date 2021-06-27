@@ -16,7 +16,7 @@ export default function MediaVideo({media, onLoad}: Props) {
 
     return (
         <video id="mediaVideo" 
-                src={`${process.env.REACT_APP_API}/media/${media.id}/file`} 
+                src={`${process.env.REACT_APP_API}/media/file?id=${media.id}`} 
                 onLoadStart={onLoadEventHandler} 
                 autoPlay
                 controls 

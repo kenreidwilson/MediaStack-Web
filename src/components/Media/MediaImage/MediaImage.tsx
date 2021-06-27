@@ -21,7 +21,7 @@ export default function MediaImage({onImageClick, onImageLoad, media}: Props) {
             <img id="mediaImage"
                 onLoad={() => onImageLoad()} 
                 alt={media.tags.toString()} 
-                src={`${process.env.REACT_APP_API}/media/${media.id}/file`}/>
+                src={`${process.env.REACT_APP_API}/media/file?id=${media.id}`}/>
         </div>
     );
 }
