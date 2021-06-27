@@ -25,7 +25,7 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
         refreshTags();
     }, []);
 
-    const refreshTags = () => new TagsRequest().send().then(response => setTags(response));
+    const refreshTags = () => new TagsRequest().send().then(response => setTags(response.tags));
     
     const numberOfPages = () => Math.ceil(tags.length / tagsPerPage);
 

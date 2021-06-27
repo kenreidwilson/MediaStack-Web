@@ -12,8 +12,8 @@ export default function TagsPage() {
     const [alerts, setAlerts] = useState<any[]>([]);
 
     useEffect(() => {
-        new TagsRequest().send().then(tags => {
-            setTags(tags);
+        new TagsRequest().send().then(response => {
+            setTags(response.tags);
         }).catch(error => {
             setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
         });

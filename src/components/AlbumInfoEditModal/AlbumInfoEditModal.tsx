@@ -39,7 +39,7 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
         new TagsRequest().send().then(response => {
             let _removeTagOptions: TagOption[] = [];
             let _addTagOptions: TagOption[] = [];
-            response.forEach(tag => {
+            response.tags.forEach(tag => {
                 let tagFound = false;
                 mediaList.forEach(media => {
                     if (!tagFound && media.tags.find(t => t.id === tag.id)) {

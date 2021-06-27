@@ -24,7 +24,7 @@ export default function TagSelector({ onChange }: Props) {
         setIsLoading(true);
         new TagsRequest().send().then(response => {
             let _tagOptions: TagOption[] = [];
-            response.forEach((tag) => {
+            response.tags.forEach((tag) => {
                 _tagOptions.push({ value: tag.id, label: tag.name });
             });
             setTagOptions(_tagOptions);
