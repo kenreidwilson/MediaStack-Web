@@ -106,7 +106,7 @@ export default function SearchMenu({ onSearch }: Props) {
                     <div className="selector">
                         <UniqueQuerySelector 
                             placeHolder="Enter Category name..." 
-                            request={new CategoriesRequest()} 
+                            optionItems={new CategoriesRequest().send().then(response => response.categories)} 
                             onChange={(selectedOption: Option) => setCategoryOptionSelected(selectedOption)}/>
                     </div>
                 </div>
@@ -115,7 +115,7 @@ export default function SearchMenu({ onSearch }: Props) {
                     <div className="selector">
                         <UniqueQuerySelector 
                             placeHolder="Enter Artist name..." 
-                            request={new ArtistsRequest()} 
+                            optionItems={new ArtistsRequest().send().then(response => response.artists)} 
                             onChange={(selectedOption: Option) => setArtistOptionSelected(selectedOption)}/>
                     </div>
                 </div>

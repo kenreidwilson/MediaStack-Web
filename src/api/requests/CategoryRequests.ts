@@ -1,10 +1,11 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
 import Category from '../../model/Category';
+import CategoriesSearchResponseData from '../responses/CategorySearchResponse';
 
 class CategoriesRequest extends BaseRequest {
     send() {
-        return API.get<Category[]>(`${this.baseURL}/categories`);
+        return API.get<CategoriesSearchResponseData>(`${this.baseURL}/categories/search?count=999`);
     }
 }
 
@@ -17,7 +18,7 @@ class CategoryInfoRequest extends BaseRequest {
     }
 
     send() {
-        return API.get<Category>(`${this.baseURL}/categories/${this.categoryId}`);
+        return API.get<Category>(`${this.baseURL}/categories?id=${this.categoryId}`);
     }
 }
 

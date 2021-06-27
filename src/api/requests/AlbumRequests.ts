@@ -7,12 +7,13 @@ import { SearchRequest } from './SearchRequests';
 import MediaSearchQuery from './RequestBodies/MediaSearchQuery';
 import Tag from '../../model/Tag';
 import { MediaInfoChangeRequest } from './MediaRequests';
+import AlbumsSearchResponse from '../responses/AlbumsSearchResponse';
 
 const primaryResource = "/albums/"
 
 class AlbumsRequest extends BaseRequest {
     send() {
-        return  API.get<Album[]>(`${this.baseURL}/albums`);
+        return API.get<AlbumsSearchResponse>(`${this.baseURL}${primaryResource}search?count=999`);
     }
 }
 
@@ -25,7 +26,7 @@ class AlbumInfoRequest extends BaseRequest {
     }
 
     send() {
-        return API.get<Album>(`${this.baseURL}${primaryResource}${this.albumId}`);
+        return API.get<Album>(`${this.baseURL}${primaryResource}?id=${this.albumId}`);
     }
 }
 
@@ -63,7 +64,7 @@ class AlbumInfoChangeRequest extends BaseRequest {
 
                 await new MediaInfoChangeRequest(media.id, mediaRequestBody).send();
             }
-        }).then(() => { return API.get<Album>(`${this.baseURL}${primaryResource}${this.albumID}`); });
+        }).then(() => { return API.get<Album>(`${this.baseURL}${primaryResource}?id=${this.albumID}`); });
     }
 }
 

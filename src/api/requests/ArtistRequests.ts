@@ -1,10 +1,11 @@
 import BaseRequest from './BaseRequest'
 import API from '../API';
 import Artist from '../../model/Artist';
+import ArtistsSearchResponse from '../responses/ArtistsSearchResponse';
 
 class ArtistsRequest extends BaseRequest {
     send() {
-        return API.get<Artist[]>(`${this.baseURL}/artists`);
+        return API.get<ArtistsSearchResponse>(`${this.baseURL}/artists/search?count=999`);
     }
 }
 
@@ -17,7 +18,7 @@ class ArtistInfoRequest extends BaseRequest {
     }
 
     send() {
-        return API.get<Artist>(`${this.baseURL}/artists/${this.artistId}`);
+        return API.get<Artist>(`${this.baseURL}/artists?id=${this.artistId}`);
     }
 }
 

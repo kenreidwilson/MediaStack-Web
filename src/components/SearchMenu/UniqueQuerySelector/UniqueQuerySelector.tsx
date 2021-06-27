@@ -16,25 +16,25 @@ type Request = {
 }
 
 type Props = {
-    request: Request,
+    optionItems: Promise<Item[]>,
     onChange: Function,
     placeHolder: string
 }
 
-export default function UniqueQuerySelector({ request, onChange, placeHolder }: Props) {
+export default function UniqueQuerySelector({ optionItems, onChange, placeHolder }: Props) {
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(optionItems === null);
     const [options, setOptions] = useState<Option[] | null>(null);
 
     const loadOptions = () => {
-        if (isLoading || options !== null) {
+        if (isLoading) {
             return;
         }
 
         setIsLoading(true);
-        request.send().then((response: Item[]) => {
+        optionItems.then(items => {
             let options: Option[] = [];
-            response.forEach((optionItem) => {
+            items.forEach((optionItem) => {
                 options.push({ value: optionItem.id, label: optionItem.name });
             });
             setOptions(options);
