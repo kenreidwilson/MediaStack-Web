@@ -22,6 +22,7 @@
     "react-image": "^4.0.2",
     "react-infinite-scroll-component": "^6.1.0",
     "react-modal": "^3.11.2",
+    "react-reorder": "^3.0.0-alpha.7",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "react-select": "^3.1.0",

@@ -13,6 +13,9 @@ import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery'
 import { SearchRequest } from '../../api/requests/SearchRequests';
 import MediaGallery from '../../components/MediaGallery/MediaGallery';
 import MediaInfoEditModal from '../../components/MediaInfoEditModal/MediaInfoEditModal';
+import DraggableMediaThumbnails from '../../components/MediaThumbnails/DraggableMediaThumbnails';
+import { MediaInfoChangeRequest } from '../../api/requests/MediaRequests';
+import MediaEditRequestBody from '../../api/requests/RequestBodies/MediaEditRequest';
 
 export default function AlbumMediaPage() {
     const [album, setAlbum] = useState<Album>();
@@ -21,6 +24,8 @@ export default function AlbumMediaPage() {
     const [showMediaEditModal, setShowMediaEditModal] = useState<boolean>(false);
     const [showAlbumEditModal, setShowAlbumEditModal] = useState<boolean>(false);
     const [alerts, setAlerts] = useState<any[]>([]);
+
+    const [isOrganizeMode, setIsOrganizeMode] = useState<boolean>(false);
 
     useEffect(() => {
         let albumIDString = new URL(window.location.href).searchParams.get("id") as string;
@@ -52,6 +57,10 @@ export default function AlbumMediaPage() {
         });
     }
 
+    const toggleOrganize = () => {
+        setIsOrganizeMode(!isOrganizeMode);
+    }
+
     return ( 
         <React.Fragment>
             {album !== undefined && showAlbumEditModal ? 
@@ -78,22 +87,44 @@ export default function AlbumMediaPage() {
                     {mediaList !== undefined && mediaList[selectedMediaIndex] !== undefined ? 
                         <div>
                             <button className="edit_button btn btn-primary" onClick={() => setShowMediaEditModal(true)}>Edit Media</button>
-                            {mediaList.length > 0 ? 
-                            <MediaInfoSidebar
-                                media={mediaList[selectedMediaIndex]}
-                                setMedia={updateSelectedMedia}
-                            /> : null }
+                            {mediaList.length > 0 ? <MediaInfoSidebar media={mediaList[selectedMediaIndex]} setMedia={updateSelectedMedia}/> : null }
                             <button className="edit_button btn btn-primary" onClick={() => setShowAlbumEditModal(true)}>Edit Album</button>
-                            <AlbumInfoSidebar
-                                album={album!}
-                                setAlbum={setAlbum}
-                                mediaList={mediaList}
-                                updateMediaList={updateMediaList}
-                            />
+                            <AlbumInfoSidebar album={album!} setAlbum={setAlbum} mediaList={mediaList}updateMediaList={updateMediaList}/>
+                            <button className="btn btn-primary" onClick={toggleOrganize}>Organize</button>
                         </div> : null}
                 </div>
-                <MediaGallery mediaList={mediaList} onMediaSelect={(selectedMediaIndex: number) => setSelectedMediaIndex(selectedMediaIndex)}/>
+                {isOrganizeMode ? 
+                    <OrganizeAlbumSection mediaList={mediaList} setMediaList={setMediaList} onSave={toggleOrganize}/> : 
+                    <MediaGallery mediaList={mediaList} onMediaSelect={(selectedMediaIndex: number) => setSelectedMediaIndex(selectedMediaIndex)}/>}
             </div>
         </React.Fragment>
      );
+}
+
+type Props = {
+    mediaList: Media[],
+    setMediaList: Function,
+    onSave: Function
+}
+
+function OrganizeAlbumSection({ mediaList, setMediaList, onSave }: Props ) {
+
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const handleSave = async () => {
+
+        setIsLoading(true);
+        for (let m of mediaList){
+            await new MediaInfoChangeRequest(m.id, new MediaEditRequestBody({albumOrder: mediaList.indexOf(m)})).send();
+        }
+        setIsLoading(false);
+        onSave();
+    }
+
+    return (
+            <div>
+                <DraggableMediaThumbnails mediaList={mediaList} onReorder={setMediaList}/>
+                <button className="btn btn-primary" disabled={isLoading} onClick={handleSave}>Save</button>
+            </div>
+        );
 }
