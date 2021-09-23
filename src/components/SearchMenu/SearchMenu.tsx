@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
 
-import TagSelector from './TagSelector/TagSelector';
+import TagSelector from '../ModelSelects/TagSelector/TagSelector';
 import UniqueQuerySelector from './UniqueQuerySelector/UniqueQuerySelector';
 import RatingSelector from './RatingSelector/RatingSelector';
 
@@ -91,14 +91,14 @@ export default function SearchMenu({ onSearch }: Props) {
             <div className="search_menu_item">
                 <p>Tags: </p>
                 <div className="selector">
-                    <TagSelector onChange={(selectedOptions: Option[]) => setTagOptionsSelected(selectedOptions)}/>
+                    <TagSelector onChange={(selectedOptions: Option[]) => setTagOptionsSelected(selectedOptions)} selectedTags={tagOptionsSelected} isCreatable={false}/>
                 </div>
             </div>
             {showAdvancedOptions ? <div id="advanced_options">
                 <div className="search_menu_item">
                     <p>Blacklist Tags: </p>
                     <div className="selector">
-                        <TagSelector onChange={(selectedOptions: Option[]) => setBlacklistTagOptionsSelected(selectedOptions)}/>
+                        <TagSelector onChange={(selectedOptions: Option[]) => setBlacklistTagOptionsSelected(selectedOptions)} selectedTags={blacklistTagOptionsSelected} isCreatable={false}/>
                     </div>
                 </div>
                 <div className="search_menu_item">

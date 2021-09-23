@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button }from "react-bootstrap";
-import CreatableSelect from 'react-select/creatable';
-import { TagsRequest, TagCreationRequest } from '../../api/requests/TagRequests'
 import Media from '../../model/Media';
 import MediaEditRequest from '../../api/requests/RequestBodies/MediaEditRequest';
 import { MediaInfoChangeRequest } from '../../api/requests/MediaRequests';
+import TagSelector from '../ModelSelects/TagSelector/TagSelector';
 
 type Props = {
     media: Media,
@@ -21,36 +20,15 @@ type TagOption = {
 export default function MediaInfoEditModal({ media, isShown, onClose, onSave }: Props) {
 
     const [newSource, setNewSource] = useState<string>(media.source);
-    const [tagOptions, setTagOptions] = useState<TagOption[]>([]);
     const [selectedTagOptions, setSelectedTagOptions] = useState<TagOption[]>([]);
-    const [isTagOptionsLoading, setIsTagOptionsLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        setIsTagOptionsLoading(true);
-        new TagsRequest().send().then(response => {
-            let _tagOptions: TagOption[] = [];
-            response.tags.forEach(tag => {
-                _tagOptions.push({ value: tag.id, label: tag.name });
-            });
-            setTagOptions(_tagOptions);
-
-            let selectedTags: TagOption[] = [];
-            media.tags.forEach(tag => {
-                selectedTags.push(_tagOptions.find(to => to.value === tag.id) as TagOption);
-            });
-            setSelectedTagOptions(selectedTags);
-            setIsTagOptionsLoading(false);
-        }).then(() => setIsTagOptionsLoading(false));
-    }, []);
-
-    const createTag = async (tagName: string) => {
-        setIsTagOptionsLoading(true);
-        await new TagCreationRequest(tagName).send().then(newTag => {
-            setTagOptions([...tagOptions, { value: newTag.id, label: newTag.name }]);
-            setSelectedTagOptions([...selectedTagOptions, { value: newTag.id, label: newTag.name }]);
+        let selectedTags: TagOption[] = [];
+        media.tags.forEach(tag => {
+            selectedTags.push({value: tag.id, label: tag.name});
         });
-        setIsTagOptionsLoading(false);
-    }
+        setSelectedTagOptions(selectedTags);
+    }, []);
 
     const handleSaveClick = () => {
         let mediaEditRequest: MediaEditRequest = new MediaEditRequest();
@@ -79,16 +57,7 @@ export default function MediaInfoEditModal({ media, isShown, onClose, onSave }: 
                     </div>
                     <div className="info_edit_modal_element">
                         <p>Tags:</p>
-                        <CreatableSelect 
-                            placeholder="Enter Tags..."
-                            value={selectedTagOptions}
-                            options={tagOptions}
-                            onChange={(newTagOptions: any) => setSelectedTagOptions(newTagOptions ? newTagOptions : [])}
-                            onCreateOption={(inputValue: any) => createTag(inputValue as string)}
-                            isSearchable
-                            isMulti
-                            isLoading={isTagOptionsLoading}
-                        />
+                        <TagSelector selectedTags={selectedTagOptions} onChange={setSelectedTagOptions} isCreatable={true}/>
                     </div>
                 </div>
                 </Modal.Body>
