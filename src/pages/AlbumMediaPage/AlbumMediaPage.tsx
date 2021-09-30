@@ -8,14 +8,11 @@ import BannerAlert from '../../components/BannerAlert/BannerAlert';
 import Album from '../../model/Album';
 import Media from '../../model/Media';
 
-import { AlbumInfoRequest } from '../../api/requests/AlbumRequests';
-import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
-import { SearchRequest } from '../../api/requests/SearchRequests';
 import MediaGallery from '../../components/MediaGallery/MediaGallery';
 import MediaInfoEditModal from '../../components/MediaInfoEditModal/MediaInfoEditModal';
 import DraggableMediaThumbnails from '../../components/MediaThumbnails/DraggableMediaThumbnails';
-import { MediaInfoChangeRequest } from '../../api/requests/MediaRequests';
-import MediaEditRequestBody from '../../api/requests/RequestBodies/MediaEditRequest';
+import { AlbumRepository } from '../../repositories/AlbumRepository';
+import { MediaRepository } from '../../repositories/MediaRepository';
 
 export default function AlbumMediaPage() {
     const [album, setAlbum] = useState<Album>();
@@ -27,10 +24,12 @@ export default function AlbumMediaPage() {
 
     const [isOrganizeMode, setIsOrganizeMode] = useState<boolean>(false);
 
+    const mediaRepository = new MediaRepository();
+
     useEffect(() => {
         let albumIDString = new URL(window.location.href).searchParams.get("id") as string;
         let albumID = +albumIDString;
-        new AlbumInfoRequest(albumID).send().then(response => {
+        new AlbumRepository().get(albumID).then(response => {
             setAlbum(response);
             updateMediaList(response);
         }).catch(error => { 
@@ -51,7 +50,8 @@ export default function AlbumMediaPage() {
             return;
         }
 
-        new SearchRequest(new MediaSearchQuery({ albumID: album!.id, mode: 1, count: 999 })).send().then(response => {
+        
+        mediaRepository.search({ albumID: album!.id, mode: 1, count: 999 }).then(response => {
             response.media.sort((a: Media, b: Media) => (a.albumOrder > b.albumOrder) ? 1 : -1);
             setMediaList(response.media);
         });
@@ -110,12 +110,13 @@ type Props = {
 function OrganizeAlbumSection({ mediaList, setMediaList, onSave }: Props ) {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const mediaRepository = new MediaRepository();
 
     const handleSave = async () => {
 
         setIsLoading(true);
         for (let m of mediaList){
-            await new MediaInfoChangeRequest(m.id, new MediaEditRequestBody({albumOrder: mediaList.indexOf(m)})).send();
+            await mediaRepository.update({ ID: m.id, albumOrder: mediaList.indexOf(m)});
         }
         setIsLoading(false);
         onSave();

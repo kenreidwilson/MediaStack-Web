@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
-import MediaSearchQuery from '../../../api/requests/RequestBodies/MediaSearchQuery';
-import { SearchRequest } from '../../../api/requests/SearchRequests';
 import Media from '../../../model/Media';
+import { IMediaSearchQuery, MediaRepository } from '../../../repositories/MediaRepository';
 import MediaThumbnails from '../../MediaThumbnails/MediaThumbnails';
 import MSPagination from '../../Pagination/MSPagination';
 
 type Props = {
-    baseQuery: MediaSearchQuery,
+    baseQuery: IMediaSearchQuery,
     linkToAlbums: boolean,
     mediaPerPage: number
 };
@@ -33,7 +32,7 @@ export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}:
         let finalQuery = baseQuery;
         finalQuery.offset = (pageNumber - 1) * mediaPerPage;
         finalQuery.count = mediaPerPage;
-        new SearchRequest(finalQuery).send().then(response => {
+        new MediaRepository().search(finalQuery).then(response => {
             setMediaList(response.media);
             setNumberOfPages(determineNumberOfPages(response.total));
             setIsMediaLoading(false);

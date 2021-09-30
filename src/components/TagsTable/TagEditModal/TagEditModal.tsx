@@ -25,7 +25,7 @@ export default function TagEditModal({ tag, isShown, onClose, onEdit }: Props) {
     }
 
     return (
-        <Modal show={isShown} onHide={onClose}>
+        <Modal show={isShown} onHide={() => onClose()}>
             <Modal.Header closeButton>
                 <Modal.Title>Edit Tag</Modal.Title>
             </Modal.Header>

@@ -2,11 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import Navigation from '../../components/Navigation/Nav';
 import BannerAlert from '../../components/BannerAlert/BannerAlert';
-
-import { SearchRequest } from '../../api/requests/SearchRequests';
 import { MediaContext } from '../../MediaContext';
-import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 import PageThumbnails from '../../components/PageThumbnails/PageThumbnails';
+import { IMediaSearchQuery, MediaRepository } from '../../repositories/MediaRepository';
 
 export default function ThumbnailPageComponent() {
     const {getQuery, setQuery} = useContext(MediaContext);
@@ -15,8 +13,8 @@ export default function ThumbnailPageComponent() {
     const [alerts, setAlerts] = useState<any[]>([]);
 
     useEffect(() => {
-        let query: MediaSearchQuery = getQuery();
-        new SearchRequest(query).send().then(response => {
+        let query: IMediaSearchQuery = getQuery();
+        new MediaRepository().search(query).then(response => {
             setLinkToAlbums(query.mode === 2);
             let mediaList = response.media;
             if (mediaList.length === 0) {

@@ -3,13 +3,13 @@ import RatingSidebarElement from './RatingSidebarElement/RatingSidebarElement';
 import TagsSidebarElement from './TagSidebarElement/TagSidebarElement';
 import Media from '../../model/Media';
 import Album from '../../model/Album';
-import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 import Tag from '../../model/Tag';
 import { useHistory } from 'react-router-dom';
 import { MediaContext } from '../../MediaContext';
 import { ErrorContext } from '../../pages/ErrorContext';
-import { AlbumInfoChangeRequest } from '../../api/requests/AlbumRequests';
 import './InfoSidebar.css';
+import { IMediaSearchQuery } from '../../repositories/MediaRepository';
+import { AlbumRepository } from '../../repositories/AlbumRepository';
 
 type Props = {
     album: Album,
@@ -24,7 +24,7 @@ export default function AlbumInfoSidebar({album, setAlbum, mediaList, updateMedi
     const { setQuery } = useContext(MediaContext);
     const { addError } = useContext(ErrorContext);
 
-    const onSidebarNavClick = (query: MediaSearchQuery) => {
+    const onSidebarNavClick = (query: IMediaSearchQuery) => {
         setQuery(query);
         history.push('/search');
     }
@@ -53,7 +53,7 @@ export default function AlbumInfoSidebar({album, setAlbum, mediaList, updateMedi
 
     const handleScoreEdit = async (newScore: number) => {
         let score = newScore === getAlbumScore() ? 0 : newScore;
-        await new AlbumInfoChangeRequest(album.id, {'score' : score}).send()
+        await new AlbumRepository().update({ albumID: album.id, 'score' : score})
             .then(() => updateMediaList(album)).catch(error => addError(error));
     }
 
@@ -66,7 +66,7 @@ export default function AlbumInfoSidebar({album, setAlbum, mediaList, updateMedi
                     handleEdit={handleScoreEdit}/>
                 <TagsSidebarElement
                     tags={getAlbumTags()}
-                    onClick={(tagId: number) => onSidebarNavClick(new MediaSearchQuery({whitelistTagIDs: [tagId]}))}/>
+                    onClick={(tagId: number) => onSidebarNavClick({whitelistTagIDs: [tagId]})}/>
             </div>
         </React.Fragment>
      );

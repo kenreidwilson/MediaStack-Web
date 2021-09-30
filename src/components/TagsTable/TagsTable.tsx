@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import TagDeleteModal from './TagDeleteModal/TagDeleteModal'; 
 import TagEditModal from './TagEditModal/TagEditModal';
-import { TagsRequest, TagInfoRequest, TagNameChangeRequest, TagDeletionRequest } from '../../api/requests/TagRequests';
 import Tag from '../../model/Tag';
 import MSPagination from '../Pagination/MSPagination';
 
 import './TagsTable.css'
+import { TagRepository } from '../../repositories/TagRepository';
 
 type mediaInfo = {
     count: number
 }
 
 export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
+
+    const tagRepo = new TagRepository();
 
     const [tags, setTags] = useState<Tag[]>([]);
     const [tagsInfo, setTagsInfo] = useState<{ [id: number]: mediaInfo | undefined }>({});
@@ -25,7 +27,7 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
         refreshTags();
     }, []);
 
-    const refreshTags = () => new TagsRequest().send().then(response => setTags(response.tags));
+    const refreshTags = () => tagRepo.search({ count: 999 }).then(response => setTags(response.tags));
     
     const numberOfPages = () => Math.ceil(tags.length / tagsPerPage);
 
@@ -34,23 +36,19 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
             return;
         }
 
-        new TagInfoRequest(tag.id).send().then(tagInfo => {
+        tagRepo.get(tag.id).then(tagInfo => {
             let newTagsInfo: { [id: number]: any } = Object.assign({}, tagsInfo);
             newTagsInfo[tag.id] = tagInfo;
             setTagsInfo(newTagsInfo);
-        });
+        })
     }
 
     const onTagUpdate = (updatedTag: Tag) => {
-        new TagNameChangeRequest(updatedTag.id, updatedTag.name).send().then(response => {
-            refreshTags();
-        });
+        tagRepo.update(updatedTag).then(refreshTags);
     }
 
     const onTagDelete = (deletedTag: Tag) => {
-        new TagDeletionRequest(deletedTag.id).send().then(response => {
-            refreshTags();
-        });
+        tagRepo.delete(deletedTag).then(refreshTags);
     }
 
     return (

@@ -8,9 +8,8 @@ import MediaInfoSidebar from '../../components/MediaInfoSidebar/MediaInfoSidebar
 import BannerAlert from '../../components/BannerAlert/BannerAlert';
 import MediaInfoEditModal from '../../components/MediaInfoEditModal/MediaInfoEditModal';
 
-import { MediaInfoRequest } from '../../api/requests/MediaRequests';
-
 import './MediaPage.css';
+import { MediaRepository } from '../../repositories/MediaRepository';
 
 export default function MediaPage() {
     const [media, setMedia] = useState<Media | null>(null);
@@ -21,7 +20,7 @@ export default function MediaPage() {
     useEffect(() => {
         var mediaIDString: string = new URL(window.location.href).searchParams.get("id") as string;
         var mediaID: number = +mediaIDString;
-        new MediaInfoRequest(mediaID).send().then((response: Media) => {
+        new MediaRepository().get(mediaID).then((response: Media) => {
             setMedia(response);
         }).catch(error => { 
             setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);

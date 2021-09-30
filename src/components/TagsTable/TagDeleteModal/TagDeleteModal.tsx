@@ -12,7 +12,7 @@ type Props = {
 export default function TagDeleteModal({tag, isShown, onClose, onDelete}: Props) {
 
     return (
-        <Modal show={isShown} onHide={onClose}>
+        <Modal show={isShown} onHide={() => onClose()}>
             <Modal.Header closeButton>
                 <Modal.Title>Delete Tag</Modal.Title>
             </Modal.Header>

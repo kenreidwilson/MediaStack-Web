@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import MediaSearchQuery from '../../api/requests/RequestBodies/MediaSearchQuery';
 import Media from '../../model/Media';
+import { IMediaSearchQuery } from '../../repositories/MediaRepository';
 import AutoPagedThumbnails from './AutoPagedThumbnails/AutoPagedThumbnails';
 import PagedThumbnails from './PagedThumbnails/PagedThumbnails';
 
 type Props = {
-    baseQuery: MediaSearchQuery,
+    baseQuery: IMediaSearchQuery,
     linkToAlbums: boolean,
     mediaPerPage: number
 };

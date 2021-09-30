@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
-import MediaSearchQuery from '../../../api/requests/RequestBodies/MediaSearchQuery';
-import { SearchRequest } from '../../../api/requests/SearchRequests';
 import Media from '../../../model/Media';
 import MediaThumbnails from '../../MediaThumbnails/MediaThumbnails';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { IMediaSearchQuery, MediaRepository } from '../../../repositories/MediaRepository';
 
 type Props = {
-    baseQuery: MediaSearchQuery,
+    baseQuery: IMediaSearchQuery,
     linkToAlbums: boolean
 };
 
@@ -42,7 +41,7 @@ export default function AutoPagedThumbnails({baseQuery, linkToAlbums}: Props) {
             let finalQuery = baseQuery;
             finalQuery.offset = mediaList.length;
             finalQuery.count = getMediaBatchSize();
-            await new SearchRequest(finalQuery).send().then(response => {
+            await new MediaRepository().search(finalQuery).then(response => {
                 setMediaList([...mediaList, ...response.media]);
                 setMaxMediaCount(response.total);
             });

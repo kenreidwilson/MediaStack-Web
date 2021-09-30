@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal, Button }from "react-bootstrap";
 import Media from '../../model/Media';
-import MediaEditRequest from '../../api/requests/RequestBodies/MediaEditRequest';
-import { MediaInfoChangeRequest } from '../../api/requests/MediaRequests';
-import TagSelector from '../ModelSelects/TagSelector/TagSelector';
+import TagSelector from '../ModelSelects/TagSelector';
+import ArtistsSelect from '../ModelSelects/ArtistSelect';
+import CategorySelect from '../ModelSelects/CategorySelect';
+import AlbumSelect from '../ModelSelects/AlbumSelect';
+import { IMediaUpdateRequestBody, MediaRepository } from '../../repositories/MediaRepository';
 
 type Props = {
     media: Media,
@@ -21,6 +23,9 @@ export default function MediaInfoEditModal({ media, isShown, onClose, onSave }: 
 
     const [newSource, setNewSource] = useState<string>(media.source);
     const [selectedTagOptions, setSelectedTagOptions] = useState<TagOption[]>([]);
+    const [newCategoryId, setNewCategoryId] = useState<number | undefined>(media.categoryID);
+    const [newArtistId, setNewArtistId] = useState<number | undefined>(media.artistID);
+    const [newAlbumId, setNewAlbumId] = useState<number | undefined>(media.albumID);
 
     useEffect(() => {
         let selectedTags: TagOption[] = [];
@@ -31,14 +36,18 @@ export default function MediaInfoEditModal({ media, isShown, onClose, onSave }: 
     }, []);
 
     const handleSaveClick = () => {
-        let mediaEditRequest: MediaEditRequest = new MediaEditRequest();
+        let mediaEditRequest: IMediaUpdateRequestBody = { ID: media.id }
 
         let newTags: number[] = [];
         selectedTagOptions.map(tagOption => newTags.push(tagOption.value as number));
         mediaEditRequest.tagIDs = newTags;
         mediaEditRequest.source = newSource;
 
-        new MediaInfoChangeRequest(media.id, mediaEditRequest).send().then(updatedMedia => onSave(updatedMedia));
+        if (media.categoryID != newCategoryId) {
+            mediaEditRequest.categoryID = newCategoryId;
+        }
+
+        new MediaRepository().update(mediaEditRequest).then(updatedMedia => onSave(updatedMedia));
     }
 
     return (
@@ -49,6 +58,18 @@ export default function MediaInfoEditModal({ media, isShown, onClose, onSave }: 
                 </Modal.Header>
                 <Modal.Body>
                 <div className="info_edit_modal_body">
+                <div className="info_edit_modal_element">
+                        <p>Catgory:</p>
+                        <CategorySelect selectedCategory={{ value: newCategoryId, label: "" }} onChange={setNewCategoryId} isCreatable={true}/>
+                    </div>
+                    <div className="info_edit_modal_element">
+                        <p>Artist:</p>
+                        <ArtistsSelect selectedArtist={{ value: newCategoryId, label: "" }} onChange={setNewArtistId} isCreatable={true}/>
+                    </div>
+                    <div className="info_edit_modal_element">
+                        <p>Album:</p>
+                        <AlbumSelect selectedAlbum={{ value: newCategoryId, label: "" }} onChange={setNewAlbumId} isCreatable={true}/>
+                    </div>
                     <div className="info_edit_modal_element">
                         <p>Source: </p>
                         <form className="info_edit_modal_source_form">

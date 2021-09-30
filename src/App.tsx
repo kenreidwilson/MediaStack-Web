@@ -8,22 +8,23 @@ import AlbumMediaPage from './pages/AlbumMediaPage/AlbumMediaPage';
 import ThumbnailPage from './pages/ThumbnailPage/ThumbnailPage';
 import TagsPage from './pages/TagsPage/TagsPage';
 import Error404Page from './pages/404Page/404Page';
-import MediaSearchQuery from './api/requests/RequestBodies/MediaSearchQuery';
 import { MediaContext } from './MediaContext';
+import ExplorePage from './pages/ExplorePage/ExplorePage';
+import { IMediaSearchQuery } from './repositories/MediaRepository';
 
 export default function App() {
 	
-	const getQuery = (): MediaSearchQuery => {
+	const getQuery = (): IMediaSearchQuery => {
 		let queryString = sessionStorage.getItem('query');
 		if (queryString === null) {
-			let query = new MediaSearchQuery();
+			let query = {};
 			setQuery(query);
 			return query;
 		}
 		return JSON.parse(queryString as string);
 	}
 
-	const setQuery = (query: MediaSearchQuery): void => {
+	const setQuery = (query: IMediaSearchQuery): void => {
 		sessionStorage.setItem('query', JSON.stringify(query));
 	}
 
@@ -37,6 +38,7 @@ export default function App() {
 						<Route path="/album" component={AlbumMediaPage} exact/>
 						<Route path="/search" component={ThumbnailPage} exact/>
 						<Route path="/tags" component={TagsPage} exact/>
+						<Route path="/explore" component={ExplorePage} exact/>
 						<Route component={Error404Page}/>
 					</Switch>
 				</MediaContext.Provider>
