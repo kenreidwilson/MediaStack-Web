@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import { APINetworkError, APINotFoundError, APIBadRequestError, APIUnexpectedResponseError } from './APIErrors';
-import BaseResponse from './responses/BaseResponse';
+import BaseResponse from './IBaseResponse';
 
 class API {
     static get<T>(url: string) {
