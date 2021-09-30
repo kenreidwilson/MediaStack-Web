@@ -1,16 +1,12 @@
 import { useState } from 'react';
 import { ArtistRepository } from '../../repositories/AritstRepository';
 import BaseSingleSelect from './BaseSingleSelect';
+import SelectOption from './SelectOption';
 
 type Props = {
-    selectedArtist?: Option,
-    onChange: Function,
+    selectedArtist?: SelectOption,
+    onChange: (option?: SelectOption) => void,
     isCreatable?: boolean
-}
-
-type Option = {
-    label: string,
-    value?: any
 }
 
 export default function ArtistsSelect({ selectedArtist, onChange, isCreatable = false } : Props) {
@@ -21,7 +17,7 @@ export default function ArtistsSelect({ selectedArtist, onChange, isCreatable = 
     const getArtists = async () => {
         setIsLoading(true);
         return await artists.search({ count: 999 }).then(response => {
-            let _options: Option[] = [];
+            let _options: SelectOption[] = [];
             response.artists.forEach(artist => {
                 _options.push({ value: artist.id, label: artist.name });
             });

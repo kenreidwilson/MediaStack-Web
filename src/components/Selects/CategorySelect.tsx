@@ -1,16 +1,12 @@
 import { useState } from 'react';
 import { CategoryRepository } from '../../repositories/CategoryRepository';
 import BaseSingleSelect from './BaseSingleSelect';
+import SelectOption from './SelectOption';
 
 type Props = {
-    selectedCategory?: Option,
-    onChange: Function,
+    selectedCategory?: SelectOption,
+    onChange: (option?: SelectOption) => void,
     isCreatable?: boolean
-}
-
-type Option = {
-    label: string,
-    value?: any
 }
 
 export default function CategorySelect({ selectedCategory, onChange, isCreatable = false } : Props) {
@@ -21,7 +17,7 @@ export default function CategorySelect({ selectedCategory, onChange, isCreatable
     const getCategories = async () => {
         setIsLoading(true);
         return await categories.search({ count: 999 }).then(response => {
-            let _options: Option[] = [];
+            let _options: SelectOption[] = [];
             response.categories.forEach(category => {
                 _options.push({ value: category.id, label: category.name });
             });

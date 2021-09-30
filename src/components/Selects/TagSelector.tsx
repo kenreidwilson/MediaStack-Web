@@ -1,17 +1,12 @@
 import { useState } from 'react';
 import { TagRepository } from '../../repositories/TagRepository';
 import BaseMultiSelect from './BaseMultiSelect';
+import SelectOption from './SelectOption';
 
 type Props = {
-    selectedTags: TagOption[],
-    onChange: Function,
-    isCreatable?: boolean,
-    isMulti?: boolean
-}
-
-type TagOption = {
-    label: string,
-    value?: any
+    selectedTags: SelectOption[],
+    onChange: (option: SelectOption[]) => void,
+    isCreatable?: boolean
 }
 
 export default function TagSelector({ selectedTags, onChange, isCreatable = false } : Props) {
@@ -23,7 +18,7 @@ export default function TagSelector({ selectedTags, onChange, isCreatable = fals
     const getTags = async () => {
         setIsLoading(true);
         return await tags.search({count: 999}).then(response => {
-            let _tagOptions: TagOption[] = [];
+            let _tagOptions: SelectOption[] = [];
             response.tags.forEach(tag => {
                 _tagOptions.push({ value: tag.id, label: tag.name });
             });

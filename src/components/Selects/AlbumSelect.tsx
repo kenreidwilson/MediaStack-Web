@@ -1,16 +1,12 @@
 import { useState } from 'react';
 import { AlbumRepository } from '../../repositories/AlbumRepository';
 import BaseSingleSelect from './BaseSingleSelect';
+import SelectOption from './SelectOption';
 
 type Props = {
-    selectedAlbum?: Option,
-    onChange: Function,
+    selectedAlbum?: SelectOption,
+    onChange: (option?: SelectOption) => void,
     isCreatable?: boolean
-}
-
-type Option = {
-    label: string,
-    value?: any
 }
 
 export default function AlbumSelect({ selectedAlbum, onChange, isCreatable = false } : Props) {
@@ -20,7 +16,7 @@ export default function AlbumSelect({ selectedAlbum, onChange, isCreatable = fal
     const getAlbums = async () => {
         setIsLoading(true);
         return await new AlbumRepository().search({ count: 9999 }).then(response => {
-            let _options: Option[] = [];
+            let _options: SelectOption[] = [];
             response.albums.forEach(album => {
                 _options.push({ value: album.id, label: album.name });
             });

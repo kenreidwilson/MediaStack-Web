@@ -1,18 +1,16 @@
 import { useState } from 'react';
-import Select from 'react-select';
 
-import TagSelector from '../ModelSelects/TagSelector';
+import TagSelector from '../Selects/TagSelector';
 import RatingSelector from './RatingSelector/RatingSelector';
 
 import './SearchMenu.css';
-import CategorySelect from '../ModelSelects/CategorySelect';
-import ArtistsSelect from '../ModelSelects/ArtistSelect';
+import CategorySelect from '../Selects/CategorySelect';
+import ArtistsSelect from '../Selects/ArtistSelect';
 import { IMediaSearchQuery } from '../../repositories/MediaRepository';
-
-type Option = {
-    label: string,
-    value: any | null
-}
+import MediaTypeSelect from '../Selects/MediaTypeSelect';
+import SelectOption from '../Selects/SelectOption';
+import SortBySelect from '../Selects/SortBySelect';
+import SearchModeSelect from '../Selects/SearchModeSelect';
 
 type Props = {
     onSearch: Function
@@ -20,21 +18,15 @@ type Props = {
 
 export default function SearchMenu({ onSearch }: Props) {
 
-    const modeOptions: Option[] = [
-		{ label: "Media and Album Cover", value: 2 },
-        { label: "All Media", value: 1 },
-		{ label: "Media with no Album", value: 3 }
-	];
-
     const [showAdvancedOptions, setShowAdvancedOptions] = useState<boolean>(false);
-    const [tagOptionsSelected, setTagOptionsSelected] = useState<Option[]>([]);
-    const [modeSelected, setModeSelected] = useState<Option>(modeOptions[0]);
-    const [blacklistTagOptionsSelected, setBlacklistTagOptionsSelected] = useState<Option[]>([]);
-    const [albumOptionSelected, setAlbumOptionSelected] = useState<Option | undefined>(undefined);
-    const [artistOptionSelected, setArtistOptionSelected] = useState<Option | undefined>(undefined);
-    const [categoryOptionSelected, setCategoryOptionSelected] = useState<Option | undefined>(undefined);
-    const [typeOptionSelected, setTypeOptionSelected] = useState<Option | undefined>(undefined);
-    const [sortByOptionSelected, setSortByOption] = useState<Option | undefined>(undefined);
+    const [tagOptionsSelected, setTagOptionsSelected] = useState<SelectOption[]>([]);
+    const [modeSelected, setModeSelected] = useState<SelectOption | undefined>(undefined);
+    const [blacklistTagOptionsSelected, setBlacklistTagOptionsSelected] = useState<SelectOption[]>([]);
+    const [albumOptionSelected, setAlbumOptionSelected] = useState<SelectOption | undefined>(undefined);
+    const [artistOptionSelected, setArtistOptionSelected] = useState<SelectOption | undefined>(undefined);
+    const [categoryOptionSelected, setCategoryOptionSelected] = useState<SelectOption | undefined>(undefined);
+    const [typeOptionSelected, setTypeOptionSelected] = useState<SelectOption | undefined>(undefined);
+    const [sortByOptionSelected, setSortByOption] = useState<SelectOption | undefined>(undefined);
     const [ratingComparator, setRatingComparator] = useState<string | undefined>(undefined);
     const [ratingValue, setRatingValue] = useState<number | undefined>(undefined);
 
@@ -53,7 +45,7 @@ export default function SearchMenu({ onSearch }: Props) {
         searchQuery.categoryID = categoryOptionSelected?.value;
         searchQuery.type = typeOptionSelected?.value;
         searchQuery.sortBy = sortByOptionSelected?.value;
-        searchQuery.mode = modeSelected.value;
+        searchQuery.mode = modeSelected?.value;
 
         if (ratingComparator) {
             if (ratingComparator === 'greaterThanScore') {
@@ -80,23 +72,20 @@ export default function SearchMenu({ onSearch }: Props) {
             <div className="search_menu_item">
                 <p>Mode: </p>
                 <div className="selector">
-                    <Select
-                        value={modeSelected}
-                        options={modeOptions}
-                        onChange={(selectedMode: any) => setModeSelected(selectedMode)}/>
+                    <SearchModeSelect onChange={setModeSelected} selectedMode={modeSelected} />
                 </div>
             </div>
             <div className="search_menu_item">
                 <p>Tags: </p>
                 <div className="selector">
-                    <TagSelector onChange={(selectedOptions: Option[]) => setTagOptionsSelected(selectedOptions)} selectedTags={tagOptionsSelected}  isMulti={true} isCreatable={false}/>
+                    <TagSelector onChange={setTagOptionsSelected} selectedTags={tagOptionsSelected} isCreatable={false}/>
                 </div>
             </div>
             {showAdvancedOptions ? <div id="advanced_options">
                 <div className="search_menu_item">
                     <p>Blacklist Tags: </p>
                     <div className="selector">
-                        <TagSelector onChange={(selectedOptions: Option[]) => setBlacklistTagOptionsSelected(selectedOptions)} selectedTags={blacklistTagOptionsSelected} isMulti={true} isCreatable={false}/>
+                        <TagSelector onChange={setBlacklistTagOptionsSelected} selectedTags={blacklistTagOptionsSelected} isCreatable={false}/>
                     </div>
                 </div>
                 <div className="search_menu_item">
@@ -114,27 +103,13 @@ export default function SearchMenu({ onSearch }: Props) {
                 <div className="search_menu_item">
                     <p>Type: </p>
                     <div className="selector">
-                    <Select 
-                        placeholder={"Choose a media type..."}
-                        options={[{ 'label': 'Image', value: 1}, { 'label': 'Animated Image', value: 2}, { 'label': 'Video', value: 3}]}
-                        value={typeOptionSelected!}
-                        onChange={(selectedOption: any) => setTypeOptionSelected(selectedOption)}
-                        isSearchable
-                        isClearable
-                    />
+                        <MediaTypeSelect  onChange={setTypeOptionSelected} selectedType={typeOptionSelected}/>
                     </div>
                 </div>
                 <div className="search_menu_item">
                     <p>Sort By: </p>
                     <div className="selector">
-                    <Select 
-                        placeholder={"Sort By Property..."}
-                        options={[{ 'label': 'Category', value: "Category"}, { 'label': 'Score', value: "Score"}]}
-                        value={sortByOptionSelected!}
-                        onChange={(selectedOption: any) => setSortByOption(selectedOption)}
-                        isSearchable
-                        isClearable
-                    />
+                        <SortBySelect selectedSortOption={sortByOptionSelected} onChange={setSortByOption}/>
                     </div>
                 </div>
                 <div className="search_menu_item">

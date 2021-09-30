@@ -4,8 +4,9 @@ import Album from '../../model/Album';
 import Media from '../../model/Media';
 
 import './AlbumInfoEditModal.css'
-import TagSelector from '../ModelSelects/TagSelector';
+import TagSelector from '../Selects/TagSelector';
 import { AlbumRepository, IAlbumUpdateRequest } from '../../repositories/AlbumRepository';
+import SelectOption from '../Selects/SelectOption';
 
 type Props = {
     album: Album,
@@ -15,16 +16,11 @@ type Props = {
     onSave: Function
 }
 
-type TagOption = {
-    label: string,
-    value?: any
-}
-
 export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, onSave}: Props) {
 
     const [newAlbumSource, setNewAlbumSource] = useState<string>("");
-    const [selectedAddTagOptions, setSelectedAddTagOptions] = useState<TagOption[]>([]);
-    const [selectedRemoveTagOptions, setSelectedRemoveTagOptions] = useState<TagOption[]>([]);
+    const [selectedAddTagOptions, setSelectedAddTagOptions] = useState<SelectOption[]>([]);
+    const [selectedRemoveTagOptions, setSelectedRemoveTagOptions] = useState<SelectOption[]>([]);
 
     useEffect(() => {
         setNewAlbumSource(getAlbumSource());

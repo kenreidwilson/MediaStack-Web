@@ -1,42 +1,45 @@
 import { useState, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select';
-
-type Option = {
-    label: string,
-    value?: any
-}
+import SelectOption from './SelectOption';
 
 type Props = {
     placeHolder?: string,
-    selectedOption?: Option,
+    selectedOptions: SelectOption[],
     getOptions: Function,
-    createOption: Function,
+    createOption?: Function,
     onChange: Function,
     isLoading?: boolean,
     isCreatable?: boolean
 }
 
-export default function BaseSingleSelect({ placeHolder, selectedOption, getOptions, createOption, onChange, isLoading = false, isCreatable = false } : Props) {
+export default function BaseMultiSelect({ placeHolder, selectedOptions, getOptions, createOption, onChange, isLoading = false, isCreatable = false } : Props) {
 
-    const [options, setOptions] = useState<Option[]>([]);
+    const [options, setOptions] = useState<SelectOption[]>([]);
 
     useEffect(() => {
         getOptions().then(setOptions);
     }, []);
 
-    const getSelectedOption = () => {
-        if (selectedOption === undefined) {
-            return undefined;
-        }
+    // Needed because the select uses '==' to compare options.
+    const getSelectedOptions = () => {
+        let _selectedOptions: SelectOption[] = [];
 
-        return options.find(o => o.value === selectedOption.value);
+        selectedOptions.forEach(option => {
+            _selectedOptions.push(selectedOptions.find(o => o.value === option.value) as SelectOption);
+        });
+
+        return _selectedOptions;
     }
 
     const createAndSelectOption = (inputValue: any) => {
-        createOption(inputValue).then((newOption: Option) => {
+        if (createOption === undefined) {
+            return;
+        }
+
+        createOption(inputValue).then((newOption: SelectOption) => {
             setOptions([ ...options, newOption]);
-            onChange(getSelectedOption());
+            onChange([ ...getSelectedOptions(), newOption]);
         })
     }
 
@@ -44,21 +47,21 @@ export default function BaseSingleSelect({ placeHolder, selectedOption, getOptio
     isCreatable ? 
         <CreatableSelect 
             placeholder={placeHolder}
-            value={getSelectedOption()}
+            value={getSelectedOptions()}
             options={options}
             onChange={(newOptions: any) => onChange(newOptions ? newOptions : [])}
             onCreateOption={(inputValue: any) => createAndSelectOption(inputValue as string)}
             isSearchable
-            isMulti={false}
+            isMulti
             isLoading={isLoading}
         /> :
         <Select
             placeholder={placeHolder}
-            value={getSelectedOption()}
+            value={getSelectedOptions()}
             options={options}
             onChange={(newOptions: any) => onChange(newOptions ? newOptions : [])}
             isSearchable
-            isMulti={false}
+            isMulti
             isLoading={isLoading}
         />
     );

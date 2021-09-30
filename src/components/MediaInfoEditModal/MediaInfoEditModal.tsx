@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button }from "react-bootstrap";
 import Media from '../../model/Media';
-import TagSelector from '../ModelSelects/TagSelector';
-import ArtistsSelect from '../ModelSelects/ArtistSelect';
-import CategorySelect from '../ModelSelects/CategorySelect';
-import AlbumSelect from '../ModelSelects/AlbumSelect';
+import TagSelector from '../Selects/TagSelector';
+import ArtistsSelect from '../Selects/ArtistSelect';
+import CategorySelect from '../Selects/CategorySelect';
+import AlbumSelect from '../Selects/AlbumSelect';
 import { IMediaUpdateRequestBody, MediaRepository } from '../../repositories/MediaRepository';
+import SelectOption from '../Selects/SelectOption';
 
 type Props = {
     media: Media,
@@ -14,21 +15,16 @@ type Props = {
     onSave: Function
 }
 
-type TagOption = {
-    label: string,
-    value?: any
-}
-
 export default function MediaInfoEditModal({ media, isShown, onClose, onSave }: Props) {
 
     const [newSource, setNewSource] = useState<string>(media.source);
-    const [selectedTagOptions, setSelectedTagOptions] = useState<TagOption[]>([]);
+    const [selectedTagOptions, setSelectedTagOptions] = useState<SelectOption[]>([]);
     const [newCategoryId, setNewCategoryId] = useState<number | undefined>(media.categoryID);
     const [newArtistId, setNewArtistId] = useState<number | undefined>(media.artistID);
     const [newAlbumId, setNewAlbumId] = useState<number | undefined>(media.albumID);
 
     useEffect(() => {
-        let selectedTags: TagOption[] = [];
+        let selectedTags: SelectOption[] = [];
         media.tags.forEach(tag => {
             selectedTags.push({value: tag.id, label: tag.name});
         });
@@ -60,15 +56,15 @@ export default function MediaInfoEditModal({ media, isShown, onClose, onSave }: 
                 <div className="info_edit_modal_body">
                 <div className="info_edit_modal_element">
                         <p>Catgory:</p>
-                        <CategorySelect selectedCategory={{ value: newCategoryId, label: "" }} onChange={setNewCategoryId} isCreatable={true}/>
+                        <CategorySelect selectedCategory={{ value: newCategoryId, label: "" }} onChange={(option) => setNewCategoryId(option?.value)} isCreatable={true}/>
                     </div>
                     <div className="info_edit_modal_element">
                         <p>Artist:</p>
-                        <ArtistsSelect selectedArtist={{ value: newCategoryId, label: "" }} onChange={setNewArtistId} isCreatable={true}/>
+                        <ArtistsSelect selectedArtist={{ value: newCategoryId, label: "" }} onChange={(option) => setNewArtistId(option?.value)} isCreatable={true}/>
                     </div>
                     <div className="info_edit_modal_element">
                         <p>Album:</p>
-                        <AlbumSelect selectedAlbum={{ value: newCategoryId, label: "" }} onChange={setNewAlbumId} isCreatable={true}/>
+                        <AlbumSelect selectedAlbum={{ value: newCategoryId, label: "" }} onChange={(option) => setNewAlbumId(option?.value)} isCreatable={true}/>
                     </div>
                     <div className="info_edit_modal_element">
                         <p>Source: </p>
