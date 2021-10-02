@@ -51,9 +51,10 @@ export default function MediaGallery({ mediaList, presentedMedia, onPresentedMed
             : 
             <div id="thumbnails">
                 <SelectableThumbnails 
+                    canUnselect={false}
                     mediaList={mediaList} 
                     selectedMedia={[presentedMedia]} 
-                    onChange={(selectedMedia: Media[]) => selectedMedia.length > 0 ? onPresentedMediaChange(selectedMedia[0]) : () => {}} />
+                    onChange={(sm: Media[]) => onPresentedMediaChange(sm.filter(m => m !== presentedMedia)[0])} />
             </div>
         ) 
         : null}

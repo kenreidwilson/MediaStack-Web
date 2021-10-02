@@ -6,9 +6,10 @@ type Props = {
     mediaList: Media[],
     selectedMedia: Media[],
     onChange: (selectedMedia: Media[]) => void;
+    canUnselect?: boolean
 }
 
-const SelectableThumbnails = ({mediaList, selectedMedia, onChange}: Props) => {
+const SelectableThumbnails = ({mediaList, selectedMedia, onChange, canUnselect = true}: Props) => {
 
     const isMediaEqual = (media: Media, other: Media) => {
         return media == other;
@@ -20,7 +21,9 @@ const SelectableThumbnails = ({mediaList, selectedMedia, onChange}: Props) => {
 
     const onMediaSelected = (media: Media) => {
         if (isMediaSelected(media)) {
-            onChange(selectedMedia.filter(m => isMediaEqual(media, m)));
+            if (canUnselect) {
+                onChange(selectedMedia.filter(m => !isMediaEqual(media, m)));
+            }
         }
         else {
             onChange([...selectedMedia, media]);

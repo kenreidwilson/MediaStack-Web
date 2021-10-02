@@ -26,6 +26,7 @@ export default function SelectableThumbnailSlider({mediaList, selectedMedia, onS
             <a id="thumbnailslider-nav-next" onClick={scroll.bind(null,-1)}>&#10094;&#10094;&#10094;</a>
             <div id="thumbnailslider-image-container">
                 <SelectableThumbnails 
+                    canUnselect={false}
                     mediaList={mediaList}
                     selectedMedia={[selectedMedia]}
                     onChange={(sm: Media[]) => onSelectMedia(sm.filter(m => m !== selectedMedia)[0])}
