@@ -1,21 +1,37 @@
-import React from 'react';
 import Media from '../../model/Media';
 import MediaThumbnail from '../MediaThumbnail/MediaThumbnail';
 import './SelectableThumbnails.css'
 
 type Props = {
-    onThumbnailClick: Function,
     mediaList: Media[],
-    mediaNumber: number
+    selectedMedia: Media[],
+    onChange: (selectedMedia: Media[]) => void;
 }
 
-const SelectableThumbnails = ({mediaList, onThumbnailClick, mediaNumber}: Props) => {
+const SelectableThumbnails = ({mediaList, selectedMedia, onChange}: Props) => {
+
+    const isMediaEqual = (media: Media, other: Media) => {
+        return media == other;
+    }
+
+    const isMediaSelected = (media: Media) => {
+        return selectedMedia.find(m => isMediaEqual(m, media)) !== undefined;
+    }
+
+    const onMediaSelected = (media: Media) => {
+        if (isMediaSelected(media)) {
+            onChange(selectedMedia.filter(m => isMediaEqual(media, m)));
+        }
+        else {
+            onChange([...selectedMedia, media]);
+        }
+    }
 
     return ( 
         <>
-            {mediaList.map((media, index) => 
-                <a key={index} onClick={() => onThumbnailClick(mediaList.indexOf(media))}>
-                    <div className={index === mediaNumber ? "selected-thumbnail" : ""}>
+            {mediaList.map((media) => 
+                <a key={media.id} onClick={() => onMediaSelected(media)}>
+                    <div className={isMediaSelected(media) ? "selected-thumbnail" : ""}>
                         <MediaThumbnail media={media}/>
                     </div>
                 </a>
