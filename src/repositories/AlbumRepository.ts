@@ -1,5 +1,5 @@
-import Album from "../model/Album";
-import Tag from "../model/Tag";
+import Album from "../types/Album";
+import Tag from "../types/Tag";
 import API from "../api/API";
 import ISearchResponse from "../api/ISearchResponse";
 import { IGenericSearchQuery } from "./GenericRepository";

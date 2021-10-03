@@ -1,4 +1,4 @@
-import Category from "../model/Category";
+import Category from "../types/Category";
 import ISearchResponse from "../api/ISearchResponse";
 import GenericRepository from "./GenericRepository";
 

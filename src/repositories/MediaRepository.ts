@@ -1,6 +1,6 @@
 import API from "../api/API";
 import ISearchResponse from "../api/ISearchResponse";
-import Media from "../model/Media";
+import Media from "../types/Media";
 import IRepository from "./IRepository";
 import ISearchQuery from "./ISearchQuery";
 

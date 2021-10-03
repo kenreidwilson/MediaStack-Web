@@ -1,4 +1,4 @@
-import Tag from "../model/Tag";
+import Tag from "../types/Tag";
 import ISearchResponse from "../api/ISearchResponse";
 import GenericRepository from "./GenericRepository";
 

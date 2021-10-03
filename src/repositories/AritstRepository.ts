@@ -1,4 +1,4 @@
-import Artist from "../model/Artist";
+import Artist from "../types/Artist";
 import ISearchResponse from "../api/ISearchResponse";
 import GenericRepository from "./GenericRepository";
 

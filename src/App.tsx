@@ -1,16 +1,15 @@
-import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/style.css';
-import IndexPage from './pages/IndexPage/IndexPage';
-import MediaPage from './pages/MediaPage/MediaPage';
-import AlbumMediaPage from './pages/AlbumMediaPage/AlbumMediaPage';
-import ThumbnailPage from './pages/ThumbnailPage/ThumbnailPage';
-import TagsPage from './pages/TagsPage/TagsPage';
-import Error404Page from './pages/404Page/404Page';
 import { MediaContext } from './MediaContext';
-import ExplorePage from './pages/ExplorePage/ExplorePage';
 import { IMediaSearchQuery } from './repositories/MediaRepository';
+import IndexPage from './pages/IndexPage';
+import MediaPage from './pages/MediaPage';
+import AlbumMediaPage from './pages/AlbumMediaPage';
+import ThumbnailPage from './pages/ThumbnailPage';
+import TagsPage from './pages/TagsPage';
+import ExplorePage from './pages/ExplorePage';
+import Error404Page from './pages/404Page';
 
 export default function App() {
 	

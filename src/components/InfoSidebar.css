@@ -1,0 +1,44 @@
+@import '../css/style.css';
+
+  #media_info_title {
+    text-align: center;
+    font-size: medium;
+    border-bottom: 1px solid white;
+    width: 50%;
+    margin: 0px auto 10px auto;
+  }
+
+  #media_info {
+    border: 3px solid var(--main-accent-color);
+    text-align: left;
+  }
+  
+  #media_info ul li p {
+    display: inline;
+  }
+  
+  #media_info p {
+    color: var(--main-text-color);;
+    padding-left: 5px;
+  }
+  
+  #media_info p a {
+    text-decoration: none;
+    color: var(--main-accent-color);
+    cursor: pointer;
+  }
+  
+  #media_info ul li {
+    padding: 1px 0px;
+  }
+  
+  #media_info ul li a {
+    text-decoration: none;
+    color: var(--main-accent-color);
+    cursor: pointer;
+  }
+
+  .edit_button {
+    margin: 5px auto 10px auto;
+    width: 100%;
+  }
