@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import Navigation from'../components/Nav';
+import Navigation from'../components/Navigation';
 import MediaInfoSidebar from '../components/MediaInfoSidebar';
 import AlbumInfoSidebar from '../components/AlbumInfoSidebar';
 import AlbumInfoEditModal from '../components/AlbumInfoEditModal';

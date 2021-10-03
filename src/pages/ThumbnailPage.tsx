@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 
-import Navigation from '../components/Nav';
+import Navigation from '../components/Navigation';
 import BannerAlert from '../components/BannerAlert';
 import { MediaContext } from '../MediaContext';
 import PageThumbnails from '../components/PageThumbnails';

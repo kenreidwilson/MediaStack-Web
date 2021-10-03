@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner'
 
-import Navigation from '../components/Nav';
+import Navigation from '../components/Navigation';
 import Media from '../types/Media';
 import MediaContainer from '../components/MediaContainer';
 import MediaInfoSidebar from '../components/MediaInfoSidebar';

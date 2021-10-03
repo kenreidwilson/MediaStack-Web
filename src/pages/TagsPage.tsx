@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TagsTable from '../components/TagsTable';
-import Navigation from '../components/Nav';
+import Navigation from '../components/Navigation';
 import { IMediaSearchQuery } from '../repositories/MediaRepository';
 
 export default function TagsPage() {

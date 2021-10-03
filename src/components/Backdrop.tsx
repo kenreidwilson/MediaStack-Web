@@ -1,9 +1,21 @@
-import React, { MouseEventHandler } from 'react';
+import { MouseEventHandler } from 'react';
 
-import './Backdrop.css'
+type Props = {
+    onClick: MouseEventHandler
+}
 
-const Backdrop = ({onClick}: {onClick: MouseEventHandler}) => (
-    <div id="backdrop" onClick={onClick}></div>
-);
+export default function Backdrop({ onClick }: Props) {
 
-export default Backdrop;
+    return <div 
+                onClick={onClick}
+                style={{
+                    position: "fixed", 
+                    width: "100%", 
+                    height: "100%", 
+                    top: 0, 
+                    left: 0, 
+                    background: "rgba(0,0,0,0.6)", 
+                    zIndex: 100
+                }}
+            />
+}

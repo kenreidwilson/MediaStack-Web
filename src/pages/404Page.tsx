@@ -1,5 +1,5 @@
 import React from 'react';
-import Navigation from '../components/Nav';
+import Navigation from '../components/Navigation';
 
 const Error404Page = () => (
    <React.Fragment>

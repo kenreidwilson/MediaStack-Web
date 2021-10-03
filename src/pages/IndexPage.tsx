@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import Navigation from '../components/Nav';
+import Navigation from '../components/Navigation';
 import SearchMenu from '../components/SearchMenu'
 import { MediaContext } from '../MediaContext';
 import { IMediaSearchQuery } from '../repositories/MediaRepository';
