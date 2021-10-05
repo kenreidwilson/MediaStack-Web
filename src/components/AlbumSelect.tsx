@@ -1,40 +1,92 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { AlbumRepository, IAlbumSearchQuery } from '../repositories/AlbumRepository';
 import BaseSingleSelect from './BaseSingleSelect';
 import SelectOption from '../types/SelectOption';
-import { AlbumRepository } from '../repositories/AlbumRepository';
 
 type Props = {
     selectedAlbum?: SelectOption,
-    onChange: (option?: SelectOption) => void,
-    isCreatable?: boolean
+    onAlbumChange: (option?: SelectOption) => void,
+    albumsQuery?: IAlbumSearchQuery,
+    albumArtistId?: number,
+    isCreatable?: boolean,
+    isDisabled?: boolean
 }
 
-export default function AlbumSelect({ selectedAlbum, onChange, isCreatable = false } : Props) {
+export default function AlbumSelect({  selectedAlbum, onAlbumChange: onChange, albumsQuery, albumArtistId, isCreatable = false, isDisabled = false } : Props) {
 
+    const albumRepo = new AlbumRepository();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    
-    const getAlbums = async () => {
+    const [albumOptions, setAlbumOptions] = useState<SelectOption[] | undefined>(undefined);
+
+    useEffect(() => {
+        if (selectedAlbum !== undefined && albumOptions === undefined) {
+            loadAlbumOptions();
+        }
+    })
+
+    const canCreateAlbum = (): boolean => {
+        return isCreatable && albumArtistId !== undefined;
+    }
+
+    const getAlbumQuery = (): IAlbumSearchQuery => {
+        if (albumsQuery !== undefined) {
+            return albumsQuery;
+        }
+        if (albumArtistId !== undefined) {
+            return { count: 9999, artistId: albumArtistId };
+        }
+        return { count: 9999 };
+    }
+
+    const loadAlbumOptions = (): void => {
+        if (albumOptions !== undefined) {
+            return;
+        }
+
         setIsLoading(true);
-        return await new AlbumRepository().search({ count: 9999 }).then(response => {
-            let _options: SelectOption[] = [];
-            response.albums.forEach(album => {
-                _options.push({ value: album.id, label: album.name });
-            });
+        getAlbums().then(options => {
+            setAlbumOptions(options);
             setIsLoading(false);
-            return _options;
         });
     }
 
-    const createAlbum = async (name: string) => {
+    const getAlbums = (): Promise<SelectOption[]> => {
+        return albumRepo.search(getAlbumQuery()).then(response => {
+            return response.albums.map(album => {
+                return { value: album.id, label: album.name };
+            });
+        });
+    }
+
+    const createAlbum = (name: string): Promise<void> => {
+
+        if (albumOptions === undefined) {
+            return Promise.resolve();
+        }
+
+        if (!canCreateAlbum()) {
+            throw "Can't create album with unknown Artist.";
+        }
+
         setIsLoading(true);
-        //return await new AlbumCreationRequest(name).send().then(album => {
-            //setIsLoading(false);
-            //return { label: album.name, value: album.id };
-        //});
+        return albumRepo.add( { id: 0, name, artistID: albumArtistId! } ).then(album => {
+            const newAlbum = { label: album.name, value: album.id };
+            setAlbumOptions([...albumOptions, newAlbum ]);
+            onChange(newAlbum);
+            setIsLoading(false);
+        });
     }
 
     return (
         <BaseSingleSelect 
-            placeHolder={"Select Category"} selectedOption={selectedAlbum} getOptions={getAlbums} createOption={createAlbum} onChange={onChange} isCreatable={isCreatable} isLoading={isLoading}/>
+            placeHolder={"Select Album"} 
+            selectedOption={selectedAlbum} 
+            options={albumOptions ? albumOptions : []} 
+            onCreate={createAlbum} 
+            onChange={onChange} 
+            onMenuOpen={loadAlbumOptions}
+            isCreatable={canCreateAlbum()} 
+            isLoading={isLoading}
+            isDisabled={isDisabled}/>
         );
 }

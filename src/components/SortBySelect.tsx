@@ -8,18 +8,16 @@ type Props = {
 
 export default function SortBySelect({ selectedSortOption, onChange }: Props) {
 
-    const getSortByOptions = (): Promise<SelectOption[]> => {
-        return Promise.resolve([
-            { label: 'Image', value: 1}, 
-            { label: 'Animated Image', value: 2}, 
-            { label: 'Video', value: 3}
-        ]);
-    }
+    const options = [
+        { label: 'Image', value: 1}, 
+        { label: 'Animated Image', value: 2}, 
+        { label: 'Video', value: 3}
+    ];
 
     return <BaseSingleSelect
                 placeHolder={"Sort By"}
                 onChange={onChange}
                 selectedOption={selectedSortOption}
-                getOptions={getSortByOptions}
+                options={options}
             />;
 }

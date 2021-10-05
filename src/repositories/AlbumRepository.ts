@@ -4,7 +4,8 @@ import API from "../api/API";
 import ISearchResponse from "../api/ISearchResponse";
 import { IGenericSearchQuery } from "./GenericRepository";
 import IRepository from "./IRepository";
-import { IMediaUpdateRequestBody, MediaRepository } from "./MediaRepository";
+import { IMediaUpdateRequest, MediaRepository } from "./MediaRepository";
+import ISearchQuery from "./ISearchQuery";
 
 interface IAlbumSearchResponse extends ISearchResponse {
     albums: Album[];
@@ -20,6 +21,11 @@ interface IAlbumUpdateRequest {
     artistId?: number;
 }
 
+interface IAlbumSearchQuery extends ISearchQuery {
+    name?: string,
+    artistId?: number
+}
+
 class AlbumRepository implements IRepository<Album> {
 
     baseURL = `${process.env.REACT_APP_API}`;
@@ -32,7 +38,7 @@ class AlbumRepository implements IRepository<Album> {
         return API.get<Album>(`${this.baseURL}/albums?id=${id}`);
     }
 
-    search(query: IGenericSearchQuery): Promise<IAlbumSearchResponse> {
+    search(query: IAlbumSearchQuery): Promise<IAlbumSearchResponse> {
         let endpoint = `${this.baseURL}/albums/search?count=${query.count}`;
 
         if (query.offset) {
@@ -43,6 +49,10 @@ class AlbumRepository implements IRepository<Album> {
             endpoint += `&name=${query.name}`;
         }
 
+        if (query.artistId) {
+            endpoint += `&artistid=${query.artistId}`;
+        }
+
         return API.get<IAlbumSearchResponse>(endpoint);
     }
 
@@ -50,7 +60,7 @@ class AlbumRepository implements IRepository<Album> {
         let mediaRepository = new MediaRepository();
         const response = await mediaRepository.search({ albumID: updateRequest.albumID, mode: 1, count: 9999 });
         for (const media of response.media) {
-            let mediaUpdateRequest: IMediaUpdateRequestBody = { ID: media.id, score: updateRequest.score, source: updateRequest.source };
+            let mediaUpdateRequest: IMediaUpdateRequest = { ID: media.id, score: updateRequest.score, source: updateRequest.source };
 
             if (updateRequest.removeTagIDs !== undefined || updateRequest.addTagIDs !== undefined) {
                 let tags: Tag[] = [...media.tags];
@@ -84,7 +94,8 @@ class AlbumRepository implements IRepository<Album> {
 
 export type {
     IAlbumSearchResponse,
-    IAlbumUpdateRequest
+    IAlbumUpdateRequest,
+    IAlbumSearchQuery
 }
 
 export {

@@ -25,7 +25,7 @@ interface IMediaSearchReponse extends ISearchResponse {
     media: Media[]
 }
 
-interface IMediaUpdateRequestBody {
+interface IMediaUpdateRequest {
     ID: number;
     categoryID?: number;
     artistID?: number;
@@ -56,7 +56,7 @@ class MediaRepository implements IRepository<Media> {
         return API.post<IMediaSearchReponse>(`${this.baseURL}/media/search`, query);
     }
 
-    update(updateRequest: IMediaUpdateRequestBody): Promise<Media> {
+    update(updateRequest: IMediaUpdateRequest): Promise<Media> {
         return API.put<Media>(`${this.baseURL}/media`, updateRequest);
     }
 
@@ -67,7 +67,7 @@ class MediaRepository implements IRepository<Media> {
 
 export type {
     IMediaSearchQuery,
-    IMediaUpdateRequestBody
+    IMediaUpdateRequest
 }
 
 export {

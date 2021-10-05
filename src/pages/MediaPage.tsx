@@ -29,7 +29,7 @@ export default function MediaPage() {
 
     return ( 
         <React.Fragment>
-            {showEditModal ? 
+            {media ? 
                 <MediaInfoEditModal media={media as Media} isShown={showEditModal} onClose={() => setShowEditModal(false)}
                     onSave={(updatedMedia: Media) => {setMedia(updatedMedia); setShowEditModal(false)}}/>
                 : null}

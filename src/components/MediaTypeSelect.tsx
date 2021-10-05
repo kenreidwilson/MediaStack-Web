@@ -8,18 +8,16 @@ type Props = {
 
 export default function MediaTypeSelct({ selectedType, onChange }: Props) {
 
-    const getTypeOptions = (): Promise<SelectOption[]> => {
-        return Promise.resolve([
-            { label: 'Category', value: 'Category'}, 
-            { label: 'Score', value: 'Score'}
-        ]);
-    }
+    const options = [
+        { label: 'Category', value: 'Category'}, 
+        { label: 'Score', value: 'Score'}
+    ];
 
     return <BaseSingleSelect
                 placeHolder={"Media Type"}
                 onChange={onChange}
                 selectedOption={selectedType}
-                getOptions={getTypeOptions}
+                options={options}
             />;
 
 }

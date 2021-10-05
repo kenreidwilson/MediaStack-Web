@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import TagSelector from './TagSelector';
+import TagSelect from './TagSelect';
 import RatingSelector from './RatingSelector';
 
 import './SearchMenu.css';
@@ -78,26 +78,26 @@ export default function SearchMenu({ onSearch }: Props) {
             <div className="search_menu_item">
                 <p>Tags: </p>
                 <div className="selector">
-                    <TagSelector onChange={setTagOptionsSelected} selectedTags={tagOptionsSelected} isCreatable={false}/>
+                    <TagSelect onTagsChange={setTagOptionsSelected} selectedTags={tagOptionsSelected} isCreatable={false}/>
                 </div>
             </div>
             {showAdvancedOptions ? <div id="advanced_options">
                 <div className="search_menu_item">
                     <p>Blacklist Tags: </p>
                     <div className="selector">
-                        <TagSelector onChange={setBlacklistTagOptionsSelected} selectedTags={blacklistTagOptionsSelected} isCreatable={false}/>
+                        <TagSelect onTagsChange={setBlacklistTagOptionsSelected} selectedTags={blacklistTagOptionsSelected} isCreatable={false}/>
                     </div>
                 </div>
                 <div className="search_menu_item">
                     <p>Category: </p>
                     <div className="selector">
-                        <CategorySelect selectedCategory={categoryOptionSelected} onChange={setCategoryOptionSelected} />
+                        <CategorySelect selectedCategory={categoryOptionSelected} onCategoryChange={setCategoryOptionSelected} />
                     </div>
                 </div>
                 <div className="search_menu_item">
                     <p>Artist: </p>
                     <div className="selector">
-                        <ArtistsSelect selectedArtist={artistOptionSelected} onChange={setArtistOptionSelected} />
+                        <ArtistsSelect selectedArtist={artistOptionSelected} onArtistChange={setArtistOptionSelected} />
                     </div>
                 </div>
                 <div className="search_menu_item">

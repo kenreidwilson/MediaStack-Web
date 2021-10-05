@@ -1,41 +1,73 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArtistRepository } from '../repositories/AritstRepository';
 import BaseSingleSelect from './BaseSingleSelect';
 import SelectOption from '../types/SelectOption';
+import { IGenericSearchQuery } from '../repositories/GenericRepository';
 
 type Props = {
     selectedArtist?: SelectOption,
-    onChange: (option?: SelectOption) => void,
-    isCreatable?: boolean
+    onArtistChange: (option?: SelectOption) => void,
+    artistsQuery?: IGenericSearchQuery,
+    isCreatable?: boolean,
+    isDisabled?: boolean
 }
 
-export default function ArtistsSelect({ selectedArtist, onChange, isCreatable = false } : Props) {
+export default function ArtistSelect({ selectedArtist, onArtistChange: onChange, artistsQuery, isCreatable = false, isDisabled = false } : Props) {
 
+    const artistRepo = new ArtistRepository();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const artists = new ArtistRepository();
+    const [artistOptions, setArtistOptions] = useState<SelectOption[] | undefined>(undefined);
 
-    const getArtists = async () => {
+    useEffect(() => {
+        if (selectedArtist !== undefined && artistOptions === undefined) {
+            loadArtistOptions();
+        }
+    });
+
+    const loadArtistOptions = (): void => {
+        if (artistOptions !== undefined) {
+            return;
+        }
+
         setIsLoading(true);
-        return await artists.search({ count: 999 }).then(response => {
-            let _options: SelectOption[] = [];
-            response.artists.forEach(artist => {
-                _options.push({ value: artist.id, label: artist.name });
-            });
+        getArtists().then((options) => {
+            setArtistOptions(options);
             setIsLoading(false);
-            return _options;
         });
     }
 
-    const createArtist = async (name: string) => {
+    const getArtists = (): Promise<SelectOption[]> => {
+        return artistRepo.search(artistsQuery ? artistsQuery : { count: 999 }).then(response => {
+            return response.artists.map(artist => {
+                return { value: artist.id, label: artist.name };
+            });
+        });
+    }
+
+    const createArtist = (name: string): Promise<void> => {
+        if (artistOptions === undefined) {
+            return Promise.resolve();
+        }
+
         setIsLoading(true);
-        return await artists.add({ id: 0, name }).then(artist => {
+        return artistRepo.add({ id: 0, name }).then(artist => {
+            const newArtist = { label: artist.name, value: artist.id };
+            setArtistOptions([ ...artistOptions, newArtist]);
+            onChange(newArtist);
             setIsLoading(false);
-            return { label: artist.name, value: artist.id };
         });
     }
 
     return (
         <BaseSingleSelect 
-            placeHolder={"Select Category"} selectedOption={selectedArtist} getOptions={getArtists} createOption={createArtist} onChange={onChange} isCreatable={isCreatable} isLoading={isLoading}/>
+            placeHolder={"Select Artist"} 
+            selectedOption={selectedArtist} 
+            options={artistOptions ? artistOptions : []} 
+            onCreate={createArtist} 
+            onChange={onChange} 
+            onMenuOpen={loadArtistOptions}
+            isCreatable={isCreatable} 
+            isLoading={isLoading}
+            isDisabled={isDisabled}/>
         );
 }

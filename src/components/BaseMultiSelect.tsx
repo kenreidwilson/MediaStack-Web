@@ -1,46 +1,46 @@
-import { useState, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select';
 import SelectOption from '../types/SelectOption';
 
 type Props = {
-    placeHolder?: string,
+    options: SelectOption[],
     selectedOptions: SelectOption[],
-    getOptions: Function,
-    createOption?: Function,
-    onChange: Function,
+    placeHolder?: string,
+    onCreate?: (inputValue: any) => void,
+    onChange?: (selectedOption: SelectOption[]) => void,
+    onMenuOpen?: () => void,
     isLoading?: boolean,
-    isCreatable?: boolean
+    isCreatable?: boolean,
+    isDisabled?: boolean
 }
 
-export default function BaseMultiSelect({ placeHolder, selectedOptions, getOptions, createOption, onChange, isLoading = false, isCreatable = false } : Props) {
-
-    const [options, setOptions] = useState<SelectOption[]>([]);
-
-    useEffect(() => {
-        getOptions().then(setOptions);
-    }, []);
+export default function BaseMultiSelect({ 
+    placeHolder, 
+    selectedOptions, 
+    options, 
+    onCreate, 
+    onChange, 
+    onMenuOpen, 
+    isLoading = false, 
+    isCreatable = false,
+    isDisabled = false } : Props) {
 
     // Needed because the select uses '==' to compare options.
-    const getSelectedOptions = () => {
-        let _selectedOptions: SelectOption[] = [];
-
-        selectedOptions.forEach(option => {
-            _selectedOptions.push(selectedOptions.find(o => o.value === option.value) as SelectOption);
-        });
-
-        return _selectedOptions;
-    }
-
-    const createAndSelectOption = (inputValue: any) => {
-        if (createOption === undefined) {
-            return;
+    const getSelectedOptions = (): SelectOption[] => {
+        if (options.length === 0) {
+            return [];
         }
 
-        createOption(inputValue).then((newOption: SelectOption) => {
-            setOptions([ ...options, newOption]);
-            onChange([ ...getSelectedOptions(), newOption]);
-        })
+        let _options: SelectOption[] = [];
+
+        for (let option of selectedOptions) {
+            let selectedOption = options.find(o => o.value === option.value);
+            if (selectedOption !== undefined) {
+                _options.push(selectedOption);
+            }
+        }
+
+        return _options;
     }
 
     return (
@@ -49,20 +49,24 @@ export default function BaseMultiSelect({ placeHolder, selectedOptions, getOptio
             placeholder={placeHolder}
             value={getSelectedOptions()}
             options={options}
-            onChange={(newOptions: any) => onChange(newOptions ? newOptions : [])}
-            onCreateOption={(inputValue: any) => createAndSelectOption(inputValue as string)}
+            onChange={(newOptions: any) => onChange ? onChange(newOptions ? newOptions : []) : () => {}}
+            onCreateOption={onCreate}
+            onMenuOpen={onMenuOpen}
             isSearchable
             isMulti
             isLoading={isLoading}
+            isDisabled={isDisabled}
         /> :
         <Select
             placeholder={placeHolder}
             value={getSelectedOptions()}
             options={options}
-            onChange={(newOptions: any) => onChange(newOptions ? newOptions : [])}
+            onChange={(newOptions: any) => onChange ? onChange(newOptions ? newOptions : []) : () => {}}
+            onMenuOpen={onMenuOpen}
             isSearchable
             isMulti
             isLoading={isLoading}
+            isDisabled={isDisabled}
         />
     );
 }

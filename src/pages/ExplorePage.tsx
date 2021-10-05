@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
 import Navigation from '../components/Navigation';
-import SelectableThumbnails from '../components/SelectableThumbnails';
 import Media from '../types/Media';
-import { MediaRepository } from '../repositories/MediaRepository';
+import { IMediaUpdateRequest, MediaRepository } from '../repositories/MediaRepository';
+import MediaUpdateForm from '../components/MediaUpdateForm';
 
 export default function ExplorePage() {
 
     const [mediaList, setMediaList] = useState<Media[]>([]);
     const [selectedMedia, setSelectedMedia] = useState<Media[]>([]);
+    const [updateRequest, setUpdateRequest] = useState<IMediaUpdateRequest>( { ID: -1 } );
 
     const mediaRepo = new MediaRepository();
 
@@ -25,8 +25,7 @@ export default function ExplorePage() {
     return (
         <React.Fragment>
             <Navigation />
-            <SelectableThumbnails mediaList={mediaList} selectedMedia={selectedMedia} onChange={setSelectedMedia} />
-            <Button onClick={() => updateMedia(2).then(() => setSelectedMedia([]))}>Print</Button>
+            {mediaList.length > 0 ? <MediaUpdateForm request={updateRequest} onChange={setUpdateRequest} /> : null}
         </React.Fragment>
     );
 };

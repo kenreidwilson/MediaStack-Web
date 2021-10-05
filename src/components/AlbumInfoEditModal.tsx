@@ -4,7 +4,7 @@ import Album from '../types/Album';
 import Media from '../types/Media';
 
 import './AlbumInfoEditModal.css'
-import TagSelector from './TagSelector';
+import TagSelect from './TagSelect';
 import { AlbumRepository, IAlbumUpdateRequest } from '../repositories/AlbumRepository';
 import SelectOption from '../types/SelectOption';
 
@@ -77,11 +77,11 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
                     </div>
                     <div className="info_edit_modal_element">
                         <p>Add Tags:</p>
-                        <TagSelector selectedTags={selectedAddTagOptions} onChange={setSelectedAddTagOptions}/>
+                        <TagSelect selectedTags={selectedAddTagOptions} onTagsChange={setSelectedAddTagOptions}/>
                     </div>
                     <div className="info_edit_modal_element">
                         <p>Remove Tags:</p>
-                        <TagSelector selectedTags={selectedRemoveTagOptions} onChange={setSelectedRemoveTagOptions}/>
+                        <TagSelect selectedTags={selectedRemoveTagOptions} onTagsChange={setSelectedRemoveTagOptions}/>
                     </div>
                 </div>
                 </Modal.Body>
