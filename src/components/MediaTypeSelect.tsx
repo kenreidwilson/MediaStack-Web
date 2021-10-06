@@ -9,8 +9,9 @@ type Props = {
 export default function MediaTypeSelct({ selectedType, onChange }: Props) {
 
     const options = [
-        { label: 'Category', value: 'Category'}, 
-        { label: 'Score', value: 'Score'}
+        { label: 'Image', value: 1}, 
+        { label: 'Animated Image', value: 2}, 
+        { label: 'Video', value: 3}
     ];
 
     return <BaseSingleSelect

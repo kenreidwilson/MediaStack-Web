@@ -7,8 +7,8 @@ import MediaUpdateForm from './MediaUpdateForm';
 type Props = {
     media: Media,
     isShown: boolean,
-    onClose: Function,
-    onSave: Function
+    onClose: () => void,
+    onSave: (updatedMedia: Media) => void
 }
 
 export default function MediaInfoEditModal({ media, isShown, onClose, onSave }: Props) {

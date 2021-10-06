@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import StarRatingComponent from 'react-star-rating-component';
+import SelectOption from '../types/SelectOption';
 
 import './RatingSelector.css';
-
-type RatingComparator = {
-	value: string | undefined,
-	label: string
-}
 
 type Props = {
 	ratingValue: number,
@@ -15,7 +11,7 @@ type Props = {
 
 export default function RatingSelector({ ratingValue, onChange }: Props) {
 
-	const options: RatingComparator[] = [
+	const options: SelectOption[] = [
 		{ label: "Any", value: undefined },
 		{ label: "Equal", value: "score" },
 		{ label: "Greater than", value: 'greaterThanScore' },
@@ -24,10 +20,10 @@ export default function RatingSelector({ ratingValue, onChange }: Props) {
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [rating, setRating] = useState<number>(0);
-	const [selectedComparator, setSelectedComparator] = useState<RatingComparator>(options[0]);
+	const [selectedComparator, setSelectedComparator] = useState<SelectOption>(options[0]);
 
 	const onRatingSelected = (nextValue: number) => {
-		let comparator: RatingComparator = selectedComparator;
+		let comparator: SelectOption = selectedComparator;
 		if (selectedComparator.label === 'Any') {
 			comparator = options.find(c => c.label === "Equal")!;
 			setSelectedComparator(comparator);

@@ -1,36 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Modal, Button }from "react-bootstrap";
 import Album from '../types/Album';
 import Media from '../types/Media';
+import { AlbumRepository, IAlbumUpdateRequest } from '../repositories/AlbumRepository';
+import AlbumUpdateForm from './AlbumUpdateForm';
 
 import './AlbumInfoEditModal.css'
-import TagSelect from './TagSelect';
-import { AlbumRepository, IAlbumUpdateRequest } from '../repositories/AlbumRepository';
-import SelectOption from '../types/SelectOption';
 
 type Props = {
     album: Album,
     mediaList: Media[]
     isShown: boolean,
-    onClose: Function,
-    onSave: Function
+    onClose: () => void,
+    onSave: (updatedAlbum: Album) => void 
 }
 
 export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, onSave}: Props) {
 
-    const [newAlbumSource, setNewAlbumSource] = useState<string>("");
-    const [selectedAddTagOptions, setSelectedAddTagOptions] = useState<SelectOption[]>([]);
-    const [selectedRemoveTagOptions, setSelectedRemoveTagOptions] = useState<SelectOption[]>([]);
-
-    useEffect(() => {
-        setNewAlbumSource(getAlbumSource());
-    }, []);
-
+    // TODO: Not Working
     const getAlbumSource = () => {
         let albumSource: string = "";
 
         mediaList.forEach(media => {
-            if (media.source !== null) {
+            if (media.source !== null && media.source !== "") {
                 if (albumSource !== null && media.source !== albumSource) {
                     return "";
                 }
@@ -41,21 +33,17 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
         return albumSource;
     };
 
+    const [updateRequest, setUpdateRequest] = useState<IAlbumUpdateRequest>(
+        { 
+            ID: album.id, 
+            categoryID: mediaList.length !== 0 ? mediaList[0].categoryID : undefined, //TODO: Find a better way.
+            artistID: album.artistID,
+            source: getAlbumSource(),
+        }
+    );
+
     const handleSave = () => {
-
-        let albumEditRequest: IAlbumUpdateRequest = { albumID: album.id };
-
-        let addTagIDs: number[] = [];
-        selectedAddTagOptions.map(tagOption => addTagIDs.push(tagOption.value as number));
-        albumEditRequest.addTagIDs = addTagIDs;
-
-        let removeTagIDs: number[] = [];
-        selectedRemoveTagOptions.map(tagOption => removeTagIDs.push(tagOption.value as number));
-        albumEditRequest.removeTagIDs = removeTagIDs;
-
-        albumEditRequest.source = newAlbumSource;
-
-        new AlbumRepository().update(albumEditRequest).then(response => {
+        new AlbumRepository().update(updateRequest).then(response => {
             onSave(response);
         });
     };
@@ -67,23 +55,7 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
                     <Modal.Title>{`Edit Album Info`}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <div id="info_edit_modal_body">
-                    <h5 className="info_edit_modal_seperator">Album </h5>
-                    <div className="info_edit_modal_element">
-                        <p>Source: </p>
-                        <form className="info_edit_modal_source_form">
-                            <input type="text" value={newAlbumSource} onChange={(value) => setNewAlbumSource(value.target.value)} />
-                        </form>
-                    </div>
-                    <div className="info_edit_modal_element">
-                        <p>Add Tags:</p>
-                        <TagSelect selectedTags={selectedAddTagOptions} onTagsChange={setSelectedAddTagOptions}/>
-                    </div>
-                    <div className="info_edit_modal_element">
-                        <p>Remove Tags:</p>
-                        <TagSelect selectedTags={selectedRemoveTagOptions} onTagsChange={setSelectedRemoveTagOptions}/>
-                    </div>
-                </div>
+                    <AlbumUpdateForm request={updateRequest} onChange={setUpdateRequest}/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => onClose()}>Close</Button>

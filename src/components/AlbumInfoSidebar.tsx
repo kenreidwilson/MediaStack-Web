@@ -53,7 +53,7 @@ export default function AlbumInfoSidebar({album, setAlbum, mediaList, updateMedi
 
     const handleScoreEdit = async (newScore: number) => {
         let score = newScore === getAlbumScore() ? 0 : newScore;
-        await new AlbumRepository().update({ albumID: album.id, 'score' : score})
+        await new AlbumRepository().update({ ID: album.id, 'score' : score})
             .then(() => updateMediaList(album)).catch(error => addError(error));
     }
 

@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import BaseSingleSelect from './BaseSingleSelect';
 import SelectOption from '../types/SelectOption';
 
@@ -14,13 +13,9 @@ export default function SearchModeSelect({ selectedMode, onChange }: Props) {
         { label: "All Media", value: 1 },
         { label: "Media with no Album", value: 3 }
     ];
-
-    useEffect(() => {
-        onChange(options[0]);
-    }, []);
     
     return <BaseSingleSelect
-                placeHolder={"Sort By"}
+                placeHolder={"Search Mode"}
                 onChange={onChange}
                 selectedOption={selectedMode}
                 options={options}

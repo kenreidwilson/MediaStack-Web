@@ -10,10 +10,24 @@ import TagSelect from './TagSelect';
 type Props = {
     request: IMediaUpdateRequest,
     onChange?: (request: IMediaUpdateRequest) => void,
-    isCreatable?: boolean
+    isCreatable?: boolean,
+    showSource?: boolean,
+    showCategory?: boolean,
+    showArtist?: boolean,
+    showAlbum?: boolean,
+    showTags?: boolean
 }
 
-export default function MediaUpdateForm({ request, onChange, isCreatable = false }: Props) {
+export default function MediaUpdateForm({ 
+    request, 
+    onChange, 
+    isCreatable = false, 
+    showSource = true, 
+    showCategory = true, 
+    showArtist = true, 
+    showAlbum = true,
+    showTags = true }: Props) {
+        
     const [newSource, setNewSource] = useState<string | undefined>(request.source);
     const [selectedTagOptions, setSelectedTagOptions] = useState<SelectOption[]>(request.tagIDs ? request.tagIDs.map(id => {return { value: id }}) : []);
     const [newCategoryOption, setNewCategoryOption] = useState<SelectOption | undefined>(request.categoryID ? { value: request.categoryID } : undefined);
@@ -39,26 +53,35 @@ export default function MediaUpdateForm({ request, onChange, isCreatable = false
 
     return (
         <Form>
-            <Form.Group>
-                <Form.Label>Category</Form.Label>
-                <CategorySelect selectedCategory={newCategoryOption} onCategoryChange={setNewCategoryOption} isCreatable={isCreatable}/>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Artist</Form.Label>
-                <ArtistSelect selectedArtist={newArtistOption} onArtistChange={setNewArtistOption} isCreatable={isCreatable}/>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Album</Form.Label>
-                <AlbumSelect selectedAlbum={newAlbumOption} onAlbumChange={setNewAlbumOption} isCreatable={isCreatable}/>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Source</Form.Label>
-                <Form.Control value={newSource} onChange={(event) => setNewSource(event.target.value)}/>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Tags</Form.Label>
-                <TagSelect selectedTags={selectedTagOptions} onTagsChange={setSelectedTagOptions} isCreatable={isCreatable}/>
-            </Form.Group>
+            {showCategory ? 
+                <Form.Group>
+                    <Form.Label>Category</Form.Label>
+                    <CategorySelect selectedCategory={newCategoryOption} onCategoryChange={setNewCategoryOption} isCreatable={isCreatable}/>
+                </Form.Group> : null}
+            
+            {showArtist ? 
+                <Form.Group>
+                    <Form.Label>Artist</Form.Label>
+                    <ArtistSelect isDisabled={newCategoryOption === undefined} selectedArtist={newArtistOption} onArtistChange={setNewArtistOption} isCreatable={isCreatable}/>
+                </Form.Group> : null}
+            
+            {showAlbum ? 
+                <Form.Group>
+                    <Form.Label>Album</Form.Label>
+                    <AlbumSelect isDisabled={newArtistOption === undefined} selectedAlbum={newAlbumOption} onAlbumChange={setNewAlbumOption} isCreatable={isCreatable}/>
+                </Form.Group> : null}
+            
+            {showSource ? 
+                <Form.Group>
+                    <Form.Label>Source</Form.Label>
+                    <Form.Control value={newSource} onChange={(event) => setNewSource(event.target.value)}/>
+                </Form.Group> : null}
+
+            {showTags ? 
+                <Form.Group>
+                    <Form.Label>Tags</Form.Label>
+                    <TagSelect selectedTags={selectedTagOptions} onTagsChange={setSelectedTagOptions} isCreatable={isCreatable}/>
+                </Form.Group> : null}
         </Form>
     );
 }

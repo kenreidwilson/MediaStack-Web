@@ -2,7 +2,6 @@ import Album from "../types/Album";
 import Tag from "../types/Tag";
 import API from "../api/API";
 import ISearchResponse from "../api/ISearchResponse";
-import { IGenericSearchQuery } from "./GenericRepository";
 import IRepository from "./IRepository";
 import { IMediaUpdateRequest, MediaRepository } from "./MediaRepository";
 import ISearchQuery from "./ISearchQuery";
@@ -12,13 +11,13 @@ interface IAlbumSearchResponse extends ISearchResponse {
 }
 
 interface IAlbumUpdateRequest {
-    albumID: number;
+    ID: number;
     addTagIDs?: number[];
     removeTagIDs?: number[];
     source?: string;
     score?: number;
-    categoryId? : number;
-    artistId?: number;
+    categoryID? : number;
+    artistID?: number;
 }
 
 interface IAlbumSearchQuery extends ISearchQuery {
@@ -58,7 +57,7 @@ class AlbumRepository implements IRepository<Album> {
 
     async update(updateRequest: IAlbumUpdateRequest): Promise<Album> {
         let mediaRepository = new MediaRepository();
-        const response = await mediaRepository.search({ albumID: updateRequest.albumID, mode: 1, count: 9999 });
+        const response = await mediaRepository.search({ albumID: updateRequest.ID, mode: 1, count: 9999 });
         for (const media of response.media) {
             let mediaUpdateRequest: IMediaUpdateRequest = { ID: media.id, score: updateRequest.score, source: updateRequest.source };
 
@@ -83,7 +82,7 @@ class AlbumRepository implements IRepository<Album> {
 
             await mediaRepository.update(mediaUpdateRequest);
         }
-        return await this.get(updateRequest.albumID);
+        return await this.get(updateRequest.ID);
     }
 
     delete(e: Album): Promise<void> {

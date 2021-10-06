@@ -9,9 +9,8 @@ type Props = {
 export default function SortBySelect({ selectedSortOption, onChange }: Props) {
 
     const options = [
-        { label: 'Image', value: 1}, 
-        { label: 'Animated Image', value: 2}, 
-        { label: 'Video', value: 3}
+        { label: 'Category', value: 'Category'}, 
+        { label: 'Score', value: 'Score'}
     ];
 
     return <BaseSingleSelect
