@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-import Media from '../types/Media';
 import { IMediaSearchQuery } from '../repositories/MediaRepository';
 import AutoPagedThumbnails from './AutoPagedThumbnails';
 import PagedThumbnails from './PagedThumbnails';

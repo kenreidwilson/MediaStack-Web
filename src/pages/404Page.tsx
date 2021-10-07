@@ -1,13 +1,11 @@
-import React from 'react';
-import Navigation from '../components/Navigation';
+import BasePage from './BasePage';
 
 const Error404Page = () => (
-   <React.Fragment>
-      <Navigation/>
-         <div>
-            <p>Error: Page does not exist!</p>
-         </div>
-   </React.Fragment>
+   <BasePage>
+      <div>
+         <p>Error: Page does not exist!</p>
+      </div>
+   </BasePage>
 )
 
 export default Error404Page;

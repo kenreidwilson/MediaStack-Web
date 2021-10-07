@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react';
-
-import Navigation from'../components/Navigation';
+import { useState, useEffect } from 'react';
 import MediaInfoSidebar from '../components/MediaInfoSidebar';
 import AlbumInfoSidebar from '../components/AlbumInfoSidebar';
 import AlbumInfoEditModal from '../components/AlbumInfoEditModal';
-import BannerAlert from '../components/BannerAlert';
 import Album from '../types/Album';
 import Media from '../types/Media';
 
@@ -13,6 +10,7 @@ import DraggableMediaThumbnails from '../components/DraggableMediaThumbnails';
 import { AlbumRepository } from '../repositories/AlbumRepository';
 import { MediaRepository } from '../repositories/MediaRepository';
 import MediaGallery from '../components/MediaGallery';
+import BasePage from './BasePage';
 
 export default function AlbumMediaPage() {
     const [album, setAlbum] = useState<Album>();
@@ -20,8 +18,6 @@ export default function AlbumMediaPage() {
     const [selectedMedia, setSelectdMedia] = useState<Media | undefined>(undefined);
     const [showMediaEditModal, setShowMediaEditModal] = useState<boolean>(false);
     const [showAlbumEditModal, setShowAlbumEditModal] = useState<boolean>(false);
-    const [alerts, setAlerts] = useState<any[]>([]);
-
     const [isOrganizeMode, setIsOrganizeMode] = useState<boolean>(false);
 
     const mediaRepository = new MediaRepository();
@@ -37,7 +33,7 @@ export default function AlbumMediaPage() {
                 }
             });
         }).catch(error => { 
-            setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
+            //setAlerts([...alerts, <MSBannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
         });
         
     }, []);
@@ -65,28 +61,26 @@ export default function AlbumMediaPage() {
         setIsOrganizeMode(!isOrganizeMode);
     }
 
-    return ( 
-        <React.Fragment>
-            {album !== undefined && showAlbumEditModal ? 
-                <AlbumInfoEditModal 
-                    isShown={showAlbumEditModal} 
-                    onClose={() => setShowAlbumEditModal(false)}
-                    onSave={(album: Album) => {setAlbum(album); updateMediaList(album); setShowAlbumEditModal(false);}}
-                    mediaList={mediaList}
-                    album={album}
-                /> 
-                : null}
-            {mediaList !== undefined && showMediaEditModal ?
-                <MediaInfoEditModal
-                    isShown={showMediaEditModal}
-                    media={selectedMedia!}
-                    onSave={(updatedMedia: Media) => {updateSelectedMedia(updatedMedia); setShowMediaEditModal(false);}}
-                    onClose={() => setShowMediaEditModal(false)}
-                /> 
-                : null}
-            <Navigation />
-            {alerts.map(errorComponent => errorComponent)}
+    return (
+        <BasePage>
             <div id="mediapage">
+                {album !== undefined && showAlbumEditModal ? 
+                    <AlbumInfoEditModal 
+                        isShown={showAlbumEditModal} 
+                        onClose={() => setShowAlbumEditModal(false)}
+                        onSave={(album: Album) => {setAlbum(album); updateMediaList(album); setShowAlbumEditModal(false);}}
+                        mediaList={mediaList}
+                        album={album}
+                    /> 
+                    : null}
+                {mediaList !== undefined && showMediaEditModal ?
+                    <MediaInfoEditModal
+                        isShown={showMediaEditModal}
+                        media={selectedMedia!}
+                        onSave={(updatedMedia: Media) => {updateSelectedMedia(updatedMedia); setShowMediaEditModal(false);}}
+                        onClose={() => setShowMediaEditModal(false)}
+                    /> 
+                : null}
                 <div id="mediapage-sidebar">
                     {mediaList !== undefined && selectedMedia !== undefined ? 
                         <div>
@@ -103,7 +97,7 @@ export default function AlbumMediaPage() {
                         <MediaGallery mediaList={mediaList} presentedMedia={selectedMedia} onPresentedMediaChange={setSelectdMedia}/> : null}
                 
             </div>
-        </React.Fragment>
+        </BasePage>
      );
 }
 

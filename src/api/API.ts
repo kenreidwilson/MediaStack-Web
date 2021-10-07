@@ -3,7 +3,7 @@ import { APINetworkError, APINotFoundError, APIBadRequestError, APIUnexpectedRes
 import BaseResponse from './IBaseResponse';
 
 class API {
-    static get<T>(url: string) {
+    static get<T>(url: string): Promise<T> {
         return Axios.get<BaseResponse<T>>(url)
         .then(response => {
             if (response.status === 200) {
@@ -11,7 +11,7 @@ class API {
             }
             throw new APIUnexpectedResponseError(`Invalid response status: ${response.status}`);
         }).catch(error => {
-            if (typeof error.response === 'undefined') {
+            if (error.response === undefined) {
                 throw new APINetworkError("API sent no response.");
             }
             switch (error.response.status) {
@@ -23,7 +23,7 @@ class API {
         });
     }
 
-    static post<T>(url: string, data?: any) {
+    static post<T>(url: string, data?: any): Promise<T> {
         return Axios.post<BaseResponse<T>>(url, data)
         .then(response => {
             if (response.status === 201 || response.status === 200) {
@@ -32,7 +32,7 @@ class API {
             throw new APIUnexpectedResponseError(`Invalid response status: ${response.status}`);
         })
         .catch(error => {
-            if (typeof error.response === 'undefined') {
+            if (error.response === undefined) {
                 throw new APINetworkError("API sent no response.");
             }
             switch (error.response.status) {
@@ -44,7 +44,7 @@ class API {
         });
     }
 
-    static delete<T>(url: string) {
+    static delete<T>(url: string): Promise<T> {
         return Axios.delete<BaseResponse<T>>(url)
         .then(response => {
             if (response.status === 200) {
@@ -53,7 +53,7 @@ class API {
             throw new APIUnexpectedResponseError(`Invalid response status: ${response.status}`);
         })
         .catch(error => {
-            if (typeof error.response === 'undefined') {
+            if (error.response === undefined) {
                 throw new APINetworkError("API sent no response.");
             }
             switch (error.response.status) {
@@ -65,7 +65,7 @@ class API {
         });
     }
 
-    static put<T>(url: string, data?: any) {
+    static put<T>(url: string, data?: any): Promise<T> {
         return Axios.put<BaseResponse<T>>(url, data)
         .then(response => {
             if (response.status === 200) {
@@ -74,7 +74,7 @@ class API {
             throw new APIUnexpectedResponseError(`Invalid response status: ${response.status}`);
         })
         .catch(error => {
-            if (typeof error.response === 'undefined') {
+            if (error.response === undefined) {
                 throw new APINetworkError("API sent no response.");
             }
             switch (error.response.status) {

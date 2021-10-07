@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Spinner } from 'react-bootstrap';
 import Media from '../types/Media';
 import { IMediaSearchQuery, MediaRepository } from '../repositories/MediaRepository';
 import MediaThumbnails from './MediaThumbnails';
 import MSPagination from './MSPagination';
+import { ErrorContext } from '../contexts/ErrorContext';
 
 type Props = {
     baseQuery: IMediaSearchQuery,
@@ -12,6 +13,8 @@ type Props = {
 };
 
 export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}: Props) {
+
+    const { addError } = useContext(ErrorContext);
 
     const [numberOfPages, setNumberOfPages] = useState<number>(0);
     const [mediaList, setMediaList] = useState<Media[]>([]);
@@ -36,7 +39,8 @@ export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}:
             setMediaList(response.media);
             setNumberOfPages(determineNumberOfPages(response.total));
             setIsMediaLoading(false);
-        });
+        })
+        .catch(addError);
     };
 
     const determineNumberOfPages = (count: number) => Math.ceil(count / mediaPerPage);

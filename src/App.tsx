@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/style.css';
-import { MediaContext } from './MediaContext';
 import { IMediaSearchQuery } from './repositories/MediaRepository';
 import IndexPage from './pages/IndexPage';
 import MediaPage from './pages/MediaPage';
@@ -10,6 +9,7 @@ import ThumbnailPage from './pages/ThumbnailPage';
 import TagsPage from './pages/TagsPage';
 import ExplorePage from './pages/ExplorePage';
 import Error404Page from './pages/404Page';
+import { MediaContext } from './contexts/MediaContext';
 
 export default function App() {
 	

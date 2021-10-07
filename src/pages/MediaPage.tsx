@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner'
-
-import Navigation from '../components/Navigation';
 import Media from '../types/Media';
 import MediaContainer from '../components/MediaContainer';
 import MediaInfoSidebar from '../components/MediaInfoSidebar';
-import BannerAlert from '../components/BannerAlert';
 import MediaInfoEditModal from '../components/MediaInfoEditModal';
 
 import './MediaPage.css';
 import { MediaRepository } from '../repositories/MediaRepository';
+import BasePage from './BasePage';
 
 export default function MediaPage() {
     const [media, setMedia] = useState<Media | null>(null);
     const [showEditModal, setShowEditModal] = useState(false);
     const [isMediaLoading, setIsMediaLoading] = useState(true);
-    const [alerts, setAlerts] = useState<any[]>([]);
 
     useEffect(() => {
         var mediaIDString: string = new URL(window.location.href).searchParams.get("id") as string;
@@ -23,19 +20,17 @@ export default function MediaPage() {
         new MediaRepository().get(mediaID).then((response: Media) => {
             setMedia(response);
         }).catch(error => { 
-            setAlerts([...alerts, <BannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
+            //setAlerts([...alerts, <MSBannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
         });
     }, []);
 
     return ( 
-        <React.Fragment>
-            {media ? 
+        <BasePage>
+            <div id="mediapage">
+                {media ? 
                 <MediaInfoEditModal media={media as Media} isShown={showEditModal} onClose={() => setShowEditModal(false)}
                     onSave={(updatedMedia: Media) => {setMedia(updatedMedia); setShowEditModal(false)}}/>
                 : null}
-            <Navigation />
-            {alerts.map(errorComponent => errorComponent)}
-            <div id="mediapage">
                 <div id="mediapage-sidebar">
                     {media !== null ? 
                         <div>
@@ -49,6 +44,6 @@ export default function MediaPage() {
                     <MediaContainer media={media as Media} onLoad={() => setIsMediaLoading(false)}/>
                 </div>
             </div>
-        </React.Fragment>
+        </BasePage>
      );
 }

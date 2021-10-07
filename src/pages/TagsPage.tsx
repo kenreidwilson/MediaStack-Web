@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
 import TagsTable from '../components/TagsTable';
-import Navigation from '../components/Navigation';
 import { IMediaSearchQuery } from '../repositories/MediaRepository';
+import BasePage from './BasePage';
 
 export default function TagsPage() {
-    const [alerts, setAlerts] = useState<any[]>([]);
-
     return ( 
-        <React.Fragment>
-            <Navigation />
-            {alerts.map(errorComponent => errorComponent)}
+        <BasePage>
             <TagsTable onTagClick={(searchQuery: IMediaSearchQuery) => console.log(searchQuery)}/>
-        </React.Fragment>
+        </BasePage>
      );
 }

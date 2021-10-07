@@ -6,13 +6,13 @@ import RatingSidebarElement from './RatingSidebarElement';
 
 import './InfoSidebar.css'
 import Media from '../types/Media';
-import { MediaContext } from '../MediaContext';
-import { ErrorContext } from '../pages/ErrorContext';
+import { ErrorContext } from '../contexts/ErrorContext';
 import { CategoryRepository } from '../repositories/CategoryRepository';
 import { ArtistRepository } from '../repositories/AritstRepository';
 import { IMediaSearchQuery, MediaRepository } from '../repositories/MediaRepository';
 import { AlbumRepository } from '../repositories/AlbumRepository';
 import TagsSidebarElement from './TagSidebarElement';
+import { MediaContext } from '../contexts/MediaContext';
 
 type Props = {
     media: Media,
