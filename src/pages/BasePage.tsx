@@ -16,15 +16,30 @@ export default function BasePage({ children }: Props) {
 
     useEffect(() => {
         errorsRef.current = errors;
-        setAlerts(errors.map(error => { return { isDismissed: false, variant: 'danger', message: error.message } }));
+        setAlerts(errors.map(error => { return { isDismissed: false, type: 'error', message: error.message } }));
     }, [errors]);
-
-    const addError = (error: Error) => setErrors([...errorsRef.current, error]);
 
     const getErrors = () => errors;
 
+    const addError = (error: Error) => setErrors([...errorsRef.current, error]);
+
+    const getMSBannerAlertVariant = (alert: MSAlert): 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'dark' | 'light' => {
+        switch(alert.type) {
+            case 'critical':
+                return 'danger';
+            case 'error':
+                return 'danger';
+            case 'info':
+                return 'info';
+            case 'success':
+                return 'success';
+            case 'warning':
+                return 'warning';
+        }
+    }
+
     const getAlertHeading = (alert: MSAlert): string => {
-        if (alert.variant === 'danger') {
+        if (alert.type === 'error' || alert.type === 'critical') {
             return "Something went wrong.";
         }
         return "Alert";
@@ -33,7 +48,7 @@ export default function BasePage({ children }: Props) {
     return (
         <ErrorContext.Provider value={{ getErrors, addError }}>
             <Navigation />
-            {alerts.map(alert => <MSBannerAlert variant={alert.variant} heading={getAlertHeading(alert)} body={alert.message ? alert.message : ""}/>)}
+            {alerts.map(alert => <MSBannerAlert variant={getMSBannerAlertVariant(alert)} heading={getAlertHeading(alert)} body={alert.message ? alert.message : ""}/>)}
             {children}
         </ErrorContext.Provider>
     );

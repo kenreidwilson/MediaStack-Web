@@ -1,5 +1,5 @@
 export default interface MSAlert {
     isDismissed: boolean,
-    variant: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'dark' | 'light',
+    type: 'success' | 'warning' | 'info' | 'error' | 'critical'
     message?: string
 }
