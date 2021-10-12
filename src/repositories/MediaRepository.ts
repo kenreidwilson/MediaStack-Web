@@ -1,8 +1,8 @@
 import API from "../api/API";
-import ISearchResponse from "../api/ISearchResponse";
+import ISearchResponse from "../types/ISearchResponse";
 import Media from "../types/Media";
-import IRepository from "./IRepository";
-import ISearchQuery from "./ISearchQuery";
+import IRepository from "../types/IRepository";
+import ISearchQuery from "../types/ISearchQuery";
 
 interface IMediaSearchQuery extends ISearchQuery {
     categoryID?: number;
@@ -19,10 +19,6 @@ interface IMediaSearchQuery extends ISearchQuery {
     sortBy?: string;
     type?: number;
     mode?: number;
-}
-
-interface IMediaSearchReponse extends ISearchResponse {
-    media: Media[]
 }
 
 interface IMediaUpdateRequest {
@@ -52,8 +48,8 @@ class MediaRepository implements IRepository<Media> {
         return `${this.baseURL}/media/file?id=${media.id}`;
     }
 
-    search(query: IMediaSearchQuery): Promise<IMediaSearchReponse> {
-        return API.post<IMediaSearchReponse>(`${this.baseURL}/media/search`, query);
+    search(query: IMediaSearchQuery): Promise<ISearchResponse<Media>> {
+        return API.post<ISearchResponse<Media>>(`${this.baseURL}/media/search`, query);
     }
 
     update(updateRequest: IMediaUpdateRequest): Promise<Media> {

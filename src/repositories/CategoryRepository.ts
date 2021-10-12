@@ -1,19 +1,11 @@
 import Category from "../types/Category";
-import ISearchResponse from "../api/ISearchResponse";
+import ISearchResponse from "../types/ISearchResponse";
 import GenericRepository from "./GenericRepository";
 
-interface ICategorySearchResponse extends ISearchResponse {
-    categories: Category[]
-}
-
-class CategoryRepository extends GenericRepository<Category, ICategorySearchResponse> {
+class CategoryRepository extends GenericRepository<Category> {
     constructor() {
         super("categories");
     }
-}
-
-export type {
-    ICategorySearchResponse
 }
 
 export {

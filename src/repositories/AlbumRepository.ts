@@ -1,14 +1,10 @@
 import Album from "../types/Album";
 import Tag from "../types/Tag";
 import API from "../api/API";
-import ISearchResponse from "../api/ISearchResponse";
-import IRepository from "./IRepository";
+import IRepository from "../types/IRepository";
 import { IMediaUpdateRequest, MediaRepository } from "./MediaRepository";
-import ISearchQuery from "./ISearchQuery";
-
-interface IAlbumSearchResponse extends ISearchResponse {
-    albums: Album[];
-}
+import ISearchResponse from "../types/ISearchResponse";
+import ISearchQuery from "../types/ISearchQuery";
 
 interface IAlbumUpdateRequest {
     ID: number;
@@ -37,7 +33,7 @@ class AlbumRepository implements IRepository<Album> {
         return API.get<Album>(`${this.baseURL}/albums?id=${id}`);
     }
 
-    search(query: IAlbumSearchQuery): Promise<IAlbumSearchResponse> {
+    search(query: IAlbumSearchQuery): Promise<ISearchResponse<Album>> {
         let endpoint = `${this.baseURL}/albums/search?count=${query.count}`;
 
         if (query.offset) {
@@ -52,13 +48,13 @@ class AlbumRepository implements IRepository<Album> {
             endpoint += `&artistid=${query.artistId}`;
         }
 
-        return API.get<IAlbumSearchResponse>(endpoint);
+        return API.get<ISearchResponse<Album>>(endpoint);
     }
 
     async update(updateRequest: IAlbumUpdateRequest): Promise<Album> {
         let mediaRepository = new MediaRepository();
         const response = await mediaRepository.search({ albumID: updateRequest.ID, mode: 1, count: 9999 });
-        for (const media of response.media) {
+        for (const media of response.data) {
             let mediaUpdateRequest: IMediaUpdateRequest = { ID: media.id, score: updateRequest.score, source: updateRequest.source };
 
             if (updateRequest.removeTagIDs !== undefined || updateRequest.addTagIDs !== undefined) {
@@ -92,7 +88,6 @@ class AlbumRepository implements IRepository<Album> {
 }
 
 export type {
-    IAlbumSearchResponse,
     IAlbumUpdateRequest,
     IAlbumSearchQuery
 }

@@ -1,19 +1,10 @@
 import Tag from "../types/Tag";
-import ISearchResponse from "../api/ISearchResponse";
 import GenericRepository from "./GenericRepository";
 
-interface ITagsSearchResponse extends ISearchResponse {
-    tags: Tag[]
-}
-
-class TagRepository extends GenericRepository<Tag, ITagsSearchResponse> {
+class TagRepository extends GenericRepository<Tag> {
     constructor() {
         super("tags");
     }
-}
-
-export type {
-    ITagsSearchResponse
 }
 
 export {

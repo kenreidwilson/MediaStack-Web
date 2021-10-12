@@ -2,17 +2,16 @@ import Artist from "../types/Artist";
 import Category from "../types/Category";
 import Tag from "../types/Tag";
 import API from "../api/API";
-import ISearchResponse from "../api/ISearchResponse";
-import IRepository from "./IRepository"
-import ISearchQuery from "./ISearchQuery";
+import ISearchResponse from "../types/ISearchResponse";
+import IRepository from "../types/IRepository"
+import ISearchQuery from "../types/ISearchQuery";
 
 interface IGenericSearchQuery extends ISearchQuery {
     name?: string;
 }
 
 export default abstract class GenericRepository<
-    TEntity extends Tag | Category | Artist,
-    TSearchResponse extends ISearchResponse> implements IRepository<TEntity> {
+    TEntity extends Tag | Category | Artist> implements IRepository<TEntity> {
 
     baseURL = `${process.env.REACT_APP_API}`;
     baseEndpoint: string;
@@ -29,7 +28,7 @@ export default abstract class GenericRepository<
         return API.get<TEntity>(`${this.baseURL}/${this.baseEndpoint}?id=${id}`);
     }
 
-    search(query: IGenericSearchQuery): Promise<TSearchResponse> {
+    search(query: IGenericSearchQuery): Promise<ISearchResponse<TEntity>> {
         let endpoint = `${this.baseURL}/${this.baseEndpoint}/search?count=${query.count}`;
 
         if (query.offset) {
@@ -40,7 +39,7 @@ export default abstract class GenericRepository<
             endpoint += `&name=${query.name}`;
         }
 
-        return API.get<TSearchResponse>(endpoint);
+        return API.get<ISearchResponse<TEntity>>(endpoint);
     }
 
     update(e: TEntity): Promise<TEntity> {
