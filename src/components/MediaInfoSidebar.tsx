@@ -14,13 +14,15 @@ import useArtists from '../hooks/useArtists';
 import useAlbums from '../hooks/useAlbums';
 import { IMediaSearchQuery } from '../repositories/MediaRepository';
 import { useMedia } from '../hooks/useMedia';
+import RatingStars from './RatingStars';
+import { ListItemButton } from '@mui/material';
 
 type Props = {
     media: Media,
     setMedia: Function
 }
 
-export default function MediaInfoSidebar({media, setMedia}: Props) {
+export default function MediaInfoSidebar({ media, setMedia }: Props) {
 
     const [categoryName, setCategoryName] = useState<string | undefined>(undefined);
     const [artistName, setArtistName] = useState<string | undefined>(undefined);
@@ -90,7 +92,9 @@ export default function MediaInfoSidebar({media, setMedia}: Props) {
                 <SidebarItemButton body={`${media.source}`}/>
             </SidebarItem>
             <SidebarItem header="Rating">
-                <SidebarItemButton body={`${media.score}`}/>
+                <ListItemButton>
+                    <RatingStars value={media.score}/>
+                </ListItemButton>
             </SidebarItem>
             <SidebarItem header={`Tags (${media.tags.length})`}>
                 <SidebarTagsItem tags={media.tags}/>

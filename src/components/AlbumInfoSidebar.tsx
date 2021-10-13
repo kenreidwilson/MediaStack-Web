@@ -10,9 +10,10 @@ import { IMediaSearchQuery } from '../repositories/MediaRepository';
 import { AlbumRepository } from '../repositories/AlbumRepository';
 import SidebarTagsItem from './TagSidebarElement';
 import { MediaContext } from '../contexts/MediaContext';
-import { List } from '@mui/material';
+import { List, ListItemButton } from '@mui/material';
 import SidebarItem from './SidebarItem';
 import useAlbums from '../hooks/useAlbums';
+import RatingStars from './RatingStars';
 
 type Props = {
     album: Album,
@@ -65,9 +66,9 @@ export default function AlbumInfoSidebar({album, setAlbum, mediaList, updateMedi
     return ( 
         <List dense>
             <SidebarItem header="Rating">
-                <RatingSidebarElement 
-                        rating={getAlbumScore()}
-                        handleEdit={handleScoreEdit}/>
+                <ListItemButton>
+                    <RatingStars value={getAlbumScore()} onChange={handleScoreEdit}/>
+                </ListItemButton>
             </SidebarItem>
             <SidebarItem header="Tags">
                 <SidebarTagsItem

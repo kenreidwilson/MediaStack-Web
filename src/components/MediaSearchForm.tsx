@@ -7,6 +7,7 @@ import ArtistSelect from "./ArtistSelect";
 import CategorySelect from "./CategorySelect";
 import MediaTypeSelct from "./MediaTypeSelect";
 import RatingComparatorSelect from "./RatingComparatorSelect";
+import RatingStars from "./RatingStars";
 import RatingValueSelect from "./RatingValueSelect";
 import SearchModeSelect from "./SearchModeSelect";
 import SortBySelect from "./SortBySelect";
@@ -130,7 +131,7 @@ export default function MediaSearchForm(
                 {showRatingComparator ? 
                     <RatingComparatorSelect selectedComparatorOption={ratingComparator} onChange={setRatingComparator} /> : null}
                 {showRatingValue ? 
-                    <RatingValueSelect ratingValue={ratingValue} onChange={(value) => {
+                    <RatingStars value={ratingValue} onChange={(value) => {
                         if (ratingComparator?.value === undefined) {
                             setRatingComparator({ value: "score" });
                         }
