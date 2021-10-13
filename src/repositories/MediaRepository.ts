@@ -32,7 +32,7 @@ interface IMediaUpdateRequest {
     albumOrder?: number;
 }
 
-class MediaRepository implements IRepository<Media> {
+class MediaRepository implements IRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
 
     baseURL = `${process.env.REACT_APP_API}`;
     

@@ -21,7 +21,7 @@ interface IAlbumSearchQuery extends ISearchQuery {
     artistId?: number
 }
 
-class AlbumRepository implements IRepository<Album> {
+class AlbumRepository implements IRepository<Album, IAlbumSearchQuery, IAlbumUpdateRequest> {
 
     baseURL = `${process.env.REACT_APP_API}`;
 

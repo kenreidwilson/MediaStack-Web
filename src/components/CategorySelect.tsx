@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { CategoryRepository } from '../repositories/CategoryRepository';
 import BaseSingleSelect from './BaseSingleSelect';
 import SelectOption from '../types/SelectOption';
 import { IGenericSearchQuery } from '../repositories/GenericRepository';
+import useCategories from '../hooks/useCategories';
 
 type Props = {
     selectedCategory?: SelectOption,
@@ -14,9 +14,10 @@ type Props = {
 
 export default function CategorySelect({ categoriesQuery, selectedCategory, onCategoryChange, isCreatable = false, isDisabled = false } : Props) {
 
-    const categoryRepo = new CategoryRepository();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [categoryOptions, setCategoryOptions] = useState<SelectOption[] | undefined>(undefined);
+
+    const { search, add } = useCategories();
 
     useEffect(() => {
         if (selectedCategory !== undefined && categoryOptions === undefined) {
@@ -37,8 +38,8 @@ export default function CategorySelect({ categoriesQuery, selectedCategory, onCa
     }
 
     const getCategories = (): Promise<SelectOption[]> => {
-        return categoryRepo.search(categoriesQuery ?  categoriesQuery : { count: 999 }).then(response => {
-            return response.categories.map(category => {
+        return search(categoriesQuery ?  categoriesQuery : { count: 999 }).then(response => {
+            return response.data.map(category => {
                return { value: category.id, label: category.name };
             });
         });
@@ -50,7 +51,7 @@ export default function CategorySelect({ categoriesQuery, selectedCategory, onCa
         }
 
         setIsLoading(true);
-        return categoryRepo.add({ id: 0, name }).then(category => {
+        return add({ id: 0, name }).then(category => {
             const newCategory = { label: category.name, value: category.id };
             setCategoryOptions([...categoryOptions, newCategory ]);
             onCategoryChange(newCategory);

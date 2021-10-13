@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { ArtistRepository } from '../repositories/AritstRepository';
 import BaseSingleSelect from './BaseSingleSelect';
 import SelectOption from '../types/SelectOption';
 import { IGenericSearchQuery } from '../repositories/GenericRepository';
+import useArtists from '../hooks/useArtists';
 
 type Props = {
     selectedArtist?: SelectOption,
@@ -14,7 +14,7 @@ type Props = {
 
 export default function ArtistSelect({ selectedArtist, onArtistChange: onChange, artistsQuery, isCreatable = false, isDisabled = false } : Props) {
 
-    const artistRepo = new ArtistRepository();
+    const { search, add } = useArtists();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [artistOptions, setArtistOptions] = useState<SelectOption[] | undefined>(undefined);
 
@@ -37,8 +37,8 @@ export default function ArtistSelect({ selectedArtist, onArtistChange: onChange,
     }
 
     const getArtists = (): Promise<SelectOption[]> => {
-        return artistRepo.search(artistsQuery ? artistsQuery : { count: 999 }).then(response => {
-            return response.artists.map(artist => {
+        return search(artistsQuery ? artistsQuery : { count: 999 }).then(response => {
+            return response.data.map(artist => {
                 return { value: artist.id, label: artist.name };
             });
         });
@@ -50,7 +50,7 @@ export default function ArtistSelect({ selectedArtist, onArtistChange: onChange,
         }
 
         setIsLoading(true);
-        return artistRepo.add({ id: 0, name }).then(artist => {
+        return add({ id: 0, name }).then(artist => {
             const newArtist = { label: artist.name, value: artist.id };
             setArtistOptions([ ...artistOptions, newArtist]);
             onChange(newArtist);

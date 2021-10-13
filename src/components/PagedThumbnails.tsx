@@ -5,6 +5,7 @@ import { IMediaSearchQuery, MediaRepository } from '../repositories/MediaReposit
 import MediaThumbnails from './MediaThumbnails';
 import MSPagination from './MSPagination';
 import { ErrorContext } from '../contexts/ErrorContext';
+import { useMedia } from '../hooks/useMedia';
 
 type Props = {
     baseQuery: IMediaSearchQuery,
@@ -19,6 +20,7 @@ export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}:
     const [numberOfPages, setNumberOfPages] = useState<number>(0);
     const [mediaList, setMediaList] = useState<Media[]>([]);
     const [isMediaLoading, setIsMediaLoading] = useState<boolean>(false);
+    const { search } = useMedia();
 
     useEffect(() => {
         fetchMediaList(getPageNumber());
@@ -35,8 +37,8 @@ export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}:
         let finalQuery = baseQuery;
         finalQuery.offset = (pageNumber - 1) * mediaPerPage;
         finalQuery.count = mediaPerPage;
-        new MediaRepository().search(finalQuery).then(response => {
-            setMediaList(response.media);
+        search(finalQuery).then(response => {
+            setMediaList(response.data);
             setNumberOfPages(determineNumberOfPages(response.total));
             setIsMediaLoading(false);
         })

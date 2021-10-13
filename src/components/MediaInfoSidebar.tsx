@@ -1,18 +1,19 @@
 import  { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-
-import InfoSideBarElement from './InfoSidebarElement';
-import RatingSidebarElement from './RatingSidebarElement';
-
 import './InfoSidebar.css'
 import Media from '../types/Media';
 import { ErrorContext } from '../contexts/ErrorContext';
-import { CategoryRepository } from '../repositories/CategoryRepository';
-import { ArtistRepository } from '../repositories/AritstRepository';
-import { IMediaSearchQuery, MediaRepository } from '../repositories/MediaRepository';
-import { AlbumRepository } from '../repositories/AlbumRepository';
-import TagsSidebarElement from './TagSidebarElement';
 import { MediaContext } from '../contexts/MediaContext';
+
+import List from '@mui/material/List';
+import SidebarTagsItem from './TagSidebarElement';
+import SidebarItem from './SidebarItem';
+import SidebarItemButton from './SidebarItemButton';
+import useCategories from '../hooks/useCategories';
+import useArtists from '../hooks/useArtists';
+import useAlbums from '../hooks/useAlbums';
+import { IMediaSearchQuery } from '../repositories/MediaRepository';
+import { useMedia } from '../hooks/useMedia';
 
 type Props = {
     media: Media,
@@ -28,12 +29,15 @@ export default function MediaInfoSidebar({media, setMedia}: Props) {
     const history = useHistory();
     const { setQuery } = useContext(MediaContext);
     const { addError } = useContext(ErrorContext);
-    const categories = new CategoryRepository();
-    const artists = new ArtistRepository();
+
+    const { get: getCategory } = useCategories();
+    const { get: getArtist } = useArtists();
+    const { get: getAlbum } = useAlbums();
+    const { update: updateMedia } = useMedia();
 
     useEffect(() => {
         if (media.categoryID) {
-            categories.get(media.categoryID).then(response => {
+            getCategory(media.categoryID).then(response => {
                 setCategoryName(response.name);
             });
         } else {
@@ -41,7 +45,7 @@ export default function MediaInfoSidebar({media, setMedia}: Props) {
         }
 
         if (media.artistID) {
-            artists.get(media.artistID).then(response => {
+            getArtist(media.artistID).then(response => {
                 setArtistName(response.name);
             });
         } else {
@@ -49,11 +53,11 @@ export default function MediaInfoSidebar({media, setMedia}: Props) {
         }
 
         if (media.albumID) {
-            new AlbumRepository().get(media.albumID).then(response => {
+            getAlbum(media.albumID).then(response => {
                 setAlbumName(response.name);
             });
         }
-    }, []);
+    }, [media]);
 
     const onSidebarNavClick = (query: IMediaSearchQuery) => {
         setQuery(query);
@@ -62,47 +66,35 @@ export default function MediaInfoSidebar({media, setMedia}: Props) {
 
     const handleScoreEdit = async (newScore: number) => {
         if (media.score !== newScore) {
-            await new MediaRepository().update({ ID: media.id, score : newScore })
+            await updateMedia({ ID: media.id, score : newScore })
                 .then(response => setMedia(response))
                 .catch(error => addError(error));
         }
     }
 
     return (
-        <div id="media_info">
-            <p id="media_info_title">{`Media Info  `}</p>
-            <InfoSideBarElement 
-                label={"Type: "} 
-                value={media.type}
-                onClick={() => onSidebarNavClick({type: media.type})}/>
-            
-            <InfoSideBarElement 
-                label={"Category: "} 
-                value={categoryName}
-                onClick={() => onSidebarNavClick({categoryID: media.categoryID})}/>
-
-            <InfoSideBarElement 
-                label={"Artist: "} 
-                value={artistName}
-                onClick={() => onSidebarNavClick({artistID: media.artistID})}/>
-
-            <InfoSideBarElement 
-                label={"Album: "} 
-                value={albumName}
-                onClick={() => onSidebarNavClick({albumID: media.albumID})}/>
-
-            <InfoSideBarElement 
-                label={"Source: "} 
-                value={media.source}
-                onClick={() => console.log("NOT IMPLEMENTED")}/>
-            
-            <RatingSidebarElement 
-                rating={media.score}
-                handleEdit={handleScoreEdit}/>
-
-            <TagsSidebarElement
-                tags={media.tags}
-                onClick={(tagID: number) => onSidebarNavClick({whitelistTagIDs: [tagID]})}/>
-        </div>
+        <List dense>
+            <SidebarItem header="Type">
+                <SidebarItemButton body={`${media.type}`}/>
+            </SidebarItem>
+            <SidebarItem header="Category">
+                <SidebarItemButton body={categoryName}/>
+            </SidebarItem>
+            <SidebarItem header="Artist">
+                <SidebarItemButton body={artistName}/>
+            </SidebarItem>
+            <SidebarItem header="Album">
+                <SidebarItemButton body={albumName}/>
+            </SidebarItem>
+            <SidebarItem header="Source">
+                <SidebarItemButton body={`${media.source}`}/>
+            </SidebarItem>
+            <SidebarItem header="Rating">
+                <SidebarItemButton body={`${media.score}`}/>
+            </SidebarItem>
+            <SidebarItem header={`Tags (${media.tags.length})`}>
+                <SidebarTagsItem tags={media.tags}/>
+            </SidebarItem>
+        </List>
     );
 }

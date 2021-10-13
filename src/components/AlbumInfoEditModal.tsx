@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { Modal, Button }from "react-bootstrap";
 import Album from '../types/Album';
 import Media from '../types/Media';
-import { AlbumRepository, IAlbumUpdateRequest } from '../repositories/AlbumRepository';
 import AlbumUpdateForm from './AlbumUpdateForm';
 
 import './AlbumInfoEditModal.css'
+import useAlbums from '../hooks/useAlbums';
+import { IAlbumUpdateRequest } from '../repositories/AlbumRepository';
 
 type Props = {
     album: Album,
@@ -16,6 +17,8 @@ type Props = {
 }
 
 export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, onSave}: Props) {
+
+    const { update } = useAlbums();
 
     // TODO: Not Working
     const getAlbumSource = () => {
@@ -43,7 +46,7 @@ export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, 
     );
 
     const handleSave = () => {
-        new AlbumRepository().update(updateRequest).then(response => {
+        update(updateRequest).then(response => {
             onSave(response);
         });
     };

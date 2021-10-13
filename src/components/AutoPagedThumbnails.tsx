@@ -4,6 +4,7 @@ import Media from '../types/Media';
 import MediaThumbnails from './MediaThumbnails';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { IMediaSearchQuery, MediaRepository } from '../repositories/MediaRepository';
+import { useMedia } from '../hooks/useMedia';
 
 type Props = {
     baseQuery: IMediaSearchQuery,
@@ -14,6 +15,8 @@ export default function AutoPagedThumbnails({baseQuery, linkToAlbums}: Props) {
 
     const [maxMediaCount, setMaxMediaCount] = useState<number | undefined>();
     const [mediaList, setMediaList] = useState<Media[]>([]);
+
+    const { search } = useMedia();
 
     useEffect(() => {
         loadMoreMedia();
@@ -41,8 +44,8 @@ export default function AutoPagedThumbnails({baseQuery, linkToAlbums}: Props) {
             let finalQuery = baseQuery;
             finalQuery.offset = mediaList.length;
             finalQuery.count = getMediaBatchSize();
-            await new MediaRepository().search(finalQuery).then(response => {
-                setMediaList([...mediaList, ...response.media]);
+            await search(finalQuery).then(response => {
+                setMediaList([...mediaList, ...response.data]);
                 setMaxMediaCount(response.total);
             });
         }

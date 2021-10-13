@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import RatingSidebarElement from './RatingSidebarElement';
 import Media from '../types/Media';
 import Album from '../types/Album';
@@ -8,8 +8,11 @@ import { ErrorContext } from '../contexts/ErrorContext';
 import './InfoSidebar.css';
 import { IMediaSearchQuery } from '../repositories/MediaRepository';
 import { AlbumRepository } from '../repositories/AlbumRepository';
-import TagsSidebarElement from './TagSidebarElement';
+import SidebarTagsItem from './TagSidebarElement';
 import { MediaContext } from '../contexts/MediaContext';
+import { List } from '@mui/material';
+import SidebarItem from './SidebarItem';
+import useAlbums from '../hooks/useAlbums';
 
 type Props = {
     album: Album,
@@ -23,6 +26,8 @@ export default function AlbumInfoSidebar({album, setAlbum, mediaList, updateMedi
     const history = useHistory();
     const { setQuery } = useContext(MediaContext);
     const { addError } = useContext(ErrorContext);
+
+    const { update } = useAlbums();
 
     const onSidebarNavClick = (query: IMediaSearchQuery) => {
         setQuery(query);
@@ -53,21 +58,22 @@ export default function AlbumInfoSidebar({album, setAlbum, mediaList, updateMedi
 
     const handleScoreEdit = async (newScore: number) => {
         let score = newScore === getAlbumScore() ? 0 : newScore;
-        await new AlbumRepository().update({ ID: album.id, 'score' : score})
+        await update({ ID: album.id, score}) 
             .then(() => updateMediaList(album)).catch(error => addError(error));
     }
 
     return ( 
-        <React.Fragment>
-            <div id="media_info">
-                <p id="media_info_title">{`Album Info  `}</p>
+        <List dense>
+            <SidebarItem header="Rating">
                 <RatingSidebarElement 
-                    rating={getAlbumScore()}
-                    handleEdit={handleScoreEdit}/>
-                <TagsSidebarElement
-                    tags={getAlbumTags()}
-                    onClick={(tagId: number) => onSidebarNavClick({whitelistTagIDs: [tagId]})}/>
-            </div>
-        </React.Fragment>
+                        rating={getAlbumScore()}
+                        handleEdit={handleScoreEdit}/>
+            </SidebarItem>
+            <SidebarItem header="Tags">
+                <SidebarTagsItem
+                        tags={getAlbumTags()}
+                        onClick={(tag) => onSidebarNavClick({whitelistTagIDs: [tag.id]})}/>
+            </SidebarItem>
+        </List>
      );
 }

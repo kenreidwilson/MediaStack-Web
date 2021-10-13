@@ -14,7 +14,7 @@ export default function ExplorePage() {
 
     useEffect(() => {
         new MediaRepository().search({}).then(response => {
-            setMediaList(response.media);
+            setMediaList(response.data);
         });
     }, [])
 

@@ -1,21 +1,18 @@
+import { Chip } from "@mui/material";
 import Tag from "../types/Tag";
 
 type Props = {
     tags: Tag[],
-    onClick: Function
+    onClick?: (tag: Tag) => void
 }
 
-const TagsSidebarElement = ({ tags, onClick }: Props) => (
-    <div>
-        <p>Tags:</p>
-        <ul>
-            {tags.map(tag => 
-            <li key={tag.id}>
-                <a href="#" onClick={() => {onClick(tag.id)}}>{tag.name}</a>
-            </li>
-            )}
-        </ul>
-    </div> 
-)
-
-export default TagsSidebarElement;
+export default function SidebarTagsItem ({ tags, onClick } : Props) {
+    
+    return (
+        <div style={{marginTop: "3px", textAlign: "center"}}>
+            {tags.map((tag) => (
+                <Chip sx={{ margin: "0px 1px 2px 1px"}} label={tag.name} variant="outlined" onClick={() => onClick && onClick(tag)}/>
+            ))}
+        </div>
+    );
+}

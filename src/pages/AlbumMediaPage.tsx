@@ -51,9 +51,9 @@ export default function AlbumMediaPage() {
         }
 
         return mediaRepository.search({ albumID: album!.id, mode: 1, count: 999 }).then(response => {
-            response.media.sort((a: Media, b: Media) => (a.albumOrder > b.albumOrder) ? 1 : -1);
-            setMediaList(response.media);
-            return response.media;
+            response.data.sort((a: Media, b: Media) => (a.albumOrder > b.albumOrder) ? 1 : -1);
+            setMediaList(response.data);
+            return response.data;
         });
     }
 

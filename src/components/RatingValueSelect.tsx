@@ -1,4 +1,4 @@
-import StarRatingComponent from "react-star-rating-component";
+import RatingSelect from "./RatingSelect";
 
 type Props = {
     ratingValue: number,
@@ -6,10 +6,5 @@ type Props = {
 }
 
 export default function RatingValueSelect({ ratingValue, onChange }: Props) {
-    return <StarRatingComponent
-        name="rating"
-        starCount={5}
-        value={ratingValue}
-        onStarClick={onChange}
-    />;
+    return <RatingSelect ratingOption={{ value: ratingValue }} onChange={(ratingOption) => ratingOption && onChange ? onChange(ratingOption.value) : () => {}}/>
 }

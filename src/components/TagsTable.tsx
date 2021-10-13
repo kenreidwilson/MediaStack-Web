@@ -5,7 +5,7 @@ import Tag from '../types/Tag';
 import MSPagination from './MSPagination';
 
 import './TagsTable.css'
-import { TagRepository } from '../repositories/TagRepository';
+import useTags from '../hooks/useTags';
 
 type mediaInfo = {
     count: number
@@ -13,7 +13,7 @@ type mediaInfo = {
 
 export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
 
-    const tagRepo = new TagRepository();
+    const { search, get, update, delete: deleteTag } = useTags();
 
     const [tags, setTags] = useState<Tag[]>([]);
     const [tagsInfo, setTagsInfo] = useState<{ [id: number]: mediaInfo | undefined }>({});
@@ -27,7 +27,7 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
         refreshTags();
     }, []);
 
-    const refreshTags = () => tagRepo.search({ count: 999 }).then(response => setTags(response.tags));
+    const refreshTags = () => search({ count: 999 }).then(response => setTags(response.data));
     
     const numberOfPages = () => Math.ceil(tags.length / tagsPerPage);
 
@@ -36,7 +36,7 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
             return;
         }
 
-        tagRepo.get(tag.id).then(tagInfo => {
+        get(tag.id).then(tagInfo => {
             let newTagsInfo: { [id: number]: any } = Object.assign({}, tagsInfo);
             newTagsInfo[tag.id] = tagInfo;
             setTagsInfo(newTagsInfo);
@@ -44,11 +44,11 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
     }
 
     const onTagUpdate = (updatedTag: Tag) => {
-        tagRepo.update(updatedTag).then(refreshTags);
+        update(updatedTag).then(refreshTags);
     }
 
     const onTagDelete = (deletedTag: Tag) => {
-        tagRepo.delete(deletedTag).then(refreshTags);
+        deleteTag(deletedTag).then(refreshTags);
     }
 
     return (

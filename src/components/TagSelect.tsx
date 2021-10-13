@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { TagRepository } from '../repositories/TagRepository';
 import BaseMultiSelect from './BaseMultiSelect';
 import SelectOption from '../types/SelectOption';
+import useTags from '../hooks/useTags';
 
 type Props = {
     selectedTags: SelectOption[],
@@ -11,9 +11,9 @@ type Props = {
 
 export default function TagSelect({ selectedTags, onTagsChange: onChange, isCreatable = false } : Props) {
 
-    const tagRepo = new TagRepository();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [tagOptions, setTagOptions] = useState<SelectOption[] | undefined>(undefined);
+    const { add: addTag, search: searchTags } = useTags();
 
     useEffect(() => {
         if (selectedTags.length !== 0 && tagOptions === undefined) {
@@ -34,8 +34,8 @@ export default function TagSelect({ selectedTags, onTagsChange: onChange, isCrea
     }
 
     const getTags = (): Promise<SelectOption[]> => {
-        return tagRepo.search({count: 999}).then(response => {
-            return response.tags.map(tag => {
+        return searchTags({count: 999}).then(response => {
+            return response.data.map(tag => {
                 return { value: tag.id, label: tag.name };
             });
         });
@@ -47,7 +47,7 @@ export default function TagSelect({ selectedTags, onTagsChange: onChange, isCrea
         }
 
         setIsLoading(true);
-        return tagRepo.add({id: 0, name: tagName}).then(tag => {
+        return addTag({id: 0, name: tagName}).then(tag => {
             const newTag = { label: tag.name, value: tag.id };
             setTagOptions([...tagOptions, newTag]);
             onChange([...selectedTags, newTag]);

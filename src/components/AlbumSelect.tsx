@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { AlbumRepository, IAlbumSearchQuery } from '../repositories/AlbumRepository';
+import { IAlbumSearchQuery } from '../repositories/AlbumRepository';
 import BaseSingleSelect from './BaseSingleSelect';
 import SelectOption from '../types/SelectOption';
+import useAlbums from '../hooks/useAlbums';
 
 type Props = {
     selectedAlbum?: SelectOption,
@@ -14,7 +15,7 @@ type Props = {
 
 export default function AlbumSelect({  selectedAlbum, onAlbumChange: onChange, albumsQuery, albumArtistId, isCreatable = false, isDisabled = false } : Props) {
 
-    const albumRepo = new AlbumRepository();
+    const { search, add } = useAlbums();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [albumOptions, setAlbumOptions] = useState<SelectOption[] | undefined>(undefined);
 
@@ -51,8 +52,8 @@ export default function AlbumSelect({  selectedAlbum, onAlbumChange: onChange, a
     }
 
     const getAlbums = (): Promise<SelectOption[]> => {
-        return albumRepo.search(getAlbumQuery()).then(response => {
-            return response.albums.map(album => {
+        return search(getAlbumQuery()).then(response => {
+            return response.data.map(album => {
                 return { value: album.id, label: album.name };
             });
         });
@@ -69,7 +70,7 @@ export default function AlbumSelect({  selectedAlbum, onAlbumChange: onChange, a
         }
 
         setIsLoading(true);
-        return albumRepo.add( { id: 0, name, artistID: albumArtistId! } ).then(album => {
+        return add( { id: 0, name, artistID: albumArtistId! } ).then(album => {
             const newAlbum = { label: album.name, value: album.id };
             setAlbumOptions([...albumOptions, newAlbum ]);
             onChange(newAlbum);
