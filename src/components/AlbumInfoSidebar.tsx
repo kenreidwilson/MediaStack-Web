@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import RatingSidebarElement from './RatingSidebarElement';
 import Media from '../types/Media';
 import Album from '../types/Album';
 import Tag from '../types/Tag';
@@ -7,7 +6,6 @@ import { useHistory } from 'react-router-dom';
 import { ErrorContext } from '../contexts/ErrorContext';
 import './InfoSidebar.css';
 import { IMediaSearchQuery } from '../repositories/MediaRepository';
-import { AlbumRepository } from '../repositories/AlbumRepository';
 import SidebarTagsItem from './TagSidebarElement';
 import { MediaContext } from '../contexts/MediaContext';
 import { List, ListItemButton } from '@mui/material';

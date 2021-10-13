@@ -3,12 +3,18 @@ import MSBannerAlert from "../components/MSBannerAlert";
 import Navigation from "../components/Navigation";
 import MSAlert from "../types/MSAlert";
 import { ErrorContext } from "../contexts/ErrorContext";
+import { css, Global } from "@emotion/react";
+import useThemes from "../hooks/useThemes";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 type Props = {
     children: JSX.Element
 }
 
 export default function BasePage({ children }: Props) {
+    
+    const { theme, setTheme } = useThemes();
+    
     const [errors, setErrors] = useState<Error[]>([]);
     const [alerts, setAlerts] = useState<MSAlert[]>([]);
 
@@ -46,10 +52,19 @@ export default function BasePage({ children }: Props) {
     }
 
     return (
-        <ErrorContext.Provider value={{ getErrors, addError }}>
-            <Navigation />
-            {alerts.map(alert => <MSBannerAlert variant={getMSBannerAlertVariant(alert)} heading={getAlertHeading(alert)} body={alert.message ? alert.message : ""}/>)}
-            {children}
-        </ErrorContext.Provider>
+            <ErrorContext.Provider value={{ getErrors, addError }}>
+                <ThemeContext.Provider value={{ theme, setTheme }}>
+                    <Global styles={
+                        css`
+                            body {
+                                background-color: ${theme.style.backgroundColor};
+                                color: ${theme.style.color};
+                            }
+                        `} />
+                    <Navigation />
+                    {alerts.map(alert => <MSBannerAlert variant={getMSBannerAlertVariant(alert)} heading={getAlertHeading(alert)} body={alert.message ? alert.message : ""}/>)}
+                    {children}
+                </ThemeContext.Provider>
+            </ErrorContext.Provider>
     );
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import TagDeleteModal from './TagDeleteModal'; 
 import TagEditModal from './TagEditModal';
 import Tag from '../types/Tag';
@@ -6,6 +6,7 @@ import MSPagination from './MSPagination';
 
 import './TagsTable.css'
 import useTags from '../hooks/useTags';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 type mediaInfo = {
     count: number
@@ -14,6 +15,7 @@ type mediaInfo = {
 export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
 
     const { search, get, update, delete: deleteTag } = useTags();
+    const { theme } = useContext(ThemeContext);
 
     const [tags, setTags] = useState<Tag[]>([]);
     const [tagsInfo, setTagsInfo] = useState<{ [id: number]: mediaInfo | undefined }>({});
@@ -72,10 +74,10 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
                 <table className="table">
                     <thead className="thead-dark">
                         <tr>
-                            <th style={{width: "5%"}}>ID</th>
-                            <th style={{width: "20%"}}>Name</th>
-                            <th style={{width: "60%"}}>Media Count</th>
-                            <th style={{width: "15%", minWidth: "111px"}}>Edit</th>
+                            <th style={{width: "5%", color: theme.style.color }}>ID</th>
+                            <th style={{width: "20%", color: theme.style.color}}>Name</th>
+                            <th style={{width: "60%", color: theme.style.color}}>Media Count</th>
+                            <th style={{width: "15%", minWidth: "111px", color: theme.style.color}}>Edit</th>
                         </tr>
                     </thead>
                     <tbody>
