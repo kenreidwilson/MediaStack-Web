@@ -1,4 +1,6 @@
 import { ListSubheader } from "@mui/material";
+import { useContext } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 type Props = {
     header?: string,
@@ -6,9 +8,19 @@ type Props = {
 }
 
 export default function SidebarItem({ header, children }: Props) {
+    
+    const { theme } = useContext(ThemeContext);
+
     return (
         <>
-            <ListSubheader sx={{ height: 35 }}>{header}</ListSubheader>
+            <ListSubheader sx={
+                { 
+                    backgroundColor: theme.style.backgroundColor, 
+                    color: theme.style.color, 
+                    height: 35,
+                    fontWeight: 'bold'
+                }
+            }>{header}</ListSubheader>
             {children}
         </>
     );

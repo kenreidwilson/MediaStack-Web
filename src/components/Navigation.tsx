@@ -1,29 +1,30 @@
 import { Navbar, Nav } from 'react-bootstrap';
+import { useContext } from 'react';
+import { ThemeContext } from '../contexts/ThemeContext';
 
-const Navigation = () => (
-    <Navbar collapseOnSelect expand="xl" bg="" variant="dark">
-            <Navbar.Brand href="/">MediaStack</Navbar.Brand>
+export default function Navigation() {
+    
+    const { theme } = useContext(ThemeContext);
+
+    const NavLink = ({ href, body}: { href: string, body: string }): JSX.Element => (
+        <Nav.Link href={href}>
+            <Nav.Link style={{ color: theme.style.color }} href={href}>{body}</Nav.Link>
+        </Nav.Link>
+    );
+
+    return (
+        <Navbar collapseOnSelect expand="xl" bg="" variant="dark">
+            <Navbar.Brand style={{ color: theme.style.color}} href="/">MediaStack</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
-                    <Nav.Link href="/search">
-                        <Nav.Link href="/search">Media</Nav.Link>
-                    </Nav.Link>
-                    <Nav.Link href="/explore">
-                        <Nav.Link href="/explore">Explore</Nav.Link>
-                    </Nav.Link>
-                    <Nav.Link href="/tags">
-                        <Nav.Link href="/tags">Tags</Nav.Link>
-                    </Nav.Link>
-                    <Nav.Link href="/upload">
-                        <Nav.Link href="/upload">Upload</Nav.Link>
-                    </Nav.Link>
-                    <Nav.Link href="/login">
-                        <Nav.Link href="/login">Login</Nav.Link>
-                    </Nav.Link>
+                    <NavLink href="/search" body="Media"/>
+                    <NavLink href="/explore" body="Explore"/>
+                    <NavLink href="/tags" body="Tags"/>
+                    <NavLink href="/upload" body="Upload"/>
+                    <NavLink href="/login" body="Login"/>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
-);
-
-export default Navigation;
+    );
+};

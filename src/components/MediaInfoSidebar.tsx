@@ -74,31 +74,57 @@ export default function MediaInfoSidebar({ media, setMedia }: Props) {
         }
     }
 
+    const getTypeBody = (type: number): string | undefined => {
+        switch (type) {
+            case 1:
+                return "Image";
+            case 2:
+                return "Animated Image";
+            case 3:
+                return "Video";
+            default:
+                return undefined;
+        }
+    }
+
     return (
-        <List dense>
+        <List dense sx={{}} >
+
+            {media.type && 
             <SidebarItem header="Type">
-                <SidebarItemButton body={`${media.type}`}/>
-            </SidebarItem>
+                <SidebarItemButton body={`${getTypeBody(media.type)}`}/>
+            </SidebarItem>}
+            
+            {categoryName && 
             <SidebarItem header="Category">
                 <SidebarItemButton body={categoryName}/>
-            </SidebarItem>
+            </SidebarItem>} 
+
+            {artistName && 
             <SidebarItem header="Artist">
                 <SidebarItemButton body={artistName}/>
-            </SidebarItem>
+            </SidebarItem>}
+            
+            {albumName && 
             <SidebarItem header="Album">
                 <SidebarItemButton body={albumName}/>
-            </SidebarItem>
+            </SidebarItem>}
+
+            {media.source && 
             <SidebarItem header="Source">
                 <SidebarItemButton body={`${media.source}`}/>
-            </SidebarItem>
+            </SidebarItem>}
+
             <SidebarItem header="Rating">
                 <ListItemButton>
                     <RatingStars value={media.score}/>
                 </ListItemButton>
             </SidebarItem>
+
+            {media.tags &&
             <SidebarItem header={`Tags (${media.tags.length})`}>
                 <SidebarTagsItem tags={media.tags}/>
-            </SidebarItem>
+            </SidebarItem>}
         </List>
     );
 }
