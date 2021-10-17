@@ -8,20 +8,20 @@ import MediaInfoEditModal from '../components/MediaInfoEditModal';
 import './MediaPage.css';
 import { MediaRepository } from '../repositories/MediaRepository';
 import BasePage from './BasePage';
+import useNavigation from '../hooks/useNavigation';
 
 export default function MediaPage() {
     const [media, setMedia] = useState<Media | null>(null);
     const [showEditModal, setShowEditModal] = useState(false);
     const [isMediaLoading, setIsMediaLoading] = useState(true);
 
+    const { getNavigationData } = useNavigation();
+
     useEffect(() => {
-        var mediaIDString: string = new URL(window.location.href).searchParams.get("id") as string;
-        var mediaID: number = +mediaIDString;
-        new MediaRepository().get(mediaID).then((response: Media) => {
+        let mediaID = getNavigationData();
+        new MediaRepository().get(+mediaID['id']).then((response: Media) => {
             setMedia(response);
-        }).catch(error => { 
-            //setAlerts([...alerts, <MSBannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
-        });
+        }).catch(/*TODO: forwardRef BasePage and call addError here.*/);
     }, []);
 
     return ( 

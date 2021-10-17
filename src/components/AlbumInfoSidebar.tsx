@@ -7,11 +7,11 @@ import { ErrorContext } from '../contexts/ErrorContext';
 import './InfoSidebar.css';
 import { IMediaSearchQuery } from '../repositories/MediaRepository';
 import SidebarTagsItem from './TagSidebarElement';
-import { MediaContext } from '../contexts/MediaContext';
 import { List, ListItemButton } from '@mui/material';
 import SidebarItem from './SidebarItem';
 import useAlbums from '../hooks/useAlbums';
 import RatingStars from './RatingStars';
+import useNavigation from '../hooks/useNavigation';
 
 type Props = {
     album: Album,
@@ -22,15 +22,12 @@ type Props = {
 
 export default function AlbumInfoSidebar({album, setAlbum, mediaList, updateMediaList }: Props) {
 
-    const history = useHistory();
-    const { setQuery } = useContext(MediaContext);
     const { addError } = useContext(ErrorContext);
-
     const { update } = useAlbums();
+    const { navigate } = useNavigation();
 
     const onSidebarNavClick = (query: IMediaSearchQuery) => {
-        setQuery(query);
-        history.push('/search');
+        navigate("search", query);
     }
 
     const getAlbumScore = () => {

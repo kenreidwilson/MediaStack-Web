@@ -84,7 +84,7 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
                         {tags ? tags.slice(tagsPerPage * (pageNumber - 1), tagsPerPage * pageNumber).map(tag =>
                             <tr key={tag.id} onLoad={() => loadTagInfo(tag)}>
                                 <th scope="row">{tag.id}</th>
-                                <td><a href="#" style={{cursor: 'pointer'}} onClick={() => onTagClick({'whitelist_tags':[tag.id]})}>{tag.name}</a></td>
+                                <td><a style={{cursor: 'pointer'}} onClick={() => onTagClick({'whitelist_tags':[tag.id]})}>{tag.name}</a></td>
                                 <td>{tagsInfo[tag.id] ? 
                                     tagsInfo[tag.id]!.count : 
                                     <div className="spinner-border spinner-border-sm" role="status">
@@ -92,8 +92,8 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
                                     </div>}
                                 </td>
                                 <td>
-                                    <a href="#" className="edit_a" onClick={() => { setSelectedTag(tag); setShowEditModal(true); }}>Edit</a> |
-                                    <a href="#" className="delete_a" onClick={() => { setSelectedTag(tag); setShowDeleteModal(true); }}> Delete</a>
+                                    <a className="edit_a" onClick={() => { setSelectedTag(tag); setShowEditModal(true); }}>Edit</a> |
+                                    <a className="delete_a" onClick={() => { setSelectedTag(tag); setShowDeleteModal(true); }}> Delete</a>
                                 </td>
                             </tr>
                         ) : null}

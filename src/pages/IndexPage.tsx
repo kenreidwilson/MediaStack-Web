@@ -1,7 +1,5 @@
-import { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 import SearchMenu from '../components/SearchMenu'
-import { MediaContext } from '../contexts/MediaContext';
+import useNavigation from '../hooks/useNavigation';
 import { IMediaSearchQuery } from '../repositories/MediaRepository';
 import BasePage from './BasePage';
 
@@ -9,14 +7,13 @@ import './IndexPage.css';
 
 export default function IndexPage() {
 
-    const history = useHistory();
-    const { setQuery } = useContext(MediaContext);
+    const { navigate } = useNavigation();
 
     return (
         <BasePage>
             <div id="index_page_content">
                 <div id="index_search_menu">
-                    <SearchMenu onSearch={(searchQuery: IMediaSearchQuery) => {setQuery!(searchQuery); history.push('/search')}}/>
+                    <SearchMenu onSearch={(searchQuery: IMediaSearchQuery) => navigate("search", searchQuery)}/>
                 </div>
             </div>
         </BasePage>

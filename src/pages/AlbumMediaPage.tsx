@@ -7,10 +7,11 @@ import Media from '../types/Media';
 
 import MediaInfoEditModal from '../components/MediaInfoEditModal';
 import DraggableMediaThumbnails from '../components/DraggableMediaThumbnails';
-import { AlbumRepository } from '../repositories/AlbumRepository';
-import { MediaRepository } from '../repositories/MediaRepository';
 import MediaGallery from '../components/MediaGallery';
 import BasePage from './BasePage';
+import useAlbums from '../hooks/useAlbums';
+import { useMedia } from '../hooks/useMedia';
+import useNavigation from '../hooks/useNavigation';
 
 export default function AlbumMediaPage() {
     const [album, setAlbum] = useState<Album>();
@@ -20,12 +21,14 @@ export default function AlbumMediaPage() {
     const [showAlbumEditModal, setShowAlbumEditModal] = useState<boolean>(false);
     const [isOrganizeMode, setIsOrganizeMode] = useState<boolean>(false);
 
-    const mediaRepository = new MediaRepository();
+    const { get: getAlbum } = useAlbums();
+    const { search: searchMedia } = useMedia();
+
+    const { getNavigationData } = useNavigation();
 
     useEffect(() => {
-        let albumIDString = new URL(window.location.href).searchParams.get("id") as string;
-        let albumID = +albumIDString;
-        new AlbumRepository().get(albumID).then(response => {
+        let albumID = +getNavigationData()['id'];
+        getAlbum(albumID).then(response => {
             setAlbum(response);
             updateMediaList(response).then(mediaList => {
                 if (mediaList !== undefined && selectedMedia === undefined) {
@@ -50,7 +53,7 @@ export default function AlbumMediaPage() {
             return;
         }
 
-        return mediaRepository.search({ albumID: album!.id, mode: 1, count: 999 }).then(response => {
+        return searchMedia({ albumID: album!.id, mode: 1, count: 999 }).then(response => {
             response.data.sort((a: Media, b: Media) => (a.albumOrder > b.albumOrder) ? 1 : -1);
             setMediaList(response.data);
             return response.data;
@@ -110,13 +113,13 @@ type Props = {
 function OrganizeAlbumSection({ mediaList, setMediaList, onSave }: Props ) {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const mediaRepository = new MediaRepository();
+    const { update } = useMedia();
 
     const handleSave = async () => {
 
         setIsLoading(true);
         for (let m of mediaList){
-            await mediaRepository.update({ ID: m.id, albumOrder: mediaList.indexOf(m)});
+            await update({ ID: m.id, albumOrder: mediaList.indexOf(m)});
         }
         setIsLoading(false);
         onSave();
