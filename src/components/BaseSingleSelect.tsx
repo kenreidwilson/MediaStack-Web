@@ -1,6 +1,8 @@
 import CreatableSelect from 'react-select/creatable';
-import Select from 'react-select';
+import Select, { CSSObjectWithLabel } from 'react-select';
 import SelectOption from '../types/SelectOption';
+import { CSSProperties, useContext } from 'react';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 type Props = {
     options: SelectOption[],
@@ -25,6 +27,8 @@ export default function BaseSingleSelect({
     isCreatable = false, 
     isDisabled = false } : Props) {
 
+    const { theme } = useContext(ThemeContext);
+
     const getSelectedOption = () => {
         if (selectedOption === undefined) {
             return undefined;
@@ -32,6 +36,19 @@ export default function BaseSingleSelect({
 
         return options.find(o => o.value === selectedOption.value);
     }
+
+    const customStyles = {
+        menu: (provided: CSSObjectWithLabel) => ({ 
+                ...provided,
+                backgroundColor: theme.style.backgroundColor, 
+                color: theme.style.color 
+            }),
+        control: (provided: CSSObjectWithLabel) => ({
+            ...provided,
+            backgroundColor: theme.style.backgroundColor, 
+            color: theme.style.color
+        })
+    };
 
     return (
     isCreatable ? 

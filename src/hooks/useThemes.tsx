@@ -5,7 +5,8 @@ export const lightTheme: Theme = {
     name: 'light',
     style: {
         backgroundColor: "white",
-        color: "black"
+        color: "black",
+        primaryColor: "rgb(0, 102, 255)"
     }
 }
 
@@ -13,7 +14,8 @@ export const darkTheme: Theme = {
     name: 'dark',
     style: {
         backgroundColor: "#1d1d1d",
-        color: "rgb(200, 200, 200)"
+        color: "rgb(200, 200, 200)",
+        primaryColor: "rgb(0, 102, 255)"
     }
 }
 

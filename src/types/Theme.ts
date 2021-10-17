@@ -5,6 +5,7 @@ export type ThemeName = 'dark' | 'light'
 export interface ThemeStyle extends React.CSSProperties {
     backgroundColor: string
     color: string,
+    primaryColor: string
 }
 
 export interface Theme {
