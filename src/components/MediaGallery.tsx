@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Spinner } from 'react-bootstrap';
 import Media from '../types/Media';
 import MediaContainer from './MediaContainer';
-import SelectableThumbnails from './SelectableThumbnails';
+import MediaThumbnails from './MediaThumbnails';
 import SelectableThumbnailSlider from './SelectableThumbnailSlider';
 
 type Props = {
@@ -50,11 +50,11 @@ export default function MediaGallery({ mediaList, presentedMedia, onPresentedMed
             <SelectableThumbnailSlider mediaList={mediaList} selectedMedia={presentedMedia} onSelectMedia={onPresentedMediaChange}/>
             : 
             <div id="thumbnails">
-                <SelectableThumbnails 
+                <MediaThumbnails 
                     canUnselect={false}
                     mediaList={mediaList} 
                     selectedMedia={[presentedMedia]} 
-                    onChange={(sm: Media[]) => onPresentedMediaChange(sm.filter(m => m !== presentedMedia)[0])} />
+                    onSelectionChange={(sm: Media[]) => onPresentedMediaChange(sm.filter(m => m !== presentedMedia)[0])} />
             </div>
         ) 
         : null}

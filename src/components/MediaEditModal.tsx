@@ -11,7 +11,7 @@ type Props = {
     onSave: (updatedMedia: Media) => void
 }
 
-export default function MediaInfoEditModal({ media, isShown, onClose, onSave }: Props) {
+export default function MediaInfoModal({ media, isShown, onClose, onSave }: Props) {
 
     const [updateRequest, setUpdateRequest] = useState<IMediaUpdateRequest>(
         { 

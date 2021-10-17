@@ -29,19 +29,17 @@ export default function App() {
 
 	return ( 
 		<BrowserRouter>
-			<div>
-				<MediaContext.Provider value={{ getQuery, setQuery }}>
-					<Switch>
-						<Route path="/" component={IndexPage} exact/>
-						<Route path="/media" component={MediaPage} exact/>
-						<Route path="/album" component={AlbumMediaPage} exact/>
-						<Route path="/search" component={ThumbnailPage} exact/>
-						<Route path="/tags" component={TagsPage} exact/>
-						<Route path="/explore" component={ExplorePage} exact/>
-						<Route component={Error404Page}/>
-					</Switch>
-				</MediaContext.Provider>
-			</div> 
+			<MediaContext.Provider value={{ getQuery, setQuery }}>
+				<Switch>
+					<Route path="/" component={IndexPage} exact/>
+					<Route path="/media" component={MediaPage} exact/>
+					<Route path="/album" component={AlbumMediaPage} exact/>
+					<Route path="/search" component={ThumbnailPage} exact/>
+					<Route path="/tags" component={TagsPage} exact/>
+					<Route path="/explore" component={ExplorePage} exact/>
+					<Route component={Error404Page}/>
+				</Switch>
+			</MediaContext.Provider>
 		</BrowserRouter>
 	);
 }

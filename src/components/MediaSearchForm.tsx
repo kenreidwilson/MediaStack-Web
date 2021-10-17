@@ -8,7 +8,6 @@ import CategorySelect from "./CategorySelect";
 import MediaTypeSelct from "./MediaTypeSelect";
 import RatingComparatorSelect from "./RatingComparatorSelect";
 import RatingStars from "./RatingStars";
-import RatingValueSelect from "./RatingValueSelect";
 import SearchModeSelect from "./SearchModeSelect";
 import SortBySelect from "./SortBySelect";
 import TagSelect from "./TagSelect";

@@ -1,6 +1,5 @@
 import  { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import './InfoSidebar.css'
 import Media from '../types/Media';
 import { ErrorContext } from '../contexts/ErrorContext';
 import { MediaContext } from '../contexts/MediaContext';

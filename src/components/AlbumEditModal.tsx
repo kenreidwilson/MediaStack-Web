@@ -3,8 +3,6 @@ import { Modal, Button }from "react-bootstrap";
 import Album from '../types/Album';
 import Media from '../types/Media';
 import AlbumUpdateForm from './AlbumUpdateForm';
-
-import './AlbumInfoEditModal.css'
 import useAlbums from '../hooks/useAlbums';
 import { IAlbumUpdateRequest } from '../repositories/AlbumRepository';
 
@@ -16,7 +14,7 @@ type Props = {
     onSave: (updatedAlbum: Album) => void 
 }
 
-export default function AlbumInfoEditModal({album, mediaList, isShown, onClose, onSave}: Props) {
+export default function AlbumEditModal({album, mediaList, isShown, onClose, onSave}: Props) {
 
     const { update } = useAlbums();
 

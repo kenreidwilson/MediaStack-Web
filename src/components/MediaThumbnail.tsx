@@ -1,11 +1,13 @@
+import { CSSProperties } from 'react';
 import Media from '../types/Media';
-import './MediaThumbnail.css'
 
 type Props = {
-    media: Media
+    media: Media,
+    onClick?: (event: React.MouseEvent, media: Media) => void,
+    style?: CSSProperties
 }
 
-export default function MediaThumbnail({media}: Props) {
+export default function MediaThumbnail({ media, onClick = () => {}, style }: Props) {
 
     const getAlt = () => {
         let alt: string = "";
@@ -15,9 +17,10 @@ export default function MediaThumbnail({media}: Props) {
 
     return (
         <img 
+            style={{ width: 241, height: 155, borderRadius: "8px", ...style }}
             alt={getAlt()}
-            className={"thumbnail"}
-            src={`${process.env.REACT_APP_API}/media/thumbnail?id=${media.id}`}>
+            src={`${process.env.REACT_APP_API}/media/thumbnail?id=${media.id}`}
+            onClick={(event) => onClick(event, media)}>
         </img>
     );
 }

@@ -20,8 +20,8 @@ export default function DraggableMediaThumbnails({ mediaList, onReorder }: Props
                 onReorder={_onReorder}
             >
                 {mediaList.map(media => 
-                    <div style={{display: 'inline-block', margin: '2px'}}>
-                        <MediaThumbnail key={media.id} media={media}/>
+                    <div key={media.id}>
+                        <MediaThumbnail media={media}/>
                     </div>
                 )}
             </Reorder>

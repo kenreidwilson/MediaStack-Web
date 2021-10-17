@@ -3,7 +3,7 @@ import Spinner from 'react-bootstrap/Spinner'
 import Media from '../types/Media';
 import MediaContainer from '../components/MediaContainer';
 import MediaInfoSidebar from '../components/MediaInfoSidebar';
-import MediaInfoEditModal from '../components/MediaInfoEditModal';
+import MediaInfoModal from '../components/MediaEditModal';
 
 import './MediaPage.css';
 import { MediaRepository } from '../repositories/MediaRepository';
@@ -28,7 +28,7 @@ export default function MediaPage() {
         <BasePage>
             <div id="mediapage">
                 {media ? 
-                <MediaInfoEditModal media={media as Media} isShown={showEditModal} onClose={() => setShowEditModal(false)}
+                <MediaInfoModal media={media as Media} isShown={showEditModal} onClose={() => setShowEditModal(false)}
                     onSave={(updatedMedia: Media) => {setMedia(updatedMedia); setShowEditModal(false)}}/>
                 : null}
                 <div id="mediapage-sidebar">

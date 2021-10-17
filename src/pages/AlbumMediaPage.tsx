@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import MediaInfoSidebar from '../components/MediaInfoSidebar';
 import AlbumInfoSidebar from '../components/AlbumInfoSidebar';
-import AlbumInfoEditModal from '../components/AlbumInfoEditModal';
+import AlbumEditModal from '../components/AlbumEditModal';
 import Album from '../types/Album';
 import Media from '../types/Media';
 
-import MediaInfoEditModal from '../components/MediaInfoEditModal';
+import MediaInfoModal from '../components/MediaEditModal';
 import DraggableMediaThumbnails from '../components/DraggableMediaThumbnails';
 import MediaGallery from '../components/MediaGallery';
 import BasePage from './BasePage';
@@ -68,7 +68,7 @@ export default function AlbumMediaPage() {
         <BasePage>
             <div id="mediapage">
                 {album !== undefined && showAlbumEditModal ? 
-                    <AlbumInfoEditModal 
+                    <AlbumEditModal 
                         isShown={showAlbumEditModal} 
                         onClose={() => setShowAlbumEditModal(false)}
                         onSave={(album: Album) => {setAlbum(album); updateMediaList(album); setShowAlbumEditModal(false);}}
@@ -77,7 +77,7 @@ export default function AlbumMediaPage() {
                     /> 
                     : null}
                 {mediaList !== undefined && showMediaEditModal ?
-                    <MediaInfoEditModal
+                    <MediaInfoModal
                         isShown={showMediaEditModal}
                         media={selectedMedia!}
                         onSave={(updatedMedia: Media) => {updateSelectedMedia(updatedMedia); setShowMediaEditModal(false);}}

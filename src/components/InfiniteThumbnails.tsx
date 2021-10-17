@@ -1,26 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, CSSProperties } from 'react';
 import { Spinner } from 'react-bootstrap';
 import Media from '../types/Media';
 import MediaThumbnails from './MediaThumbnails';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { IMediaSearchQuery, MediaRepository } from '../repositories/MediaRepository';
+import { IMediaSearchQuery } from '../repositories/MediaRepository';
 import { useMedia } from '../hooks/useMedia';
 
 type Props = {
-    baseQuery: IMediaSearchQuery,
-    linkToAlbums: boolean
+    mediaQuery: IMediaSearchQuery,
+    mediaList: Media[],
+    setMediaList: (mediaList: Media[]) => void,
+    onThumbnailClick?: (event: React.MouseEvent, media: Media) => void,
+    onMediaLoad?: (mediaCount: number) => void,
+    distinguishAlbumMedia?: boolean,
+    thumbnailContainerStyle?: CSSProperties
 };
 
-export default function AutoPagedThumbnails({baseQuery, linkToAlbums}: Props) {
+export default function InfiniteThumbnails({ 
+    mediaQuery,  
+    mediaList,
+    setMediaList,
+    onThumbnailClick = () => {}, 
+    onMediaLoad = () => {},
+    distinguishAlbumMedia = false,
+    thumbnailContainerStyle }: Props) {
 
     const [maxMediaCount, setMaxMediaCount] = useState<number | undefined>();
-    const [mediaList, setMediaList] = useState<Media[]>([]);
 
     const { search } = useMedia();
 
     useEffect(() => {
         loadMoreMedia();
     }, []);
+
+    useEffect(() => {
+        onMediaLoad(mediaList.length);
+    }, [mediaList])
 
     const canLoadMore = () => maxMediaCount === undefined || mediaList.length < maxMediaCount;
 
@@ -41,7 +56,7 @@ export default function AutoPagedThumbnails({baseQuery, linkToAlbums}: Props) {
 
     const loadMoreMedia = async () => {
         if (canLoadMore()) {
-            let finalQuery = baseQuery;
+            let finalQuery = mediaQuery;
             finalQuery.offset = mediaList.length;
             finalQuery.count = getMediaBatchSize();
             await search(finalQuery).then(response => {
@@ -52,7 +67,7 @@ export default function AutoPagedThumbnails({baseQuery, linkToAlbums}: Props) {
     }
 
     return (
-        <div>
+        <>
             <InfiniteScroll
                 scrollableTarget="scrollableDiv"
                 dataLength={mediaList.length}
@@ -60,8 +75,10 @@ export default function AutoPagedThumbnails({baseQuery, linkToAlbums}: Props) {
                 hasMore={canLoadMore()}
                 loader={<Spinner style={{position: 'absolute'}} animation="border" variant="primary"/>}
             >
-                <MediaThumbnails mediaList={mediaList} linkToAlbums={linkToAlbums}/>
+                <div style={thumbnailContainerStyle}>
+                    <MediaThumbnails mediaList={mediaList} onClick={onThumbnailClick} distinguishAlbumMedia={distinguishAlbumMedia}/>
+                </div>
             </InfiniteScroll>
-        </div>
+        </>
     );
 }

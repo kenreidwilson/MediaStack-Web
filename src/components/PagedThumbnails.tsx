@@ -1,40 +1,48 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, CSSProperties } from 'react';
 import { Spinner } from 'react-bootstrap';
 import Media from '../types/Media';
-import { IMediaSearchQuery, MediaRepository } from '../repositories/MediaRepository';
+import { IMediaSearchQuery } from '../repositories/MediaRepository';
 import MediaThumbnails from './MediaThumbnails';
 import MSPagination from './MSPagination';
 import { ErrorContext } from '../contexts/ErrorContext';
 import { useMedia } from '../hooks/useMedia';
 
 type Props = {
-    baseQuery: IMediaSearchQuery,
-    linkToAlbums: boolean,
-    mediaPerPage: number
+    mediaQuery: IMediaSearchQuery,
+    mediaPerPage: number,
+    pageNumber: number,
+    mediaList: Media[],
+    setMediaList: (mediaList: Media[]) => void,
+    setPageNumber?: (pageNumber: number) => void,
+    onThumbnailClick?: (event: React.MouseEvent, media: Media) => void,
+    distinguishAlbumMedia?: boolean,
+    thumbnailContainerStyle?: CSSProperties
 };
 
-export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}: Props) {
+export default function PagedThumbnails({ 
+    mediaQuery, 
+    mediaPerPage, 
+    pageNumber, 
+    mediaList,
+    setMediaList,
+    setPageNumber = () => {},
+    onThumbnailClick = () => {},
+    distinguishAlbumMedia = false,
+    thumbnailContainerStyle }: Props) {
 
     const { addError } = useContext(ErrorContext);
-
-    const [numberOfPages, setNumberOfPages] = useState<number>(0);
-    const [mediaList, setMediaList] = useState<Media[]>([]);
-    const [isMediaLoading, setIsMediaLoading] = useState<boolean>(false);
     const { search } = useMedia();
 
-    useEffect(() => {
-        fetchMediaList(getPageNumber());
-    }, []);
+    const [numberOfPages, setNumberOfPages] = useState<number>(0);
+    const [isMediaLoading, setIsMediaLoading] = useState<boolean>(false);
 
-    const getPageNumber = () => {
-        var url = new URL(window.location.href);
-        let pageNumber = url.searchParams.get("p");
-        return pageNumber ? +pageNumber : 1;
-    }
+    useEffect(() => {
+        fetchMediaList(pageNumber);
+    }, [pageNumber]);
 
     const fetchMediaList = (pageNumber: number) => {
         setIsMediaLoading(true);
-        let finalQuery = baseQuery;
+        let finalQuery = mediaQuery;
         finalQuery.offset = (pageNumber - 1) * mediaPerPage;
         finalQuery.count = mediaPerPage;
         search(finalQuery).then(response => {
@@ -46,22 +54,18 @@ export default function PagedThumbnails({baseQuery, linkToAlbums, mediaPerPage}:
     };
 
     const determineNumberOfPages = (count: number) => Math.ceil(count / mediaPerPage);
-
-    const goToPage = (pageNumber: number) => {
-        let urlParams = new URLSearchParams(window.location.search);
-        urlParams.set("p", `${pageNumber}`);
-        window.location.search = urlParams.toString();
-    };
     
     return (
-        <div>
+        <>
             {isMediaLoading ? <Spinner animation="border" variant="primary"/> :
-            <MediaThumbnails mediaList={mediaList} linkToAlbums={linkToAlbums}/>}
+            <div style={thumbnailContainerStyle}>
+                <MediaThumbnails mediaList={mediaList} onClick={onThumbnailClick} distinguishAlbumMedia={distinguishAlbumMedia}/>
+            </div>}
             <div style={{display: 'flex', marginTop: '5px'}}>
                 <div style={{margin: 'auto'}}>
-                    <MSPagination pageNumber={getPageNumber()} numberOfPages={numberOfPages} onNavigate={goToPage}/>
+                    <MSPagination pageNumber={pageNumber} numberOfPages={numberOfPages} onNavigate={setPageNumber}/>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
