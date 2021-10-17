@@ -1,8 +1,6 @@
 import  { useState, useEffect, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 import Media from '../types/Media';
 import { ErrorContext } from '../contexts/ErrorContext';
-import { MediaContext } from '../contexts/MediaContext';
 
 import List from '@mui/material/List';
 import SidebarTagsItem from './TagSidebarElement';
@@ -15,6 +13,7 @@ import { IMediaSearchQuery } from '../repositories/MediaRepository';
 import { useMedia } from '../hooks/useMedia';
 import RatingStars from './RatingStars';
 import { ListItemButton } from '@mui/material';
+import useNavigation from '../hooks/useNavigation';
 
 type Props = {
     media: Media,
@@ -27,9 +26,8 @@ export default function MediaInfoSidebar({ media, setMedia }: Props) {
     const [artistName, setArtistName] = useState<string | undefined>(undefined);
     const [albumName, setAlbumName] = useState<string | undefined>(undefined);
 
-    const history = useHistory();
-    const { setQuery } = useContext(MediaContext);
     const { addError } = useContext(ErrorContext);
+    const { navigate } = useNavigation();
 
     const { get: getCategory } = useCategories();
     const { get: getArtist } = useArtists();
@@ -61,8 +59,7 @@ export default function MediaInfoSidebar({ media, setMedia }: Props) {
     }, [media]);
 
     const onSidebarNavClick = (query: IMediaSearchQuery) => {
-        setQuery(query);
-        history.push('/search');
+        navigate("/search", query);
     }
 
     const handleScoreEdit = async (newScore: number) => {
@@ -91,22 +88,24 @@ export default function MediaInfoSidebar({ media, setMedia }: Props) {
 
             {media.type && 
             <SidebarItem header="Type">
-                <SidebarItemButton body={`${getTypeBody(media.type)}`}/>
+                <SidebarItemButton 
+                    onClick={() => onSidebarNavClick({ type: media.type })} 
+                    body={`${getTypeBody(media.type)}`}/>
             </SidebarItem>}
             
             {categoryName && 
             <SidebarItem header="Category">
-                <SidebarItemButton body={categoryName}/>
+                <SidebarItemButton onClick={() => onSidebarNavClick({ mode: 2, categoryID: media.categoryID })} body={categoryName}/>
             </SidebarItem>} 
 
             {artistName && 
             <SidebarItem header="Artist">
-                <SidebarItemButton body={artistName}/>
+                <SidebarItemButton onClick={() => onSidebarNavClick({ mode: 1, artistID: media.artistID })} body={artistName}/>
             </SidebarItem>}
             
             {albumName && 
             <SidebarItem header="Album">
-                <SidebarItemButton body={albumName}/>
+                <SidebarItemButton onClick={() => onSidebarNavClick({ mode: 1, albumID: media.albumID })} body={albumName}/>
             </SidebarItem>}
 
             {media.source && 
@@ -115,14 +114,14 @@ export default function MediaInfoSidebar({ media, setMedia }: Props) {
             </SidebarItem>}
 
             <SidebarItem header="Rating">
-                <ListItemButton>
+                <ListItemButton onClick={() => onSidebarNavClick({ score: media.score })}>
                     <RatingStars value={media.score}/>
                 </ListItemButton>
             </SidebarItem>
 
             {media.tags &&
             <SidebarItem header={`Tags (${media.tags.length})`}>
-                <SidebarTagsItem tags={media.tags}/>
+                <SidebarTagsItem onClick={(tag) => onSidebarNavClick({ mode: 2, whitelistTagIDs: [tag.id] })} tags={media.tags}/>
             </SidebarItem>}
         </List>
     );

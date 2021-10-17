@@ -9,37 +9,20 @@ import ThumbnailPage from './pages/ThumbnailPage';
 import TagsPage from './pages/TagsPage';
 import ExplorePage from './pages/ExplorePage';
 import Error404Page from './pages/404Page';
-import { MediaContext } from './contexts/MediaContext';
 
 export default function App() {
-	
-	const getQuery = (): IMediaSearchQuery => {
-		let queryString = sessionStorage.getItem('query');
-		if (queryString === null) {
-			let query = {};
-			setQuery(query);
-			return query;
-		}
-		return JSON.parse(queryString as string);
-	}
-
-	const setQuery = (query: IMediaSearchQuery): void => {
-		sessionStorage.setItem('query', JSON.stringify(query));
-	}
 
 	return ( 
 		<BrowserRouter>
-			<MediaContext.Provider value={{ getQuery, setQuery }}>
-				<Switch>
-					<Route path="/" component={IndexPage} exact/>
-					<Route path="/media" component={MediaPage} exact/>
-					<Route path="/album" component={AlbumMediaPage} exact/>
-					<Route path="/search" component={ThumbnailPage} exact/>
-					<Route path="/tags" component={TagsPage} exact/>
-					<Route path="/explore" component={ExplorePage} exact/>
-					<Route component={Error404Page}/>
-				</Switch>
-			</MediaContext.Provider>
+			<Switch>
+				<Route path="/" component={IndexPage} exact/>
+				<Route path="/media" component={MediaPage} exact/>
+				<Route path="/album" component={AlbumMediaPage} exact/>
+				<Route path="/search" component={ThumbnailPage} exact/>
+				<Route path="/tags" component={TagsPage} exact/>
+				<Route path="/explore" component={ExplorePage} exact/>
+				<Route component={Error404Page}/>
+			</Switch>
 		</BrowserRouter>
 	);
 }
