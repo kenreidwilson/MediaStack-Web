@@ -1,14 +1,10 @@
-import Artist from "../types/Artist";
-import Category from "../types/Category";
-import Tag from "../types/Tag";
-import API from "../api/API";
-import ISearchResponse from "../types/ISearchResponse";
-import IRepository from "../types/IRepository"
-import ISearchQuery from "../types/ISearchQuery";
-
-interface IGenericSearchQuery extends ISearchQuery {
-    name?: string;
-}
+import Tag from '../types/Tag';
+import Artist from '../types/Artist';
+import Category from '../types/Category';
+import IRepository from '../types/IRepository';
+import ISearchResponse from '../types/ISearchResponse';
+import IGenericSearchQuery from '../types/IGenericSearchQuery';
+import API from '../api/API';
 
 export default abstract class GenericRepository<
     TEntity extends Tag | Category | Artist> implements IRepository<TEntity> {
@@ -50,7 +46,3 @@ export default abstract class GenericRepository<
         return API.delete(`${this.baseURL}/${this.baseEndpoint}?id=${e.id}`);
     }
 }
-
-export type {
-    IGenericSearchQuery
-};

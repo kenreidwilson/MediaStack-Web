@@ -1,17 +1,16 @@
-import { useState, useEffect } from 'react';
-import MediaInfoSidebar from '../components/MediaInfoSidebar';
-import AlbumInfoSidebar from '../components/AlbumInfoSidebar';
-import AlbumEditModal from '../components/AlbumEditModal';
-import Album from '../types/Album';
 import Media from '../types/Media';
-
-import MediaInfoModal from '../components/MediaEditModal';
-import DraggableMediaThumbnails from '../components/DraggableMediaThumbnails';
-import MediaGallery from '../components/MediaGallery';
-import BasePage from './BasePage';
+import Album from '../types/Album';
+import { useState, useEffect } from 'react';
 import useAlbums from '../hooks/useAlbums';
-import { useMedia } from '../hooks/useMedia';
+import useMedia from '../hooks/useMedia';
 import useNavigation from '../hooks/useNavigation';
+import BasePage from './BasePage';
+import MediaGallery from '../components/MediaGallery';
+import DraggableMediaThumbnails from '../components/Thumbnail/DraggableMediaThumbnails';
+import MediaInfoSidebar from '../components/Sidebar/MediaInfoSidebar';
+import AlbumInfoSidebar from '../components/Sidebar/AlbumInfoSidebar';
+import AlbumEditModal from '../components/Modals/AlbumEditModal';
+import MediaInfoModal from '../components/Modals/MediaEditModal';
 
 export default function AlbumMediaPage() {
     const [album, setAlbum] = useState<Album>();
@@ -36,7 +35,7 @@ export default function AlbumMediaPage() {
                 }
             });
         }).catch(error => { 
-            //setAlerts([...alerts, <MSBannerAlert variant="danger" heading="API Error:" body={error.message}/>]);
+            //setAlerts([...alerts, <MSBannerAlert variant='danger' heading='API Error:' body={error.message}/>]);
         });
         
     }, []);
@@ -66,7 +65,7 @@ export default function AlbumMediaPage() {
 
     return (
         <BasePage>
-            <div id="mediapage">
+            <div id='mediapage'>
                 {album !== undefined && showAlbumEditModal ? 
                     <AlbumEditModal 
                         isShown={showAlbumEditModal} 
@@ -84,14 +83,14 @@ export default function AlbumMediaPage() {
                         onClose={() => setShowMediaEditModal(false)}
                     /> 
                 : null}
-                <div id="mediapage-sidebar">
+                <div id='mediapage-sidebar'>
                     {mediaList !== undefined && selectedMedia !== undefined ? 
                         <div>
-                            <button className="edit_button btn btn-primary" onClick={() => setShowMediaEditModal(true)}>Edit Media</button>
+                            <button className='edit_button btn btn-primary' onClick={() => setShowMediaEditModal(true)}>Edit Media</button>
                             {mediaList.length > 0 ? <MediaInfoSidebar media={selectedMedia} setMedia={updateSelectedMedia}/> : null }
-                            <button className="edit_button btn btn-primary" onClick={() => setShowAlbumEditModal(true)}>Edit Album</button>
+                            <button className='edit_button btn btn-primary' onClick={() => setShowAlbumEditModal(true)}>Edit Album</button>
                             <AlbumInfoSidebar album={album!} setAlbum={setAlbum} mediaList={mediaList}updateMediaList={updateMediaList}/>
-                            <button className="btn btn-primary" onClick={toggleOrganize}>Organize</button>
+                            <button className='btn btn-primary' onClick={toggleOrganize}>Organize</button>
                         </div> : null}
                 </div>
                 {selectedMedia !== undefined ? 
@@ -128,7 +127,7 @@ function OrganizeAlbumSection({ mediaList, setMediaList, onSave }: Props ) {
     return (
             <div>
                 <DraggableMediaThumbnails mediaList={mediaList} onReorder={setMediaList}/>
-                <button className="btn btn-primary" disabled={isLoading} onClick={handleSave}>Save</button>
+                <button className='btn btn-primary' disabled={isLoading} onClick={handleSave}>Save</button>
             </div>
         );
 }

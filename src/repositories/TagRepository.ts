@@ -1,12 +1,8 @@
-import Tag from "../types/Tag";
-import GenericRepository from "./GenericRepository";
+import Tag from '../types/Tag';
+import GenericRepository from './GenericRepository';
 
-class TagRepository extends GenericRepository<Tag> {
+export default class TagRepository extends GenericRepository<Tag> {
     constructor() {
-        super("tags");
+        super('tags');
     }
-}
-
-export {
-    TagRepository
 }

@@ -8,7 +8,7 @@ export interface ThemeStyle extends React.CSSProperties {
     primaryColor: string
 }
 
-export interface Theme {
+export default interface Theme {
     name: ThemeName,
     style: ThemeStyle
 }

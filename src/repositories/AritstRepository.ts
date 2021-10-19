@@ -1,13 +1,8 @@
-import Artist from "../types/Artist";
-import ISearchResponse from "../types/ISearchResponse";
-import GenericRepository from "./GenericRepository";
+import Artist from '../types/Artist';
+import GenericRepository from './GenericRepository';
 
-class ArtistRepository extends GenericRepository<Artist> {
+export default class ArtistRepository extends GenericRepository<Artist> {
     constructor() {
-        super("artists");
+        super('artists');
     }
-}
-
-export {
-    ArtistRepository
 }

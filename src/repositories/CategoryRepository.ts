@@ -1,13 +1,8 @@
-import Category from "../types/Category";
-import ISearchResponse from "../types/ISearchResponse";
-import GenericRepository from "./GenericRepository";
+import Category from '../types/Category';
+import GenericRepository from './GenericRepository';
 
-class CategoryRepository extends GenericRepository<Category> {
+export default class CategoryRepository extends GenericRepository<Category> {
     constructor() {
-        super("categories");
+        super('categories');
     }
-}
-
-export {
-    CategoryRepository
 }

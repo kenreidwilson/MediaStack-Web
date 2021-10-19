@@ -1,7 +1,7 @@
+import IMediaSearchQuery from '../types/IMediaSearchQuery';
 import { useContext, useState } from 'react';
 import { ThemeContext } from '../contexts/ThemeContext';
-import { IMediaSearchQuery } from '../repositories/MediaRepository';
-import MediaSearchForm from './MediaSearchForm';
+import MediaSearchForm from './Forms/MediaSearchForm';
 
 type Props = {
     onSearch: Function
@@ -15,7 +15,7 @@ export default function SearchMenu({ onSearch }: Props) {
     const { theme } = useContext(ThemeContext);
 
     return (
-        <div style={{ margin: "auto", width: "50%", display: "flex", flexDirection: "column" }}>
+        <div style={{ margin: 'auto', width: '50%', display: 'flex', flexDirection: 'column' }}>
             <MediaSearchForm 
                 query={searchQuery} 
                 onChange={setSearchQuery}
@@ -29,11 +29,11 @@ export default function SearchMenu({ onSearch }: Props) {
                 showRatingValue={showAdvancedOptions}/>
                 
             <div>
-                <button style={{ marginTop: "5px" }} className="btn btn-primary" onClick={() => onSearch(searchQuery)}>Search</button>
+                <button style={{ marginTop: '5px' }} className='btn btn-primary' onClick={() => onSearch(searchQuery)}>Search</button>
                 <a 
                     onClick={() => setShowAdvancedOptions(!showAdvancedOptions)} 
-                    style={{ float: "right", color: theme.style.primaryColor }}>
-                        {showAdvancedOptions ? "hide advanced options" : "show advanced options"}
+                    style={{ float: 'right', color: theme.style.primaryColor }}>
+                        {showAdvancedOptions ? 'hide advanced options' : 'show advanced options'}
                 </a>
             </div>
         </div>

@@ -1,12 +1,12 @@
-import { useState, useEffect, useContext } from 'react';
-import TagDeleteModal from './TagDeleteModal'; 
-import TagEditModal from './TagEditModal';
 import Tag from '../types/Tag';
-import MSPagination from './MSPagination';
+import { useState, useEffect, useContext } from 'react';
+import { ThemeContext } from '../contexts/ThemeContext';
+import useTags from '../hooks/useTags';
+import TagDeleteModal from './Modals/TagDeleteModal'; 
+import TagEditModal from './Modals/TagEditModal';
+import MSPagination from './Misc/MSPagination';
 
 import './TagsTable.css'
-import useTags from '../hooks/useTags';
-import { ThemeContext } from '../contexts/ThemeContext';
 
 type mediaInfo = {
     count: number
@@ -54,7 +54,7 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
     }
 
     return (
-        <div id="tags_table">
+        <div id='tags_table'>
 
             {selectedTag ? <TagEditModal 
                 isShown={showEditModal}
@@ -70,37 +70,37 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
                 tag={selectedTag}
             /> : null}
             
-            <div id="tags_table_table">
-                <table className="table">
-                    <thead className="thead-dark">
+            <div id='tags_table_table'>
+                <table className='table'>
+                    <thead className='thead-dark'>
                         <tr>
-                            <th style={{width: "5%", color: theme.style.color }}>ID</th>
-                            <th style={{width: "20%", color: theme.style.color}}>Name</th>
-                            <th style={{width: "60%", color: theme.style.color}}>Media Count</th>
-                            <th style={{width: "15%", minWidth: "111px", color: theme.style.color}}>Edit</th>
+                            <th style={{width: '5%', color: theme.style.color }}>ID</th>
+                            <th style={{width: '20%', color: theme.style.color}}>Name</th>
+                            <th style={{width: '60%', color: theme.style.color}}>Media Count</th>
+                            <th style={{width: '15%', minWidth: '111px', color: theme.style.color}}>Edit</th>
                         </tr>
                     </thead>
                     <tbody>
                         {tags ? tags.slice(tagsPerPage * (pageNumber - 1), tagsPerPage * pageNumber).map(tag =>
                             <tr key={tag.id} onLoad={() => loadTagInfo(tag)}>
-                                <th scope="row">{tag.id}</th>
+                                <th scope='row'>{tag.id}</th>
                                 <td><a style={{cursor: 'pointer'}} onClick={() => onTagClick({'whitelist_tags':[tag.id]})}>{tag.name}</a></td>
                                 <td>{tagsInfo[tag.id] ? 
                                     tagsInfo[tag.id]!.count : 
-                                    <div className="spinner-border spinner-border-sm" role="status">
-                                        <span className="sr-only">Loading...</span>
+                                    <div className='spinner-border spinner-border-sm' role='status'>
+                                        <span className='sr-only'>Loading...</span>
                                     </div>}
                                 </td>
                                 <td>
-                                    <a className="edit_a" onClick={() => { setSelectedTag(tag); setShowEditModal(true); }}>Edit</a> |
-                                    <a className="delete_a" onClick={() => { setSelectedTag(tag); setShowDeleteModal(true); }}> Delete</a>
+                                    <a className='edit_a' onClick={() => { setSelectedTag(tag); setShowEditModal(true); }}>Edit</a> |
+                                    <a className='delete_a' onClick={() => { setSelectedTag(tag); setShowDeleteModal(true); }}> Delete</a>
                                 </td>
                             </tr>
                         ) : null}
                     </tbody>
                 </table>
             </div>
-            <div id="tags_table_nav">
+            <div id='tags_table_nav'>
                 <MSPagination pageNumber={pageNumber} numberOfPages={numberOfPages()} onNavigate={setPageNumber}/>
             </div>
       </div>

@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import MSBannerAlert from "../components/MSBannerAlert";
-import Navigation from "../components/Navigation";
-import MSAlert from "../types/MSAlert";
-import { ErrorContext } from "../contexts/ErrorContext";
-import { css, Global } from "@emotion/react";
-import useThemes from "../hooks/useThemes";
-import { ThemeContext } from "../contexts/ThemeContext";
+import MSAlert from '../types/MSAlert';
+import { useEffect, useRef, useState } from 'react';
+import { ErrorContext } from '../contexts/ErrorContext';
+import { ThemeContext } from '../contexts/ThemeContext';
+import useThemes from '../hooks/useThemes';
+import { css, Global } from '@emotion/react';
+import MSBannerAlert from '../components/Misc/MSBannerAlert';
+import Navigation from '../components/Misc/Navigation';
 
 type Props = {
     children: JSX.Element
@@ -46,9 +46,9 @@ export default function BasePage({ children }: Props) {
 
     const getAlertHeading = (alert: MSAlert): string => {
         if (alert.type === 'error' || alert.type === 'critical') {
-            return "Something went wrong.";
+            return 'Something went wrong.';
         }
-        return "Alert";
+        return 'Alert';
     }
 
     return (
@@ -62,7 +62,7 @@ export default function BasePage({ children }: Props) {
                             }
                         `} />
                     <Navigation />
-                    {alerts.map(alert => <MSBannerAlert variant={getMSBannerAlertVariant(alert)} heading={getAlertHeading(alert)} body={alert.message ? alert.message : ""}/>)}
+                    {alerts.map(alert => <MSBannerAlert variant={getMSBannerAlertVariant(alert)} heading={getAlertHeading(alert)} body={alert.message ? alert.message : ''}/>)}
                     {children}
                 </ThemeContext.Provider>
             </ErrorContext.Provider>

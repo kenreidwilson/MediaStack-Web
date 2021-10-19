@@ -1,27 +1,14 @@
-import Album from "../types/Album";
-import Tag from "../types/Tag";
-import API from "../api/API";
-import IRepository from "../types/IRepository";
-import { IMediaUpdateRequest, MediaRepository } from "./MediaRepository";
-import ISearchResponse from "../types/ISearchResponse";
-import ISearchQuery from "../types/ISearchQuery";
+import Album from '../types/Album';
+import Tag from '../types/Tag';
+import IRepository from '../types/IRepository';
+import ISearchResponse from '../types/ISearchResponse';
+import IAlbumSearchQuery from '../types/IAlbumSearchQuery';
+import IAlbumUpdateRequest from '../types/IAlbumUpdateRequest';
+import IMediaUpdateRequest from '../types/IMediaUpdateRequest';
+import API from '../api/API';
+import MediaRepository from './MediaRepository';
 
-interface IAlbumUpdateRequest {
-    ID: number;
-    addTagIDs?: number[];
-    removeTagIDs?: number[];
-    source?: string;
-    score?: number;
-    categoryID? : number;
-    artistID?: number;
-}
-
-interface IAlbumSearchQuery extends ISearchQuery {
-    name?: string,
-    artistId?: number
-}
-
-class AlbumRepository implements IRepository<Album, IAlbumSearchQuery, IAlbumUpdateRequest> {
+export default class AlbumRepository implements IRepository<Album, IAlbumSearchQuery, IAlbumUpdateRequest> {
 
     baseURL = `${process.env.REACT_APP_API}`;
 
@@ -82,16 +69,7 @@ class AlbumRepository implements IRepository<Album, IAlbumSearchQuery, IAlbumUpd
     }
 
     delete(e: Album): Promise<void> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
     
-}
-
-export type {
-    IAlbumUpdateRequest,
-    IAlbumSearchQuery
-}
-
-export {
-    AlbumRepository
 }

@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
 interface IErrorContext {
     getErrors: () => Error[],
@@ -6,6 +6,6 @@ interface IErrorContext {
 }
 
 export const ErrorContext = createContext<IErrorContext>({ 
-    getErrors: () => { throw new Error("Not Implemented") }, 
-    addError: (error: Error) => { throw new Error("Not Implemented") }
+    getErrors: () => { throw new Error('Not Implemented') }, 
+    addError: (error: Error) => { throw new Error('Not Implemented') }
 });

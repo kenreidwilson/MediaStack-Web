@@ -1,5 +1,5 @@
-import IRepository from "../types/IRepository";
-import ISearchQuery from "../types/ISearchQuery";
+import IRepository from '../types/IRepository';
+import ISearchQuery from '../types/ISearchQuery';
 
 export default function useRepository<TEntity, TSearchQuery extends ISearchQuery = ISearchQuery, TUpdateData = TEntity>
     (repository: IRepository<TEntity, TSearchQuery, TUpdateData>) {

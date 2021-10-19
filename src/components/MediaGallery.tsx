@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
 import { Spinner } from 'react-bootstrap';
 import Media from '../types/Media';
-import MediaContainer from './MediaContainer';
-import MediaThumbnails from './MediaThumbnails';
-import SelectableThumbnailSlider from './SelectableThumbnailSlider';
+import MediaContainer from './Media/MediaContainer';
+import MediaThumbnails from './Thumbnail/MediaThumbnails';
+import SelectableThumbnailSlider from './Thumbnail/SelectableThumbnailSlider';
 
 type Props = {
     mediaList: Media[],
@@ -37,10 +37,10 @@ export default function MediaGallery({ mediaList, presentedMedia, onPresentedMed
     }
 
     return (
-        <div id="mediapage-content">
+        <div id='mediapage-content'>
         {mediaList !== undefined && mediaList.length > 0 ? 
             <div>
-                {isMediaLoading ? <Spinner id="imageLoadingSpinner" animation="border" variant="primary" /> : null}
+                {isMediaLoading ? <Spinner id='imageLoadingSpinner' animation='border' variant='primary' /> : null}
                 <MediaContainer onLoad={() => setIsMediaLoading(false)} 
                     onClick={(event: React.MouseEvent<HTMLImageElement, MouseEvent>) => handleMediaClick(event)} media={presentedMedia}/>
             </div>
@@ -49,7 +49,7 @@ export default function MediaGallery({ mediaList, presentedMedia, onPresentedMed
         (global.matchMedia(`(min-width: 768px)`).matches ?
             <SelectableThumbnailSlider mediaList={mediaList} selectedMedia={presentedMedia} onSelectMedia={onPresentedMediaChange}/>
             : 
-            <div id="thumbnails">
+            <div id='thumbnails'>
                 <MediaThumbnails 
                     canUnselect={false}
                     mediaList={mediaList} 

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import Navigation from '../components/Navigation';
 import Media from '../types/Media';
-import { IMediaUpdateRequest, MediaRepository } from '../repositories/MediaRepository';
-import MediaUpdateForm from '../components/MediaUpdateForm';
+import IMediaUpdateRequest from '../types/IMediaUpdateRequest';
+import React, { useState, useEffect } from 'react';
+import useMedia from '../hooks/useMedia';
+import Navigation from '../components/Misc/Navigation';
+import MediaUpdateForm from '../components/Forms/MediaUpdateForm';
 
 export default function ExplorePage() {
 
@@ -10,16 +11,16 @@ export default function ExplorePage() {
     const [selectedMedia, setSelectedMedia] = useState<Media[]>([]);
     const [updateRequest, setUpdateRequest] = useState<IMediaUpdateRequest>( { ID: -1 } );
 
-    const mediaRepo = new MediaRepository();
+    const { search, update } = useMedia();
 
     useEffect(() => {
-        new MediaRepository().search({}).then(response => {
+        search({}).then(response => {
             setMediaList(response.data);
         });
     }, [])
 
     const updateMedia = (score: number) => {
-        return Promise.all(selectedMedia.map(m => mediaRepo.update({ ID: m.id, score, tagIDs: [1] })));
+        return Promise.all(selectedMedia.map(m => update({ ID: m.id, score, tagIDs: [1] })));
     }
 
     return (

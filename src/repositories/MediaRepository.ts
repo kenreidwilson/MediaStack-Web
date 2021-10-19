@@ -1,43 +1,16 @@
-import API from "../api/API";
-import ISearchResponse from "../types/ISearchResponse";
-import Media from "../types/Media";
-import IRepository from "../types/IRepository";
-import ISearchQuery from "../types/ISearchQuery";
+import Media from '../types/Media';
+import IRepository from '../types/IRepository';
+import ISearchResponse from '../types/ISearchResponse';
+import IMediaSearchQuery from '../types/IMediaSearchQuery';
+import IMediaUpdateRequest from '../types/IMediaUpdateRequest';
+import API from '../api/API';
 
-interface IMediaSearchQuery extends ISearchQuery {
-    categoryID?: number;
-    blacklistCategoryIDs?: number[];
-    artistID?: number;
-    blacklistArtistsIDs?: number[];
-    albumID?: number;
-    blacklistAlbumIDs?: number[];
-    whitelistTagIDs?: number[];
-    blacklistTagIDs?: number[];
-    score?: number;
-    lessThanScore?: number;
-    greaterThanScore?: number;
-    sortBy?: string;
-    type?: number;
-    mode?: number;
-}
-
-interface IMediaUpdateRequest {
-    ID: number;
-    categoryID?: number;
-    artistID?: number;
-    albumID?: number;
-    tagIDs?: number[];
-    score?: number;
-    source?: string;
-    albumOrder?: number;
-}
-
-class MediaRepository implements IRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
+export default class MediaRepository implements IRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
 
     baseURL = `${process.env.REACT_APP_API}`;
     
     add(media: Media): Promise<Media> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     get(id: number): Promise<Media> {
@@ -57,15 +30,6 @@ class MediaRepository implements IRepository<Media, IMediaSearchQuery, IMediaUpd
     }
 
     delete(media: Media): Promise<void> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
-}
-
-export type {
-    IMediaSearchQuery,
-    IMediaUpdateRequest
-}
-
-export {
-    MediaRepository
 }

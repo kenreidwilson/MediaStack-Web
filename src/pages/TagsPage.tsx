@@ -1,7 +1,7 @@
-import TagsTable from '../components/TagsTable';
+import IMediaSearchQuery from '../types/IMediaSearchQuery';
 import useNavigation from '../hooks/useNavigation';
-import { IMediaSearchQuery } from '../repositories/MediaRepository';
 import BasePage from './BasePage';
+import TagsTable from '../components/TagsTable';
 
 export default function TagsPage() {
 
@@ -9,7 +9,7 @@ export default function TagsPage() {
 
     return ( 
         <BasePage>
-            <TagsTable onTagClick={(searchQuery: IMediaSearchQuery) => navigate("/search", searchQuery)}/>
+            <TagsTable onTagClick={(searchQuery: IMediaSearchQuery) => navigate('/search', searchQuery)}/>
         </BasePage>
      );
 }

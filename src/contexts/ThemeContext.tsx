@@ -1,6 +1,6 @@
-import { createContext } from "react";
-import { lightTheme } from "../hooks/useThemes";
-import { Theme, ThemeName } from "../types/Theme";
+import Theme, { ThemeName } from '../types/Theme';
+import { LightTheme } from '../themes/LightTheme';
+import { createContext } from 'react';
 
 type ThemeContextType = {
     theme: Theme,
@@ -8,6 +8,6 @@ type ThemeContextType = {
 }
 
 export const ThemeContext = createContext<ThemeContextType>({
-    theme: lightTheme,
-    setTheme: () => { throw new Error("Not Implemented") }
+    theme: LightTheme,
+    setTheme: () => { throw new Error('Not Implemented') }
 });

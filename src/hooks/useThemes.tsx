@@ -1,38 +1,22 @@
-import { useState } from "react";
-import { Theme, ThemeName } from "../types/Theme";
-
-export const lightTheme: Theme = { 
-    name: 'light',
-    style: {
-        backgroundColor: "white",
-        color: "black",
-        primaryColor: "rgb(0, 102, 255)"
-    }
-}
-
-export const darkTheme: Theme = {
-    name: 'dark',
-    style: {
-        backgroundColor: "#1d1d1d",
-        color: "rgb(200, 200, 200)",
-        primaryColor: "rgb(0, 102, 255)"
-    }
-}
+import { useState } from 'react';
+import Theme, { ThemeName } from '../types/Theme';
+import { DarkTheme } from '../themes/DarkTheme';
+import { LightTheme } from '../themes/LightTheme';
 
 export default function useThemes() {
 
-    const [theme, setTheme] = useState<Theme>(darkTheme);
+    const [theme, setTheme] = useState<Theme>(DarkTheme);
 
     const setThemeByName = (name: ThemeName) => {
         switch(name) {
             case 'dark':
-                setTheme(darkTheme);
+                setTheme(DarkTheme);
                 break;
             case 'light':
-                setTheme(lightTheme);
+                setTheme(LightTheme);
                 break;
             default:
-                setTheme(lightTheme);
+                setTheme(LightTheme);
                 break;
         }
     }
