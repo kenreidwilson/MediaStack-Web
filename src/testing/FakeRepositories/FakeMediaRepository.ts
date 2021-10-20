@@ -1,13 +1,14 @@
 import Media from '../../types/Media';
+import ISearchResponse from '../../types/ISearchResponse';
 import IMediaSearchQuery from '../../types/IMediaSearchQuery';
 import IMediaUpdateRequest from '../../types/IMediaUpdateRequest';
 import BaseFakeRepository from './BaseFakeRepository';
-import ISearchResponse from '../../types/ISearchResponse';
+import { SeedMedia } from '../SeedData/SeedMedia';
 
 export default class FakeMediaRepository extends BaseFakeRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
 
     constructor() {
-        super("media", []);
+        super("media", SeedMedia);
     }
 
     search(query: IMediaSearchQuery): Promise<ISearchResponse<Media>> {

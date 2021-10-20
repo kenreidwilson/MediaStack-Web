@@ -1,6 +1,5 @@
 import IGenericSearchQuery from '../../types/IGenericSearchQuery';
 import ISearchResponse from '../../types/ISearchResponse';
-
 import BaseFakeRepository from './BaseFakeRepository';
 
 export default class GenericFakeRepository<TEntity extends { id: number, name: string }> extends BaseFakeRepository<TEntity>  {

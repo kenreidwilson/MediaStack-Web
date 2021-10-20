@@ -2,15 +2,13 @@ import Album from '../../types/Album';
 import IAlbumSearchQuery from '../../types/IAlbumSearchQuery';
 import IAlbumUpdateRequest from '../../types/IAlbumUpdateRequest';
 import ISearchResponse from '../../types/ISearchResponse';
-import BaseFakeRepository from "./BaseFakeRepository";
+import BaseFakeRepository from './BaseFakeRepository';
+import { SeedAlbums } from '../SeedData/SeedAlbums';
 
 export default class FakeAlbumRepository extends BaseFakeRepository<Album, IAlbumSearchQuery, IAlbumUpdateRequest> {
 
     constructor() {
-        super("albums", [
-            { id: 1, name: "album1", artistID: 1},
-            { id: 2, name: "album2", artistID: 2}
-        ]);
+        super("albums", SeedAlbums);
     }
 
     search(query: IAlbumSearchQuery): Promise<ISearchResponse<Album>> {

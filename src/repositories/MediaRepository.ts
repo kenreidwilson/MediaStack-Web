@@ -21,10 +21,6 @@ export default class MediaRepository extends BaseRepository<Media, IMediaSearchQ
         return this.API.get<Media>(`${this.baseURL}/media?id=${id}`);
     }
 
-    getFileURL(media: Media) {
-        return `${this.baseURL}/media/file?id=${media.id}`;
-    }
-
     search(query: IMediaSearchQuery): Promise<ISearchResponse<Media>> {
         return this.API.post<ISearchResponse<Media>>(`${this.baseURL}/media/search`, query);
     }

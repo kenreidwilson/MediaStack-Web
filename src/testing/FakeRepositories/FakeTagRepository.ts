@@ -1,12 +1,10 @@
 import Tag from '../../types/Tag';
 import GenericFakeRepository from './GenericFakeRepository';
+import { SeedTags } from '../SeedData/SeedTags';
 
 export default class FakeTagRepository extends GenericFakeRepository<Tag> {
 
     constructor() {
-        super("tags", [
-            { name: "tag1", id: 1 },
-            { name: "tag2", id: 2 }
-        ]);
+        super("tags", SeedTags);
     };
 }
