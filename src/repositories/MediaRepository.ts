@@ -1,20 +1,24 @@
 import Media from '../types/Media';
-import IRepository from '../types/IRepository';
 import ISearchResponse from '../types/ISearchResponse';
 import IMediaSearchQuery from '../types/IMediaSearchQuery';
 import IMediaUpdateRequest from '../types/IMediaUpdateRequest';
-import API from '../api/API';
+import BaseRepository from './BaseRepository';
+import IAPI from '../types/IAPI';
 
-export default class MediaRepository implements IRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
-
-    baseURL = `${process.env.REACT_APP_API}`;
+export default class MediaRepository extends BaseRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
     
+    baseURL: string = `${process.env.REACT_APP_API}`;
+
+    constructor(api: IAPI) {
+        super(api);
+    }
+
     add(media: Media): Promise<Media> {
         throw new Error('Method not implemented.');
     }
 
     get(id: number): Promise<Media> {
-        return API.get<Media>(`${this.baseURL}/media?id=${id}`);
+        return this.API.get<Media>(`${this.baseURL}/media?id=${id}`);
     }
 
     getFileURL(media: Media) {
@@ -22,11 +26,11 @@ export default class MediaRepository implements IRepository<Media, IMediaSearchQ
     }
 
     search(query: IMediaSearchQuery): Promise<ISearchResponse<Media>> {
-        return API.post<ISearchResponse<Media>>(`${this.baseURL}/media/search`, query);
+        return this.API.post<ISearchResponse<Media>>(`${this.baseURL}/media/search`, query);
     }
 
     update(updateRequest: IMediaUpdateRequest): Promise<Media> {
-        return API.put<Media>(`${this.baseURL}/media`, updateRequest);
+        return this.API.put<Media>(`${this.baseURL}/media`, updateRequest);
     }
 
     delete(media: Media): Promise<void> {

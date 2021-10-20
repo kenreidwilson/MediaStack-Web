@@ -5,8 +5,8 @@ export default class MockTagRepository extends GenericMockRepository<Tag> {
 
     constructor() {
         super("tags", [
-            { name: "asdf", id: 1 },
-            { name: "asdf2", id: 2 }
+            { name: "tag1", id: 1 },
+            { name: "tag2", id: 2 }
         ]);
     };
 }

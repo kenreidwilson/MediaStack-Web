@@ -1,10 +1,12 @@
-import Axios from 'axios';
 import { APINetworkError, APINotFoundError, APIBadRequestError, APIUnexpectedResponseError } from './APIErrors';
+import IAPI from '../types/IAPI';
 import BaseResponse from '../types/IBaseResponse';
+import Axios from 'axios';
 
-class API {
-    static get<T>(url: string): Promise<T> {
-        return Axios.get<BaseResponse<T>>(url)
+export default class API implements IAPI {
+
+    get<T>(endpoint: string): Promise<T> {
+        return Axios.get<BaseResponse<T>>(endpoint)
         .then(response => {
             if (response.status === 200) {
                 return response.data.data;
@@ -23,8 +25,8 @@ class API {
         });
     }
 
-    static post<T>(url: string, data?: any): Promise<T> {
-        return Axios.post<BaseResponse<T>>(url, data)
+    post<T>(endpoint: string, data?: any): Promise<T> {
+        return Axios.post<BaseResponse<T>>(endpoint, data)
         .then(response => {
             if (response.status === 201 || response.status === 200) {
                 return response.data.data;
@@ -44,8 +46,8 @@ class API {
         });
     }
 
-    static delete<T>(url: string): Promise<T> {
-        return Axios.delete<BaseResponse<T>>(url)
+    delete<T>(endpoint: string): Promise<T> {
+        return Axios.delete<BaseResponse<T>>(endpoint)
         .then(response => {
             if (response.status === 200) {
                 return response.data.data;
@@ -65,8 +67,8 @@ class API {
         });
     }
 
-    static put<T>(url: string, data?: any): Promise<T> {
-        return Axios.put<BaseResponse<T>>(url, data)
+    put<T>(endpoint: string, data?: any): Promise<T> {
+        return Axios.put<BaseResponse<T>>(endpoint, data)
         .then(response => {
             if (response.status === 200) {
                 return response.data.data;
@@ -86,5 +88,3 @@ class API {
         });
     }
 }
-
-export default API;

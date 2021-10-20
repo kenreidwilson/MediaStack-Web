@@ -4,8 +4,9 @@ import IMediaSearchQuery from '../types/IMediaSearchQuery';
 import IMediaUpdateRequest from '../types/IMediaUpdateRequest';
 import MediaRepository from '../repositories/MediaRepository';
 import useRepository from './useRepository';
+import API from '../api/API';
 
 export default function useMedia() {
-    const mediaRepository: IRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> = new MediaRepository();
+    const mediaRepository: IRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> = new MediaRepository(new API());
     return useRepository(mediaRepository);
 }

@@ -1,8 +1,9 @@
 import Tag from '../types/Tag';
+import IAPI from '../types/IAPI';
 import GenericRepository from './GenericRepository';
 
 export default class TagRepository extends GenericRepository<Tag> {
-    constructor() {
-        super('tags');
+    constructor(api: IAPI) {
+        super(api, 'tags');
     }
 }

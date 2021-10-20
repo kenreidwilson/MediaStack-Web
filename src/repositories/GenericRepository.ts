@@ -1,27 +1,28 @@
 import Tag from '../types/Tag';
 import Artist from '../types/Artist';
 import Category from '../types/Category';
-import IRepository from '../types/IRepository';
 import ISearchResponse from '../types/ISearchResponse';
 import IGenericSearchQuery from '../types/IGenericSearchQuery';
-import API from '../api/API';
+import BaseRepository from './BaseRepository';
+import IAPI from '../types/IAPI';
 
 export default abstract class GenericRepository<
-    TEntity extends Tag | Category | Artist> implements IRepository<TEntity> {
+    TEntity extends Tag | Category | Artist> extends BaseRepository<TEntity> {
 
-    baseURL = `${process.env.REACT_APP_API}`;
     baseEndpoint: string;
+    baseURL: string = `${process.env.REACT_APP_API}`;
 
-    constructor(baseEndpoint: string) {
+    constructor(api: IAPI, baseEndpoint: string) {
+        super(api);
         this.baseEndpoint = baseEndpoint;
     }
 
     add(e: TEntity): Promise<TEntity> {
-        return API.post<TEntity>(`${this.baseURL}/${this.baseEndpoint}?name=${e.name}`);
+        return this.API.post<TEntity>(`${this.baseURL}/${this.baseEndpoint}?name=${e.name}`);
     }
     
     get(id: number): Promise<TEntity> {
-        return API.get<TEntity>(`${this.baseURL}/${this.baseEndpoint}?id=${id}`);
+        return this.API.get<TEntity>(`${this.baseURL}/${this.baseEndpoint}?id=${id}`);
     }
 
     search(query: IGenericSearchQuery): Promise<ISearchResponse<TEntity>> {
@@ -35,14 +36,14 @@ export default abstract class GenericRepository<
             endpoint += `&name=${query.name}`;
         }
 
-        return API.get<ISearchResponse<TEntity>>(endpoint);
+        return this.API.get<ISearchResponse<TEntity>>(endpoint);
     }
 
     update(e: TEntity): Promise<TEntity> {
-        return API.put<TEntity>(`${this.baseURL}/${this.baseEndpoint}`, e);
+        return this.API.put<TEntity>(`${this.baseURL}/${this.baseEndpoint}`, e);
     }
 
     delete(e: TEntity): Promise<void> {
-        return API.delete(`${this.baseURL}/${this.baseEndpoint}?id=${e.id}`);
+        return this.API.delete(`${this.baseURL}/${this.baseEndpoint}?id=${e.id}`);
     }
 }

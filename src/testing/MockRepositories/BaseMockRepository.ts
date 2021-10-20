@@ -1,44 +1,68 @@
-import IRepository from "../../types/IRepository";
-import ISearchQuery from "../../types/ISearchQuery";
-import ISearchResponse from "../../types/ISearchResponse";
+import Album from '../../types/Album';
+import Artist from '../../types/Artist';
+import Category from '../../types/Category';
+import Media from '../../types/Media';
+import Tag from '../../types/Tag';
+import ISearchQuery from '../../types/ISearchQuery';
+import ISearchResponse from '../../types/ISearchResponse';
+import MockAPI from '../MockAPI';
+import BaseRepository from '../../repositories/BaseRepository';
 
-export default abstract class BaseMockRepository<TEntity> implements IRepository<TEntity> {
+export default abstract class BaseMockRepository<
+    TEntity extends Album | Artist | Category | Tag | Media, 
+    TSearchQuery = ISearchQuery, TUpdateRequest = TEntity> 
+        extends BaseRepository<TEntity, TSearchQuery, TUpdateRequest> {
 
     entitiesKey: string;
-    entities: TEntity[];
 
     constructor(entitiesKey: string, defaultEntities?: TEntity[]) {
+
+        super(new MockAPI());
+
         this.entitiesKey = entitiesKey;
 
-        let entities = this.restoreEntites(this.entitiesKey);
-        this.entities = entities ? entities : 
-            defaultEntities ? defaultEntities : [];
-
-        this.persistEntities(this.entitiesKey, this.entities);
-    }
-
-    restoreEntites(entitiesKey: string): TEntity[] | undefined {
-        let entitiesString = sessionStorage.getItem(entitiesKey);
-        if (entitiesString) {
-            let entities = JSON.parse(entitiesString);
-            if (entities) {
-                return entities;
-            }
+        try {
+            this.API.get<TEntity[]>(this.entitiesKey);
+        } catch (_) {
+            this.API.post(this.entitiesKey, defaultEntities);
         }
-        return undefined;
     }
 
-    persistEntities(entitiesKey: string, entities: TEntity[]): void {
-        sessionStorage.setItem(entitiesKey, JSON.stringify(entities));
+    add(e: TEntity): Promise<TEntity> {
+        return this.API.get<TEntity[]>(this.entitiesKey)
+            .then(entities => {
+                let potentialEntity = entities.find(et => et.id === e.id);
+
+                if (!potentialEntity) {
+                    entities.push(e);
+                    return this.API.post<TEntity[]>(this.entitiesKey, entities).then(_ => e);
+                } else {
+                    return e;
+                }
+            });
     }
 
-    abstract add(e: TEntity): Promise<TEntity>;
+    get(id: number): Promise<TEntity> {
+        return this.API.get<TEntity[]>(this.entitiesKey)
+            .then(entities => {
+                let potentialEntity = entities.find(e => e.id === id);
 
-    abstract get(id: number): Promise<TEntity>;
+                if (!potentialEntity) {
+                    throw new Error(`No Entity found with ID: ${id}`);
+                }
 
-    abstract search(query: ISearchQuery): Promise<ISearchResponse<TEntity>>;
+                return potentialEntity;
+            });
+    }
+
+    abstract search(query: TSearchQuery): Promise<ISearchResponse<TEntity>>;
     
-    abstract update(e: TEntity): Promise<TEntity>;
+    abstract update(e: TUpdateRequest): Promise<TEntity>;
 
-    abstract delete(e: TEntity): Promise<void>;
+    delete(e: TEntity): Promise<void> {
+        return this.API.get<TEntity[]>(this.entitiesKey)
+            .then(entities => {
+                return this.API.put(this.entitiesKey, entities.filter(et => et.id !== e.id));
+            });
+    }
 }

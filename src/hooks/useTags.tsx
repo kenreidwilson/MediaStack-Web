@@ -1,10 +1,8 @@
-import Tag from '../types/Tag';
-import IRepository from '../types/IRepository';
-import IGenericSearchQuery from '../types/IGenericSearchQuery';
-import TagRepository from '../repositories/TagRepository';
+import { useContext } from 'react';
+import { DependencyContext } from '../contexts/DependencyContext';
 import useRepository from './useRepository';
 
 export default function useTags() {
-    const tagsRepository: IRepository<Tag, IGenericSearchQuery> = new TagRepository();
-    return useRepository(tagsRepository);
+    const { tagsRepository } = useContext(DependencyContext);
+    return useRepository(tagsRepository!);
 }

@@ -1,23 +1,27 @@
 import Album from '../types/Album';
 import Tag from '../types/Tag';
-import IRepository from '../types/IRepository';
+import IAPI from '../types/IAPI';
 import ISearchResponse from '../types/ISearchResponse';
 import IAlbumSearchQuery from '../types/IAlbumSearchQuery';
 import IAlbumUpdateRequest from '../types/IAlbumUpdateRequest';
 import IMediaUpdateRequest from '../types/IMediaUpdateRequest';
-import API from '../api/API';
 import MediaRepository from './MediaRepository';
+import BaseRepository from './BaseRepository';
 
-export default class AlbumRepository implements IRepository<Album, IAlbumSearchQuery, IAlbumUpdateRequest> {
+export default class AlbumRepository extends BaseRepository<Album, IAlbumSearchQuery, IAlbumUpdateRequest> {
 
-    baseURL = `${process.env.REACT_APP_API}`;
+    baseURL: string = `${process.env.REACT_APP_API}`;
+
+    constructor(api: IAPI) {
+        super(api);
+    }
 
     add(album: Album): Promise<Album> {
-        return API.post<Album>(`${this.baseURL}/albums?name=${album.name}&artistId=${album.artistID}`);
+        return this.API.post<Album>(`${this.baseURL}/albums?name=${album.name}&artistId=${album.artistID}`);
     }
 
     get(id: number): Promise<Album> {
-        return API.get<Album>(`${this.baseURL}/albums?id=${id}`);
+        return this.API.get<Album>(`${this.baseURL}/albums?id=${id}`);
     }
 
     search(query: IAlbumSearchQuery): Promise<ISearchResponse<Album>> {
@@ -35,11 +39,11 @@ export default class AlbumRepository implements IRepository<Album, IAlbumSearchQ
             endpoint += `&artistid=${query.artistId}`;
         }
 
-        return API.get<ISearchResponse<Album>>(endpoint);
+        return this.API.get<ISearchResponse<Album>>(endpoint);
     }
 
     async update(updateRequest: IAlbumUpdateRequest): Promise<Album> {
-        let mediaRepository = new MediaRepository();
+        let mediaRepository = new MediaRepository(this.API);
         const response = await mediaRepository.search({ albumID: updateRequest.ID, mode: 1, count: 9999 });
         for (const media of response.data) {
             let mediaUpdateRequest: IMediaUpdateRequest = { ID: media.id, score: updateRequest.score, source: updateRequest.source };

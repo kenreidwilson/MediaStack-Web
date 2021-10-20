@@ -12,68 +12,39 @@ export default class GenericMockRepository<TEntity extends Tag | Category | Arti
         super(entitiesKey, defaultEntities);
     }
 
-    add(e: TEntity): Promise<TEntity> {
-        try {
-            return this.get(e.id);
-        }
-        catch (_) {
-            this.entities.push(e);
-            this.persistEntities(this.entitiesKey, this.entities);
-            return Promise.resolve(e);
-        }
-    }
-
-    get(id: number): Promise<TEntity> {
-
-        let potentialEntity = this.entities.find(e => e.id === id);
-
-        if (!potentialEntity) {
-            throw new Error(`No Entity found with ID: ${id}`);
-        }
-
-        return Promise.resolve(potentialEntity);
-    }
-
     search(query: IGenericSearchQuery): Promise<ISearchResponse<TEntity>> {
+        return this.API.get<TEntity[]>(this.entitiesKey)
+            .then(entities => {
 
-        if (!query.offset) {
-            query.offset = 0;
-        }
+                if (!query.offset) {
+                    query.offset = 0;
+                }
+        
+                if (!query.count) {
+                    query.count = 5;
+                }
 
-        if (!query.count) {
-            query.count = 5;
-        }
+                if (query.name) {
+                    entities = entities.filter(e => e.name === query.name);
+                }
 
-        let entities = this.entities;
-        if (query.name) {
-            entities = entities.filter(e => e.name === query.name);
-        }
+                let responeData = entities.slice(query.offset).slice(0, query.count);
 
-        let responeData = entities.slice(query.offset).slice(0, query.count);
-        return Promise.resolve({
-            data: responeData,
-            total: entities.length,
-            count: responeData.length,
-            offset: query.offset
+                return {
+                    data: responeData,
+                    total: entities.length,
+                    count: responeData.length,
+                    offset: query.offset
+                };
         });
-
     }
 
     update(e: TEntity): Promise<TEntity> {
-        return this.get(e.id)
-            .then(foundTag => {
-                this.entities = this.entities.filter(t => t !== foundTag);
-                this.entities.push(e);
-                this.persistEntities(this.entitiesKey, this.entities);
-                return foundTag;
-            });
-    }
-
-    delete(e: TEntity): Promise<void> {
-        return this.get(e.id)
-            .then(foundTag => {
-                this.entities = this.entities.filter(t => t !== foundTag);
-                this.persistEntities(this.entitiesKey, this.entities);
+        return this.API.get<TEntity[]>(this.entitiesKey)
+            .then(entities => {
+                entities = entities.filter(et => et.id !== e.id);
+                entities.push(e);
+                return this.API.put<TEntity[]>(this.entitiesKey, entities).then(_ => e);
             });
     }
 }
