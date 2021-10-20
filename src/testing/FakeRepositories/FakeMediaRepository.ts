@@ -1,13 +1,25 @@
 import Media from '../../types/Media';
 import IMediaSearchQuery from '../../types/IMediaSearchQuery';
 import IMediaUpdateRequest from '../../types/IMediaUpdateRequest';
-import BaseMockRepository from './BaseMockRepository';
+import BaseFakeRepository from './BaseFakeRepository';
 import ISearchResponse from '../../types/ISearchResponse';
 
-export default class MockMediaRepository extends BaseMockRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
+export default class FakeMediaRepository extends BaseFakeRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
+
+    constructor() {
+        super("media", []);
+    }
 
     search(query: IMediaSearchQuery): Promise<ISearchResponse<Media>> {
         return this.API.get<Media[]>(this.entitiesKey).then(entities => {
+
+            if (!query.offset) {
+                query.offset = 0;
+            }
+    
+            if (!query.count) {
+                query.count = 5;
+            }
 
             let allEntities = [...entities];
 
@@ -35,8 +47,8 @@ export default class MockMediaRepository extends BaseMockRepository<Media, IMedi
                 entities = entities.filter(m => m.albumID !== albId);
             });
             if (query.score) entities = entities.filter(m => m.score === query.score);
-            if (query.lessThanScore) entities = entities.filter(m => m.score < query.lessThanScore);
-            if (query.greaterThanScore) entities = entities.filter(m => m.score > query.greaterThanScore);
+            if (query.lessThanScore) entities = entities.filter(m => m.score < query.lessThanScore!);
+            if (query.greaterThanScore) entities = entities.filter(m => m.score > query.greaterThanScore!);
 
             if (query.mode === 2) {
 

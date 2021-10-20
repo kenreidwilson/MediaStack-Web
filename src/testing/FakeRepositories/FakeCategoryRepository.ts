@@ -1,7 +1,7 @@
 import Category from '../../types/Category';
-import GenericMockRepository from './GenericMockRepository';
+import GenericFakeRepository from './GenericFakeRepository';
 
-export default class MockCategoryRepository extends GenericMockRepository<Category> {
+export default class FakeCategoryRepository extends GenericFakeRepository<Category> {
 
     constructor() {
         super("categories", [

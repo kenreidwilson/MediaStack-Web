@@ -1,7 +1,7 @@
 import Artist from '../../types/Artist';
-import GenericMockRepository from './GenericMockRepository';
+import GenericFakeRepository from './GenericFakeRepository';
 
-export default class MockArtistRepository extends GenericMockRepository<Artist> {
+export default class FakeArtistRepository extends GenericFakeRepository<Artist> {
 
     constructor() {
         super("artists", [

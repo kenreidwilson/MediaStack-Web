@@ -1,11 +1,8 @@
-import Category from '../types/Category';
-import IRepository from '../types/IRepository';
-import IGenericSearchQuery from '../types/IGenericSearchQuery';
-import CategoryRepository from '../repositories/CategoryRepository';
+import { useContext } from 'react';
+import { DependencyContext } from '../contexts/DependencyContext';
 import useRepository from './useRepository';
-import API from '../api/API';
 
 export default function useCategories() {
-    const categoryRepository: IRepository<Category, IGenericSearchQuery> = new CategoryRepository(new API());
-    return useRepository(categoryRepository);
+    const { categoryRepository } = useContext(DependencyContext);
+    return useRepository(categoryRepository!);
 }

@@ -1,12 +1,8 @@
-import Media from '../types/Media';
-import IRepository from '../types/IRepository';
-import IMediaSearchQuery from '../types/IMediaSearchQuery';
-import IMediaUpdateRequest from '../types/IMediaUpdateRequest';
-import MediaRepository from '../repositories/MediaRepository';
+import { useContext } from 'react';
+import { DependencyContext } from '../contexts/DependencyContext';
 import useRepository from './useRepository';
-import API from '../api/API';
 
 export default function useMedia() {
-    const mediaRepository: IRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> = new MediaRepository(new API());
-    return useRepository(mediaRepository);
+    const { mediaRepository } = useContext(DependencyContext);
+    return useRepository(mediaRepository!);
 }

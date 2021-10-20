@@ -1,6 +1,6 @@
 import IAPI from "../types/IAPI";
 
-export default class MockAPI implements IAPI {
+export default class FakeAPI implements IAPI {
 
     get<T = void>(endpoint: string): Promise<T> {
         let storage = sessionStorage.getItem(endpoint);

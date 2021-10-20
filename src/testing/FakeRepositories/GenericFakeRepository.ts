@@ -1,12 +1,9 @@
-import Tag from '../../types/Tag';
-import Category from '../../types/Category';
-import Artist from '../../types/Artist';
 import IGenericSearchQuery from '../../types/IGenericSearchQuery';
 import ISearchResponse from '../../types/ISearchResponse';
 
-import BaseMockRepository from './BaseMockRepository';
+import BaseFakeRepository from './BaseFakeRepository';
 
-export default class GenericMockRepository<TEntity extends Tag | Category | Artist> extends BaseMockRepository<TEntity>  {
+export default class GenericFakeRepository<TEntity extends { id: number, name: string }> extends BaseFakeRepository<TEntity>  {
 
     constructor(entitiesKey: string, defaultEntities?: TEntity[]) {
         super(entitiesKey, defaultEntities);

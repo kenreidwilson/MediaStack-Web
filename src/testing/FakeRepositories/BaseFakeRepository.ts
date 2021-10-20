@@ -1,15 +1,10 @@
-import Album from '../../types/Album';
-import Artist from '../../types/Artist';
-import Category from '../../types/Category';
-import Media from '../../types/Media';
-import Tag from '../../types/Tag';
 import ISearchQuery from '../../types/ISearchQuery';
 import ISearchResponse from '../../types/ISearchResponse';
-import MockAPI from '../MockAPI';
+import FakeAPI from '../FakeAPI';
 import BaseRepository from '../../repositories/BaseRepository';
 
-export default abstract class BaseMockRepository<
-    TEntity extends Album | Artist | Category | Tag | Media, 
+export default abstract class BaseFakeRepository<
+    TEntity extends { id: number }, 
     TSearchQuery = ISearchQuery, TUpdateRequest = TEntity> 
         extends BaseRepository<TEntity, TSearchQuery, TUpdateRequest> {
 
@@ -17,7 +12,7 @@ export default abstract class BaseMockRepository<
 
     constructor(entitiesKey: string, defaultEntities?: TEntity[]) {
 
-        super(new MockAPI());
+        super(new FakeAPI());
 
         this.entitiesKey = entitiesKey;
 

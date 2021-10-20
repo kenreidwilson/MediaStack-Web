@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import BasePage from './BasePage';
-import MockTagRepository from '../testing/MockRepositories/MockTagRepository';
+import FakeTagRepository from '../testing/FakeRepositories/FakeTagRepository';
 
 export default function ExplorePage() {
 
-    const mtr = new MockTagRepository();
+    const mtr = new FakeTagRepository();
 
     useEffect(() => {
         mtr.search({ count: 1 }).then(console.log);

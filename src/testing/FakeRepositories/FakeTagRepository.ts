@@ -1,7 +1,7 @@
 import Tag from '../../types/Tag';
-import GenericMockRepository from './GenericMockRepository';
+import GenericFakeRepository from './GenericFakeRepository';
 
-export default class MockTagRepository extends GenericMockRepository<Tag> {
+export default class FakeTagRepository extends GenericFakeRepository<Tag> {
 
     constructor() {
         super("tags", [
