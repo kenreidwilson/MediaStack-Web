@@ -1,11 +1,12 @@
+import IKeyBasedAPI from '../../types/IKeyBasedAPI';
 import IGenericSearchQuery from '../../types/IGenericSearchQuery';
 import ISearchResponse from '../../types/ISearchResponse';
 import BaseFakeRepository from './BaseFakeRepository';
 
 export default class GenericFakeRepository<TEntity extends { id: number, name: string }> extends BaseFakeRepository<TEntity>  {
 
-    constructor(entitiesKey: string, defaultEntities?: TEntity[]) {
-        super(entitiesKey, defaultEntities);
+    constructor(api: IKeyBasedAPI, entitiesKey: string, defaultEntities?: TEntity[]) {
+        super(api, entitiesKey, defaultEntities);
     }
 
     search(query: IGenericSearchQuery): Promise<ISearchResponse<TEntity>> {
@@ -40,7 +41,8 @@ export default class GenericFakeRepository<TEntity extends { id: number, name: s
             .then(entities => {
                 entities = entities.filter(et => et.id !== e.id);
                 entities.push(e);
-                return this.API.put<TEntity[]>(this.entitiesKey, entities).then(_ => e);
+                this.API.set(this.entitiesKey, entities).then(_ => e);
+                return e;
             });
     }
 }

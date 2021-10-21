@@ -1,25 +1,25 @@
+import IKeyBasedAPI from '../../types/IKeyBasedAPI';
+import IRepository from '../../types/IRepository';
 import ISearchQuery from '../../types/ISearchQuery';
 import ISearchResponse from '../../types/ISearchResponse';
-import FakeAPI from '../FakeAPI';
-import BaseRepository from '../../repositories/BaseRepository';
 
 export default abstract class BaseFakeRepository<
     TEntity extends { id: number }, 
     TSearchQuery = ISearchQuery, TUpdateRequest = TEntity> 
-        extends BaseRepository<TEntity, TSearchQuery, TUpdateRequest> {
+        implements IRepository<TEntity, TSearchQuery, TUpdateRequest> {
 
+    API: IKeyBasedAPI;
     entitiesKey: string;
 
-    constructor(entitiesKey: string, defaultEntities?: TEntity[]) {
-
-        super(new FakeAPI());
+    constructor(api: IKeyBasedAPI, entitiesKey: string, defaultEntities?: TEntity[]) {
 
         this.entitiesKey = entitiesKey;
+        this.API = api;
 
         try {
             this.API.get<TEntity[]>(this.entitiesKey);
         } catch (_) {
-            this.API.post(this.entitiesKey, defaultEntities);
+            this.API.set(this.entitiesKey, defaultEntities);
         }
     }
 
@@ -30,10 +30,9 @@ export default abstract class BaseFakeRepository<
 
                 if (!potentialEntity) {
                     entities.push(e);
-                    return this.API.post<TEntity[]>(this.entitiesKey, entities).then(_ => e);
-                } else {
-                    return e;
+                    this.API.set(this.entitiesKey, entities).then(_ => e);
                 }
+                return e;
             });
     }
 
@@ -57,7 +56,7 @@ export default abstract class BaseFakeRepository<
     delete(e: TEntity): Promise<void> {
         return this.API.get<TEntity[]>(this.entitiesKey)
             .then(entities => {
-                return this.API.put(this.entitiesKey, entities.filter(et => et.id !== e.id));
+                return this.API.set(this.entitiesKey, entities.filter(et => et.id !== e.id));
             });
     }
 }

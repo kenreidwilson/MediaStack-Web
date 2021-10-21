@@ -1,9 +1,9 @@
 import Category from '../types/Category';
-import IAPI from '../types/IAPI';
+import IRestAPI from '../types/IRestAPI';
 import GenericRepository from './GenericRepository';
 
 export default class CategoryRepository extends GenericRepository<Category> {
-    constructor(api: IAPI) {
+    constructor(api: IRestAPI) {
         super(api, 'categories');
     }
 }

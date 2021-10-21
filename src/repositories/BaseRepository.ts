@@ -1,4 +1,4 @@
-import IAPI from "../types/IAPI";
+import IRestAPI from "../types/IRestAPI";
 import IRepository from "../types/IRepository";
 import ISearchQuery from "../types/ISearchQuery";
 import ISearchResponse from "../types/ISearchResponse";
@@ -6,9 +6,9 @@ import ISearchResponse from "../types/ISearchResponse";
 export default abstract class BaseRepository<TEntity, TSearchQuery = ISearchQuery, TUpdateRequest = TEntity> 
     implements IRepository<TEntity, TSearchQuery, TUpdateRequest> {
 
-    API: IAPI;
+    API: IRestAPI;
 
-    constructor(api: IAPI) {
+    constructor(api: IRestAPI) {
         this.API = api;
     }
 

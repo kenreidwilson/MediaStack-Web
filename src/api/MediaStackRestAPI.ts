@@ -1,9 +1,9 @@
 import { APINetworkError, APINotFoundError, APIBadRequestError, APIUnexpectedResponseError } from './APIErrors';
-import IAPI from '../types/IAPI';
+import IRestAPI from '../types/IRestAPI';
 import BaseResponse from '../types/IBaseResponse';
 import Axios from 'axios';
 
-export default class API implements IAPI {
+export default class MediaStackRestAPI implements IRestAPI {
 
     get<T>(endpoint: string): Promise<T> {
         return Axios.get<BaseResponse<T>>(endpoint)

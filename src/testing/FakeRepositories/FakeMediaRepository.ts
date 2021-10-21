@@ -1,4 +1,5 @@
 import Media from '../../types/Media';
+import IKeyBasedAPI from '../../types/IKeyBasedAPI';
 import ISearchResponse from '../../types/ISearchResponse';
 import IMediaSearchQuery from '../../types/IMediaSearchQuery';
 import IMediaUpdateRequest from '../../types/IMediaUpdateRequest';
@@ -7,8 +8,8 @@ import { SeedMedia } from '../SeedData/SeedMedia';
 
 export default class FakeMediaRepository extends BaseFakeRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
 
-    constructor() {
-        super("media", SeedMedia);
+    constructor(api: IKeyBasedAPI) {
+        super(api, "media", SeedMedia);
     }
 
     search(query: IMediaSearchQuery): Promise<ISearchResponse<Media>> {

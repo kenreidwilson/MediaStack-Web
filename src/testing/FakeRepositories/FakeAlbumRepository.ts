@@ -1,4 +1,5 @@
 import Album from '../../types/Album';
+import IKeyBasedAPI from '../../types/IKeyBasedAPI';
 import IAlbumSearchQuery from '../../types/IAlbumSearchQuery';
 import IAlbumUpdateRequest from '../../types/IAlbumUpdateRequest';
 import ISearchResponse from '../../types/ISearchResponse';
@@ -7,8 +8,8 @@ import { SeedAlbums } from '../SeedData/SeedAlbums';
 
 export default class FakeAlbumRepository extends BaseFakeRepository<Album, IAlbumSearchQuery, IAlbumUpdateRequest> {
 
-    constructor() {
-        super("albums", SeedAlbums);
+    constructor(api: IKeyBasedAPI) {
+        super(api, "albums", SeedAlbums);
     }
 
     search(query: IAlbumSearchQuery): Promise<ISearchResponse<Album>> {

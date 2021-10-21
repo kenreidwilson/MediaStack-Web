@@ -1,6 +1,6 @@
 import Album from '../types/Album';
 import Tag from '../types/Tag';
-import IAPI from '../types/IAPI';
+import IRestAPI from '../types/IRestAPI';
 import ISearchResponse from '../types/ISearchResponse';
 import IAlbumSearchQuery from '../types/IAlbumSearchQuery';
 import IAlbumUpdateRequest from '../types/IAlbumUpdateRequest';
@@ -12,7 +12,7 @@ export default class AlbumRepository extends BaseRepository<Album, IAlbumSearchQ
 
     baseURL: string = `${process.env.REACT_APP_API}`;
 
-    constructor(api: IAPI) {
+    constructor(api: IRestAPI) {
         super(api);
     }
 

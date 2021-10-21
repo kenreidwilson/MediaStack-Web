@@ -1,9 +1,9 @@
 import Artist from '../types/Artist';
-import IAPI from '../types/IAPI';
+import IRestAPI from '../types/IRestAPI';
 import GenericRepository from './GenericRepository';
 
 export default class ArtistRepository extends GenericRepository<Artist> {
-    constructor(api: IAPI) {
+    constructor(api: IRestAPI) {
         super(api, 'artists');
     }
 }

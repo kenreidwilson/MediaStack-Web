@@ -3,13 +3,13 @@ import ISearchResponse from '../types/ISearchResponse';
 import IMediaSearchQuery from '../types/IMediaSearchQuery';
 import IMediaUpdateRequest from '../types/IMediaUpdateRequest';
 import BaseRepository from './BaseRepository';
-import IAPI from '../types/IAPI';
+import IRestAPI from '../types/IRestAPI';
 
 export default class MediaRepository extends BaseRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
     
     baseURL: string = `${process.env.REACT_APP_API}`;
 
-    constructor(api: IAPI) {
+    constructor(api: IRestAPI) {
         super(api);
     }
 

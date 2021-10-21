@@ -4,7 +4,7 @@ import Category from '../types/Category';
 import ISearchResponse from '../types/ISearchResponse';
 import IGenericSearchQuery from '../types/IGenericSearchQuery';
 import BaseRepository from './BaseRepository';
-import IAPI from '../types/IAPI';
+import IRestAPI from '../types/IRestAPI';
 
 export default abstract class GenericRepository<
     TEntity extends Tag | Category | Artist> extends BaseRepository<TEntity> {
@@ -12,7 +12,7 @@ export default abstract class GenericRepository<
     baseEndpoint: string;
     baseURL: string = `${process.env.REACT_APP_API}`;
 
-    constructor(api: IAPI, baseEndpoint: string) {
+    constructor(api: IRestAPI, baseEndpoint: string) {
         super(api);
         this.baseEndpoint = baseEndpoint;
     }
