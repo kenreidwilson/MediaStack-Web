@@ -2,8 +2,11 @@ import Category from '../../types/Category';
 
 export const SeedCategories: Category[] = ((): Category[] => {
     return [
-        { id: 1, name: 'category1' },
-        { id: 2, name: 'category2' },
-        { id: 3, name: 'category3' }
+        { id: 1, name: "Contemporary" }, 
+        { id: 2, name: "Modern" }, 
+        { id: 3, name: "Renaissance" }, 
+        { id: 4, name: "Renaissance to Neoclassicism" }, 
+        { id: 5, name: "Romanticism" }, 
+        { id: 6, name: "Romanticism to Modern" }
     ];
 })();

@@ -9,6 +9,7 @@ import IMediaSearchQuery from '../types/IMediaSearchQuery';
 import IMediaUpdateRequest from '../types/IMediaUpdateRequest';
 import IAlbumSearchQuery from '../types/IAlbumSearchQuery';
 import IAlbumUpdateRequest from '../types/IAlbumUpdateRequest';
+import IMediaFileLinkGenerator from '../types/IMediaFileLinkGenerator';
 import { createContext } from 'react';
 
 export interface IDependencyContext {
@@ -16,7 +17,8 @@ export interface IDependencyContext {
     artistRepository?: IRepository<Artist, IGenericSearchQuery>,
     tagsRepository?: IRepository<Tag, IGenericSearchQuery>,
     mediaRepository?: IRepository<Media, IMediaSearchQuery, IMediaUpdateRequest>,
-    albumRepository?: IRepository<Album, IAlbumSearchQuery, IAlbumUpdateRequest>
+    albumRepository?: IRepository<Album, IAlbumSearchQuery, IAlbumUpdateRequest>,
+    mediaFileLinkGenerator?: IMediaFileLinkGenerator
 }
 
 export const DependencyContext = createContext<IDependencyContext>({});

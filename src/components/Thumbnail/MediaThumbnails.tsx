@@ -50,7 +50,7 @@ export default function MediaThumbnails({
         <>
           {mediaList.map(media => 
                 <div key={media.id}>
-                    {distinguishAlbumMedia && media.albumID !== null && 
+                    {distinguishAlbumMedia && media.albumID !== undefined && 
                         <span 
                             style={{ margin: '130px 0px 0px 185px', position: 'absolute' }} 
                             className='badge badge-primary'>Album</span>}

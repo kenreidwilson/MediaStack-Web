@@ -1,5 +1,6 @@
 import Media from '../../types/Media';
 import React from 'react';
+import useMediaFiles from '../../hooks/useMediaFiles';
 
 type Props = {
     media: Media,
@@ -44,8 +45,9 @@ export default function MediaContainer({ media, onClick, onLoad }: Props) {
 
 function MediaImage({ media, onClick, onLoad }: Props) {
     
+    const { getFileLink } = useMediaFiles();
     const { innerWidth: width } = window;
-
+    
     const getImageStyle = () => {
         if (width <= 768) {
             return { width: 'auto', height: 'auto'};
@@ -57,11 +59,12 @@ function MediaImage({ media, onClick, onLoad }: Props) {
                 onClick={onClick}
                 onLoad={() => onLoad ? onLoad() : () => {}} 
                 alt={media.tags.toString()} 
-                src={`${process.env.REACT_APP_API}/media/file?id=${media.id}`}/>
+                src={getFileLink(media)}/>
 }
 
 function MediaVideo({ media, onLoad }: Props) {
 
+    const { getFileLink } = useMediaFiles();
     const { innerWidth: width } = window;
 
     const getVideoStyle = () => {
@@ -73,7 +76,7 @@ function MediaVideo({ media, onLoad }: Props) {
 
     return <video 
                 style={getVideoStyle()}
-                src={`${process.env.REACT_APP_API}/media/file?id=${media.id}`} 
+                src={getFileLink(media)} 
                 onLoadStart={onLoad} 
                 autoPlay
                 controls 

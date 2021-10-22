@@ -1,5 +1,6 @@
 import Media from '../../types/Media';
 import { CSSProperties } from 'react';
+import useMediaFiles from '../../hooks/useMediaFiles';
 
 type Props = {
     media: Media,
@@ -8,6 +9,8 @@ type Props = {
 }
 
 export default function MediaThumbnail({ media, onClick = () => {}, style }: Props) {
+
+    const { getThumbnailLink } = useMediaFiles();
 
     const getAlt = () => {
         let alt: string = '';
@@ -19,7 +22,7 @@ export default function MediaThumbnail({ media, onClick = () => {}, style }: Pro
         <img 
             style={{ width: 241, height: 155, borderRadius: '8px', ...style }}
             alt={getAlt()}
-            src={`${process.env.REACT_APP_API}/media/thumbnail?id=${media.id}`}
+            src={getThumbnailLink(media)}
             onClick={(event) => onClick(event, media)}>
         </img>
     );

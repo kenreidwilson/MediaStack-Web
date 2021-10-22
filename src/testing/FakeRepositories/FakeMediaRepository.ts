@@ -27,10 +27,10 @@ export default class FakeMediaRepository extends BaseFakeRepository<Media, IMedi
 
             switch(query.mode) {
                 case (2):
-                    entities = entities.filter(m => m.albumID || m.albumOrder === 0);
+                    entities = entities.filter(m => !m.albumID || m.albumOrder === 0);
                     break;
                 case (3):
-                    entities = entities.filter(m => m.albumID);
+                    entities = entities.filter(m => !m.albumID);
                     break;
                 default:
                     break;
