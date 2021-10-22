@@ -1,9 +1,9 @@
 import Media from '../../types/Media';
 import IMediaUpdateRequest from '../../types/IMediaUpdateRequest';
 import { useState } from 'react';
-import { Modal, Button }from 'react-bootstrap';
 import useMedia from '../../hooks/useMedia';
 import MediaUpdateForm from '../Forms/MediaUpdateForm';
+import BaseEditModal from './BaseEditModal';
 
 type Props = {
     media: Media,
@@ -15,7 +15,6 @@ type Props = {
 export default function MediaInfoModal({ media, isShown, onClose, onSave }: Props) {
 
     const { update } = useMedia();
-
     const [updateRequest, setUpdateRequest] = useState<IMediaUpdateRequest>(
         { 
             ID: media.id,
@@ -27,24 +26,14 @@ export default function MediaInfoModal({ media, isShown, onClose, onSave }: Prop
         }
     );
 
-    const handleSaveClick = () => {
-        update(updateRequest).then(updatedMedia => onSave(updatedMedia));
+    const handleSaveClick = (): Promise<void> => {
+        return update(updateRequest)
+            .then(updatedMedia => onSave(updatedMedia));
     }
 
     return (
-        <>
-            <Modal show={isShown} onHide={() => onClose()}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{`Edit Media Info`}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <MediaUpdateForm request={updateRequest} onChange={setUpdateRequest}/>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant='secondary' onClick={() => onClose()}>Close</Button>
-                    <Button variant='primary' onClick={() => handleSaveClick()}>Save Changes</Button>
-                </Modal.Footer>
-            </Modal>
-      </>
+        <BaseEditModal title="Edit Media" isShown={isShown} onClose={onClose} onSave={handleSaveClick}>
+            <MediaUpdateForm request={updateRequest} onChange={setUpdateRequest}/>
+        </BaseEditModal>
     );
 }

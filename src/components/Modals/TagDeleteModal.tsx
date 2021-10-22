@@ -1,27 +1,25 @@
-import { Modal, Button } from 'react-bootstrap';
+import useTags from '../../hooks/useTags';
 import Tag from '../../types/Tag';
+import BaseEditModal from './BaseEditModal';
 
 type Props = {
     tag: Tag,
     isShown: boolean,
-    onClose: Function,
-    onDelete: Function
+    onClose?: () => void,
+    onSave?: (tag: Tag) => void
 };
 
-export default function TagDeleteModal({tag, isShown, onClose, onDelete}: Props) {
+export default function TagDeleteModal({ tag, isShown, onClose, onSave = () => {} }: Props) {
+
+    const { delete: deleteTag } = useTags();
+
+    const onTagDelete = (): Promise<void> => {
+        return deleteTag(tag).then(() => onSave(tag));
+    }
 
     return (
-        <Modal show={isShown} onHide={() => onClose()}>
-            <Modal.Header closeButton>
-                <Modal.Title>Delete Tag</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <p>Delete tag: {tag.name}? (ID: {tag.id})</p>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant='secondary' onClick={() => onClose()}>Close</Button>
-                <Button variant='primary' onClick={() => onDelete(tag)}>Save Changes</Button>
-            </Modal.Footer>
-        </Modal>
+        <BaseEditModal title="Delete Tag" isShown={isShown} onClose={onClose} onSave={onTagDelete}>
+            <p>Delete tag: {tag.name}? (ID: {tag.id})</p>
+        </BaseEditModal>
     );
 };

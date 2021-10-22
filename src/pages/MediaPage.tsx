@@ -28,10 +28,13 @@ export default function MediaPage() {
     return ( 
         <BasePage>
             <div id='mediapage'>
-                {media ? 
-                <MediaInfoModal media={media as Media} isShown={showEditModal} onClose={() => setShowEditModal(false)}
-                    onSave={(updatedMedia: Media) => {setMedia(updatedMedia); setShowEditModal(false)}}/>
-                : null}
+                {media && 
+                <MediaInfoModal 
+                    media={media} 
+                    isShown={showEditModal} 
+                    onClose={() => setShowEditModal(false)}
+                    onSave={(updatedMedia: Media) => {setMedia(updatedMedia); setShowEditModal(false)}}/>}
+                    
                 <div id='mediapage-sidebar'>
                     {media !== null ? 
                         <div>

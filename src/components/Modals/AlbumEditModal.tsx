@@ -3,8 +3,8 @@ import Album from '../../types/Album';
 import IAlbumUpdateRequest from '../../types/IAlbumUpdateRequest';
 import { useState } from 'react';
 import useAlbums from '../../hooks/useAlbums';
-import { Modal, Button }from 'react-bootstrap';
 import AlbumUpdateForm from '../Forms/AlbumUpdateForm';
+import BaseEditModal from './BaseEditModal';
 
 type Props = {
     album: Album,
@@ -19,7 +19,7 @@ export default function AlbumEditModal({album, mediaList, isShown, onClose, onSa
     const { update } = useAlbums();
 
     // TODO: Not Working
-    const getAlbumSource = () => {
+    const getAlbumSource = (): string => {
         let albumSource: string = '';
 
         mediaList.forEach(media => {
@@ -43,26 +43,15 @@ export default function AlbumEditModal({album, mediaList, isShown, onClose, onSa
         }
     );
 
-    const handleSave = () => {
-        update(updateRequest).then(response => {
+    const handleSave = (): Promise<void> => {
+        return update(updateRequest).then(response => {
             onSave(response);
         });
     };
     
     return ( 
-        <>
-            <Modal show={isShown} onHide={() => onClose()}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{`Edit Album Info`}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <AlbumUpdateForm request={updateRequest} onChange={setUpdateRequest}/>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant='secondary' onClick={() => onClose()}>Close</Button>
-                    <Button variant='primary' onClick={handleSave}>Save Changes</Button>
-                </Modal.Footer>
-            </Modal>
-      </>
+        <BaseEditModal title="Edit Album" isShown={isShown} onClose={onClose} onSave={handleSave} >
+            <AlbumUpdateForm request={updateRequest} onChange={setUpdateRequest}/>
+        </BaseEditModal>
      );
 }

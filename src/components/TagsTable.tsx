@@ -59,14 +59,14 @@ export default function TagsTable({ onTagClick }: { onTagClick: Function }) {
             {selectedTag ? <TagEditModal 
                 isShown={showEditModal}
                 onClose={() => setShowEditModal(false)}
-                onEdit={(updatedTag: Tag) => { onTagUpdate(updatedTag); setShowEditModal(false); }}
+                onSave={(updatedTag: Tag) => { onTagUpdate(updatedTag); setShowEditModal(false); }}
                 tag={selectedTag}
             /> : null}
 
             {selectedTag ? <TagDeleteModal
                 isShown={showDeleteModal}
                 onClose={() => setShowDeleteModal(false)}
-                onDelete={(deletedTag: Tag) => { onTagDelete(deletedTag); setShowDeleteModal(false); }}
+                onSave={(deletedTag: Tag) => { onTagDelete(deletedTag); setShowDeleteModal(false); }}
                 tag={selectedTag}
             /> : null}
             
