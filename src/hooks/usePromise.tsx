@@ -6,23 +6,30 @@ interface State<T> {
     result: T | undefined
 }
 
-export default function usePromise<T>(promise: () => Promise<T>): {
+export default function usePromise<T, PT = undefined>(promise: (param?: PT) => Promise<T>): {
     isLoading: boolean,
     error: Error | undefined,
     result: T | undefined,
-    resolve: () => Promise<void> } {
+    resolve: (param?: PT) => Promise<void>,
+    reset: () => void } {
 
-    const [ state , setState ] = useState<State<T>>({ isLoading: false, error: undefined, result: undefined });
+    const defaultState: State<T> = { isLoading: false, error: undefined, result: undefined };
 
-    const resolve = async (): Promise<void> => {
+    const [ state , setState ] = useState<State<T>>(defaultState);
+
+    const reset = (): void => {
+        setState(defaultState);
+    }
+
+    const resolve = async (param?: PT): Promise<void> => {
         setState({ isLoading: true, error: undefined, result: undefined });
         try {
-            let result = await promise();
+            let result = await promise(param);
             setState({ isLoading: false, error: undefined, result });
         } catch (error: any) {
             setState({ isLoading: false, error, result: undefined });
         }
     }
 
-    return { isLoading: state.isLoading, error: state.error, result: state.result, resolve };
+    return { isLoading: state.isLoading, error: state.error, result: state.result, resolve, reset };
 }

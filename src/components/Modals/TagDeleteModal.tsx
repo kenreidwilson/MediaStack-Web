@@ -14,13 +14,19 @@ type Props = {
 export default function TagDeleteModal({ tag, isShown, onClose, onSave = () => {} }: Props) {
 
     const { delete: deleteTag } = useTags();
-    const { isLoading, error, result, resolve } = usePromise(() => deleteTag(tag));
+    const { isLoading, error, result, resolve, reset } = usePromise(() => deleteTag(tag));
 
     useEffect(() => {
         if (result) {
             onSave(result);
         }
     }, [result]);
+
+    useEffect(() => {
+        if (!isShown) {
+            reset();
+        }
+    }, [isShown]);
 
     return (
         <BaseEditModal 

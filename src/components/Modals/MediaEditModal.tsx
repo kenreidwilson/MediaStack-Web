@@ -27,13 +27,19 @@ export default function MediaInfoModal({ media, isShown, onClose, onSave }: Prop
         }
     );
 
-    const { isLoading, error, result, resolve } = usePromise(() => update(updateRequest));
+    const { isLoading, error, result, resolve, reset } = usePromise(() => update(updateRequest));
 
     useEffect(() => {
         if (result) {
             onSave(result);
         }
     }, [result]);
+
+    useEffect(() => {
+        if (!isShown) {
+            reset();
+        }
+    }, [isShown]);
 
     return (
         <BaseEditModal 

@@ -1,4 +1,6 @@
-import { Modal, Button }from 'react-bootstrap';
+import { useContext } from 'react';
+import { ThemeContext } from '../../contexts/ThemeContext'; 
+import { Modal, Button } from 'react-bootstrap';
 
 type Props = {
     children: JSX.Element,
@@ -18,6 +20,8 @@ export default function BaseEditModal({
     isLoading = false,
     onClose = () => {}, 
     onSave = () => {} }: Props) {
+
+    const { theme } = useContext(ThemeContext);
 
     return (
         <Modal show={isShown} onHide={() => onClose()}>

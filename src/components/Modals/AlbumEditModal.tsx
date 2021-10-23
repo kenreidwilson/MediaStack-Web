@@ -44,7 +44,7 @@ export default function AlbumEditModal({album, mediaList, isShown, onClose, onSa
         }
     );
 
-    const { isLoading, error, result, resolve: updateAlbum } = usePromise(() => update(updateRequest));
+    const { isLoading, error, result, resolve: updateAlbum, reset } = usePromise(() => update(updateRequest));
 
     useEffect(() => {
         if (result) {
@@ -52,6 +52,12 @@ export default function AlbumEditModal({album, mediaList, isShown, onClose, onSa
         }
     }, [result]);
     
+    useEffect(() => {
+        if (!isShown) {
+            reset();
+        }
+    }, [isShown]);
+
     return ( 
         <BaseEditModal 
             title='Edit Album'

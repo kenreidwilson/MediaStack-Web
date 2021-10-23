@@ -15,7 +15,7 @@ export default function TagEditModal({ tag, isShown, onClose, onSave = () => {} 
 
     const { update } = useTags();
     const [newTagName, setNewTagName] = useState<string>('');
-    const { isLoading, error, result, resolve } = usePromise(() => update({ id: tag.id, name: newTagName }));
+    const { isLoading, error, result, resolve, reset } = usePromise(() => update({ id: tag.id, name: newTagName }));
 
     useEffect(() => {
         setNewTagName('');
@@ -26,6 +26,12 @@ export default function TagEditModal({ tag, isShown, onClose, onSave = () => {} 
             onSave(result);
         }
     }, [result]);
+
+    useEffect(() => {
+        if (!isShown) {
+            reset();
+        }
+    }, [isShown]);
 
     return (
         <BaseEditModal 
