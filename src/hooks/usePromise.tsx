@@ -1,31 +1,28 @@
 import { useState } from 'react';
 
-type State<T> = {
+interface State<T> {
     isLoading: boolean,
     error: Error | undefined,
     result: T | undefined
 }
 
-type ReturnType<T> = {
+export default function usePromise<T>(promise: () => Promise<T>): {
     isLoading: boolean,
     error: Error | undefined,
     result: T | undefined,
-    dispatch: () => void
-}
+    resolve: () => Promise<void> } {
 
-export default function usePromise<T>(promise: () => Promise<T>): ReturnType<T> {
+    const [ state , setState ] = useState<State<T>>({ isLoading: false, error: undefined, result: undefined });
 
-    const [ { isLoading, error, result}, setState ] = useState<State<T>>({ isLoading: false, error: undefined, result: undefined });
-
-    const dispatch = (): void => {
+    const resolve = async (): Promise<void> => {
         setState({ isLoading: true, error: undefined, result: undefined });
         try {
-            promise()
-                .then(result => setState({ isLoading: false, error: undefined, result }));
+            let result = await promise();
+            setState({ isLoading: false, error: undefined, result });
         } catch (error: any) {
             setState({ isLoading: false, error, result: undefined });
         }
     }
 
-    return { isLoading, error, result, dispatch };
+    return { isLoading: state.isLoading, error: state.error, result: state.result, resolve };
 }

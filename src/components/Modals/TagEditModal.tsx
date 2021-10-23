@@ -1,7 +1,8 @@
 import Tag from '../../types/Tag';
 import { useEffect, useState } from 'react';
-import BaseEditModal from './BaseEditModal';
 import useTags from '../../hooks/useTags';
+import usePromise from '../../hooks/usePromise';
+import BaseEditModal from './BaseEditModal';
 
 type Props = {
     tag: Tag,
@@ -14,17 +15,26 @@ export default function TagEditModal({ tag, isShown, onClose, onSave = () => {} 
 
     const { update } = useTags();
     const [newTagName, setNewTagName] = useState<string>('');
+    const { isLoading, error, result, resolve } = usePromise(() => update({ id: tag.id, name: newTagName }));
 
     useEffect(() => {
         setNewTagName('');
     }, [isShown]);
 
-    const onTagSave = (): Promise<void> => {
-        return update({ id: tag.id, name: newTagName }).then(onSave);
-    };
+    useEffect(() => {
+        if (result) {
+            onSave(result);
+        }
+    }, [result]);
 
     return (
-        <BaseEditModal isShown={isShown} onClose={onClose} onSave={onTagSave}>
+        <BaseEditModal 
+            title={`Edit Tag: ${tag.id}`}
+            isShown={isShown}
+            isLoading={isLoading}
+            errorMessage={error?.message}
+            onClose={onClose} 
+            onSave={resolve}>
             <div className='tag_name_edit_div'>
                 <p>New Name: </p>
                 <form className='tag_name_edit_form'>

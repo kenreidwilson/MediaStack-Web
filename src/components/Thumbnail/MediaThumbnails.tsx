@@ -48,7 +48,7 @@ export default function MediaThumbnails({
 
     return ( 
         <>
-          {mediaList.map(media => 
+          {mediaList && mediaList.map(media => 
                 <div key={media.id}>
                     {distinguishAlbumMedia && media.albumID !== undefined && 
                         <span 

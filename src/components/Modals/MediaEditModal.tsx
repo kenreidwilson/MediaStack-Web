@@ -1,7 +1,8 @@
 import Media from '../../types/Media';
 import IMediaUpdateRequest from '../../types/IMediaUpdateRequest';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useMedia from '../../hooks/useMedia';
+import usePromise from '../../hooks/usePromise';
 import MediaUpdateForm from '../Forms/MediaUpdateForm';
 import BaseEditModal from './BaseEditModal';
 
@@ -26,13 +27,22 @@ export default function MediaInfoModal({ media, isShown, onClose, onSave }: Prop
         }
     );
 
-    const handleSaveClick = (): Promise<void> => {
-        return update(updateRequest)
-            .then(updatedMedia => onSave(updatedMedia));
-    }
+    const { isLoading, error, result, resolve } = usePromise(() => update(updateRequest));
+
+    useEffect(() => {
+        if (result) {
+            onSave(result);
+        }
+    }, [result]);
 
     return (
-        <BaseEditModal title="Edit Media" isShown={isShown} onClose={onClose} onSave={handleSaveClick}>
+        <BaseEditModal 
+            title='Edit Media'
+            isShown={isShown} 
+            isLoading={isLoading}
+            errorMessage={error?.message}
+            onClose={onClose} 
+            onSave={resolve}>
             <MediaUpdateForm request={updateRequest} onChange={setUpdateRequest}/>
         </BaseEditModal>
     );

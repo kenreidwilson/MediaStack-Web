@@ -1,7 +1,7 @@
 import Media from '../../types/Media';
 import Album from '../../types/Album';
 import IAlbumUpdateRequest from '../../types/IAlbumUpdateRequest';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useAlbums from '../../hooks/useAlbums';
 import usePromise from '../../hooks/usePromise';
 import AlbumUpdateForm from '../Forms/AlbumUpdateForm';
@@ -44,22 +44,22 @@ export default function AlbumEditModal({album, mediaList, isShown, onClose, onSa
         }
     );
 
-    const handleSave = (): Promise<void> => {
-        return update(updateRequest).then(response => {
-            onSave(response);
-        });
-    };
+    const { isLoading, error, result, resolve: updateAlbum } = usePromise(() => update(updateRequest));
 
-    const { isLoading, error, result, dispatch } = usePromise(handleSave);
+    useEffect(() => {
+        if (result) {
+            onSave(result);
+        }
+    }, [result]);
     
     return ( 
         <BaseEditModal 
-            title="Edit Album" 
+            title='Edit Album'
             isShown={isShown} 
             isLoading={isLoading} 
             errorMessage={error?.message} 
             onClose={onClose} 
-            onSave={dispatch}>
+            onSave={updateAlbum}>
             <AlbumUpdateForm request={updateRequest} onChange={setUpdateRequest}/>
         </BaseEditModal>
      );
