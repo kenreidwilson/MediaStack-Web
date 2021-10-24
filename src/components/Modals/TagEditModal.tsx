@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import useTags from '../../hooks/useTags';
 import usePromise from '../../hooks/usePromise';
 import BaseEditModal from './BaseEditModal';
+import TagUpdateForm from '../Forms/TagUpdateForm';
 
 type Props = {
     tag: Tag,
@@ -14,12 +15,12 @@ type Props = {
 export default function TagEditModal({ tag, isShown, onClose, onSave = () => {} }: Props) {
 
     const { update } = useTags();
-    const [newTagName, setNewTagName] = useState<string>('');
-    const { isLoading, error, result, resolve, reset } = usePromise(() => update({ id: tag.id, name: newTagName }));
+    const [updateRequest, setUpdateRequest] = useState<Tag>(tag);
+    const { isLoading, error, result, resolve, reset } = usePromise(() => update(updateRequest));
 
     useEffect(() => {
-        setNewTagName('');
-    }, [isShown]);
+        setUpdateRequest(tag);
+    }, [tag]);
 
     useEffect(() => {
         if (result) {
@@ -30,23 +31,19 @@ export default function TagEditModal({ tag, isShown, onClose, onSave = () => {} 
     useEffect(() => {
         if (!isShown) {
             reset();
+            setUpdateRequest(tag);
         }
     }, [isShown]);
 
     return (
         <BaseEditModal 
-            title={`Edit Tag: ${tag.id}`}
+            title={`Edit Tag: ${updateRequest.id}`}
             isShown={isShown}
             isLoading={isLoading}
             errorMessage={error?.message}
             onClose={onClose} 
             onSave={resolve}>
-            <div className='tag_name_edit_div'>
-                <p>New Name: </p>
-                <form className='tag_name_edit_form'>
-                    <input type='text' value={newTagName} onChange={(event) => setNewTagName(event.target.value as string)} />
-                </form>
-            </div>
+                <TagUpdateForm request={updateRequest} onChange={setUpdateRequest}/>
         </BaseEditModal>
     );
 }

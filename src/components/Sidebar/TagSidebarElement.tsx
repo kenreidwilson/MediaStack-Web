@@ -16,7 +16,7 @@ export default function SidebarTagsItem ({ tags, onClick } : Props) {
         <div style={{marginTop: '3px', textAlign: 'center'}}>
             {tags.map((tag) => (
                 <Chip key={tag.id}
-                    sx={{ color: theme.style.color, margin: '0px 1px 2px 1px'}} 
+                    sx={{ ...theme.style, margin: '0px 1px 2px 1px'}} 
                     label={tag.name} 
                     variant='outlined' 
                     onClick={() => onClick && onClick(tag)}/>

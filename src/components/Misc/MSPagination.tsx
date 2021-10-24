@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { ThemeContext } from '../../contexts/ThemeContext';
 import { Pagination } from 'react-bootstrap';
 
 type Props = {
@@ -7,6 +9,8 @@ type Props = {
 }
 
 export default function MSPagination({pageNumber, numberOfPages, onNavigate}: Props) {
+
+    const { theme } = useContext(ThemeContext);
 
     return (
         <Pagination>

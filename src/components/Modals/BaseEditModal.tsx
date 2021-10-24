@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ThemeContext } from '../../contexts/ThemeContext'; 
+import { ThemeContext } from '../../contexts/ThemeContext';
 import { Modal, Button } from 'react-bootstrap';
 
 type Props = {
@@ -25,14 +25,14 @@ export default function BaseEditModal({
 
     return (
         <Modal show={isShown} onHide={() => onClose()}>
-            <Modal.Header closeButton>
-                <Modal.Title>{title}</Modal.Title>
+            <Modal.Header style={theme.style} closeButton>
+                <Modal.Title style={theme.style}>{title}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body style={theme.style}>
                 {children}
                 <p style={{ marginTop: "10px"}} className="text-danger">{errorMessage}</p>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer style={theme.style}>
                 <Button variant='secondary' onClick={onClose}>Close</Button>
                 <Button variant='primary' onClick={onSave}>Save Changes {isLoading && "..."}</Button>
             </Modal.Footer>

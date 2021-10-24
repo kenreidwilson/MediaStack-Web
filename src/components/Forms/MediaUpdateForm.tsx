@@ -20,7 +20,7 @@ type Props = {
 
 export default function MediaUpdateForm({ 
     request, 
-    onChange, 
+    onChange = () => {}, 
     isCreatable = false, 
     showSource = true, 
     showCategory = true, 
@@ -35,10 +35,6 @@ export default function MediaUpdateForm({
     const [newAlbumOption, setNewAlbumOption] = useState<SelectOption | undefined>(request.albumID ? { value: request.albumID } : undefined);
 
     useEffect(() => {
-        if (onChange === undefined) { 
-            return;
-        }
-
         onChange(
             { 
                 ID: request.ID,

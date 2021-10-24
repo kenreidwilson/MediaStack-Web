@@ -11,16 +11,15 @@ export default function SidebarItem({ header, children }: Props) {
     
     const { theme } = useContext(ThemeContext);
 
+    const headerStyle = { 
+        ...theme.style,
+        height: 35,
+        fontWeight: 'bold'
+    };
+
     return (
         <>
-            <ListSubheader sx={
-                { 
-                    backgroundColor: theme.style.backgroundColor, 
-                    color: theme.style.color, 
-                    height: 35,
-                    fontWeight: 'bold'
-                }
-            }>{header}</ListSubheader>
+            <ListSubheader sx={headerStyle}>{header}</ListSubheader>
             {children}
         </>
     );
