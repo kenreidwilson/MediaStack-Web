@@ -1,20 +1,21 @@
 import Tag from '../types/Tag';
+import IGenericSearchQuery from '../types/IGenericSearchQuery';
 import IMediaSearchQuery from '../types/IMediaSearchQuery';
+import { useState } from 'react';
 import useNavigation from '../hooks/useNavigation';
 import BasePage from './BasePage';
-import PaginatedTagsTable from '../components/Tables/PaginatedTagsTable';
-import { useState } from 'react';
-import IGenericSearchQuery from '../types/IGenericSearchQuery';
 import TagEditModal from '../components/Modals/TagEditModal';
+import TagDeleteModal from '../components/Modals/TagDeleteModal';
+import PaginatedTagsTable from '../components/Tables/PaginatedTagsTable';
 
 export default function TagsPage() {
 
     const { navigate } = useNavigation(); 
 
     const [query, setQuery] = useState<IGenericSearchQuery>({});
-    const [selectedTag, setSelectedTag] = useState<Tag | undefined>();
-    const [showEditModal, setShowEditModal] = useState<boolean>(false);
-    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [ { selectedTag, showEditModal, showDeleteModal }, setModalState ] = 
+        useState<{ selectedTag: Tag | undefined, showEditModal: boolean, showDeleteModal: boolean }>
+            ({ selectedTag: undefined, showEditModal: false, showDeleteModal: false });
 
     return ( 
         <BasePage>
@@ -22,13 +23,20 @@ export default function TagsPage() {
             {selectedTag && <TagEditModal 
                 tag={selectedTag} 
                 isShown={showEditModal} 
-                onClose={() => setShowEditModal(false)} 
-                onSave={(tag) => setShowEditModal(false)}/>} 
+                onClose={() => setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false })} 
+                onSave={(tag) => { setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false }); setQuery({}); }}/>} 
+
+            {selectedTag && <TagDeleteModal
+                tag={selectedTag}
+                isShown={showDeleteModal}
+                onClose={() => setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false })}
+                onSave={(tag) => { setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false }); setQuery({}); }}/>}
 
             <button onClick={() => setQuery({ fuzzyname: 'asdf1' })}>asdf</button>
             <PaginatedTagsTable 
                 baseQuery={query} 
-                onTagEdit={(tag) => { setSelectedTag(tag); setShowEditModal(true); }}
+                onTagEdit={(tag) => setModalState({ selectedTag: tag, showEditModal: true, showDeleteModal: false })}
+                onTagDelete={(tag) => setModalState({ selectedTag: tag, showEditModal: false, showDeleteModal: true })}
                 onTagClick={(tag: Tag) => navigate<IMediaSearchQuery>('/search', { whitelistTagIDs: [tag.id] })}/>
         </>
         </BasePage>

@@ -1,6 +1,7 @@
 import Media from '../types/Media';
 import Album from '../types/Album';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { ErrorContext } from '../contexts/ErrorContext';
 import useAlbums from '../hooks/useAlbums';
 import useMedia from '../hooks/useMedia';
 import useNavigation from '../hooks/useNavigation';
@@ -114,14 +115,20 @@ function OrganizeAlbumSection({ mediaList, setMediaList, onSave }: Props ) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { update } = useMedia();
 
+    const { addError } = useContext(ErrorContext);
+
     const handleSave = async () => {
 
         setIsLoading(true);
         for (let m of mediaList){
-            await update({ ID: m.id, albumOrder: mediaList.indexOf(m)});
-        }
-        setIsLoading(false);
-        onSave();
+            try {
+                await update({ ID: m.id, albumOrder: mediaList.indexOf(m)});
+                setIsLoading(false);
+                onSave();
+            } catch (e) {
+                addError(e as Error);
+            }
+        }   
     }
 
     return (
