@@ -96,7 +96,7 @@ export default function AlbumMediaPage() {
                 {selectedMedia !== undefined ? 
                     isOrganizeMode ? 
                         <OrganizeAlbumSection mediaList={mediaList} setMediaList={setMediaList} onSave={toggleOrganize}/> : 
-                        <MediaGallery mediaList={mediaList} presentedMedia={selectedMedia} onPresentedMediaChange={setSelectdMedia}/> : null}
+                        <MediaGallery mediaList={mediaList} presentedMedia={selectedMedia} setPresentedMedia={setSelectdMedia}/> : null}
                 
             </div>
         </BasePage>
