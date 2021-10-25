@@ -21,8 +21,8 @@ export default class GenericFakeRepository<TEntity extends { id: number, name: s
                     query.count = 5;
                 }
 
-                if (query.name) {
-                    entities = entities.filter(e => e.name === query.name);
+                if (query.fuzzyname) {
+                    entities = entities.filter(e => e.name === query.fuzzyname);
                 }
 
                 let responeData = entities.slice(query.offset).slice(0, query.count);

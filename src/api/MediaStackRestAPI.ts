@@ -81,7 +81,7 @@ export default class MediaStackRestAPI implements IRestAPI {
             }
             switch (error.response.status) {
                 case (400):
-                    throw new APIBadRequestError(error.response.data.message);
+                    throw new APIBadRequestError("Bad Request");
                 default:
                     throw new APIUnexpectedResponseError("Server responded unexpectedly.");
             }

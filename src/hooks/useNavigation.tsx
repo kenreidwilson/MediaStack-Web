@@ -4,7 +4,7 @@ export default function useNavigation() {
 
     const history = useHistory();
 
-    const navigate = (name: string, data?: any) => {
+    const   navigate = <T extends object>(name: string, data?: T): void => {
         history.push({
             pathname: name,
             search: data ? new URLSearchParams(objectToRecord(data)).toString() : undefined
@@ -21,7 +21,7 @@ export default function useNavigation() {
         return query;
     };
 
-    const getNavigationData = () => {
+    const getNavigationData = (): Record<string, string> => {
         let params = new URLSearchParams(window.location.search);
 
         let record: Record<string, string> = {};

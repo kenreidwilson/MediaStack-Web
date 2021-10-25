@@ -49,7 +49,7 @@ export default function MediaInfoModal({ media, isShown, onClose, onSave }: Prop
             errorMessage={error?.message}
             onClose={onClose} 
             onSave={resolve}>
-            <MediaUpdateForm request={updateRequest} onChange={setUpdateRequest}/>
+            <MediaUpdateForm isCreatable={true} request={updateRequest} onChange={setUpdateRequest}/>
         </BaseEditModal>
     );
 }

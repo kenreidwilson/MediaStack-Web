@@ -5,6 +5,7 @@ import ISearchResponse from '../types/ISearchResponse';
 import IGenericSearchQuery from '../types/IGenericSearchQuery';
 import BaseRepository from './BaseRepository';
 import IRestAPI from '../types/IRestAPI';
+import { APIBadRequestError } from '../api/APIErrors';
 
 export default abstract class GenericRepository<
     TEntity extends Tag | Category | Artist> extends BaseRepository<TEntity> {
@@ -18,6 +19,9 @@ export default abstract class GenericRepository<
     }
 
     add(e: TEntity): Promise<TEntity> {
+        if (e.name === undefined) {
+            throw new APIBadRequestError("Bad Request: Invalid Name");
+        }
         return this.API.post<TEntity>(`${this.baseURL}/${this.baseEndpoint}?name=${e.name}`);
     }
     
@@ -32,15 +36,18 @@ export default abstract class GenericRepository<
             endpoint += `&offset=${query.offset}`
         }
 
-        if (query.name) {
-            endpoint += `&name=${query.name}`;
+        if (query.fuzzyname) {
+            endpoint += `&fuzzyname=${query.fuzzyname}`;
         }
 
         return this.API.get<ISearchResponse<TEntity>>(endpoint);
     }
 
     update(e: TEntity): Promise<TEntity> {
-        return this.API.put<TEntity>(`${this.baseURL}/${this.baseEndpoint}`, e);
+        if (e.name === undefined) {
+            throw new APIBadRequestError("Bad Request: Invalid Name");
+        }
+        return this.API.put<TEntity>(`${this.baseURL}/${this.baseEndpoint}?id=${e.id}&name=${e.name}`);
     }
 
     delete(e: TEntity): Promise<void> {

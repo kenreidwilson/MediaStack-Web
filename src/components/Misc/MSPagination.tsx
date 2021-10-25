@@ -5,10 +5,10 @@ import { Pagination } from 'react-bootstrap';
 type Props = {
     pageNumber: number,
     numberOfPages: number,
-    onNavigate: (pageNumber: number) => void;
+    onNavigate?: (pageNumber: number) => void;
 }
 
-export default function MSPagination({pageNumber, numberOfPages, onNavigate}: Props) {
+export default function MSPagination({ pageNumber, numberOfPages, onNavigate = () => {} }: Props) {
 
     const { theme } = useContext(ThemeContext);
 
