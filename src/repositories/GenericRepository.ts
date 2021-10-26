@@ -36,8 +36,8 @@ export default abstract class GenericRepository<
             endpoint += `&offset=${query.offset}`
         }
 
-        if (query.fuzzyname) {
-            endpoint += `&fuzzyname=${query.fuzzyname}`;
+        if (query.fuzzyName) {
+            endpoint += `&fuzzyname=${query.fuzzyName}`;
         }
 
         return this.API.get<ISearchResponse<TEntity>>(endpoint);

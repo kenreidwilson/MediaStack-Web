@@ -7,6 +7,7 @@ import BasePage from './BasePage';
 import TagEditModal from '../components/Modals/TagEditModal';
 import TagDeleteModal from '../components/Modals/TagDeleteModal';
 import PaginatedTagsTable from '../components/Tables/PaginatedTagsTable';
+import TagSearchForm from '../components/Forms/TagSearchForm';
 
 export default function TagsPage() {
 
@@ -32,7 +33,10 @@ export default function TagsPage() {
                 onClose={() => setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false })}
                 onSave={(tag) => { setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false }); setQuery({}); }}/>}
 
-            <button onClick={() => setQuery({ fuzzyname: 'asdf1' })}>asdf</button>
+            <div style={{ width: '80%', margin: 'auto' }}>
+                <TagSearchForm query={query} setQuery={setQuery} />
+            </div>
+            
             <PaginatedTagsTable 
                 baseQuery={query} 
                 onTagEdit={(tag) => setModalState({ selectedTag: tag, showEditModal: true, showDeleteModal: false })}

@@ -137,7 +137,6 @@ export default function MediaSearchForm(
                         setRatingValue(value);
                     }} /> : null}
             </Form.Group> : null}
-
         </Form>
     );
 }

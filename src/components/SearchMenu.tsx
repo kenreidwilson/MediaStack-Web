@@ -4,7 +4,7 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import MediaSearchForm from './Forms/MediaSearchForm';
 
 type Props = {
-    onSearch: Function
+    onSearch: (query: IMediaSearchQuery) => void
 }
 
 export default function SearchMenu({ onSearch }: Props) {

@@ -31,5 +31,5 @@ export default function usePromise<T, PT = undefined>(promise: (param?: PT) => P
         }
     }
 
-    return { isLoading: state.isLoading, error: state.error, result: state.result, resolve, reset };
+    return { ...state, resolve, reset };
 }
