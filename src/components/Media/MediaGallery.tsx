@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Spinner } from 'react-bootstrap';
-import Media from '../types/Media';
-import MediaContainer from './Media/MediaContainer';
-import MediaThumbnails from './Thumbnail/MediaThumbnails';
-import SelectableThumbnailSlider from './Thumbnail/SelectableThumbnailSlider';
+import Media from '../../types/Media';
+import MediaContainer from './MediaContainer';
+import MediaThumbnails from '../Thumbnail/MediaThumbnails';
+import SelectableThumbnailSlider from '../Thumbnail/SelectableThumbnailSlider';
 
 type Props = {
     mediaList: Media[],

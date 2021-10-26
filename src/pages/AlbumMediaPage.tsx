@@ -6,7 +6,7 @@ import useAlbums from '../hooks/useAlbums';
 import useMedia from '../hooks/useMedia';
 import useNavigation from '../hooks/useNavigation';
 import BasePage from './BasePage';
-import MediaGallery from '../components/MediaGallery';
+import MediaGallery from '../components/Media/MediaGallery';
 import DraggableMediaThumbnails from '../components/Thumbnail/DraggableMediaThumbnails';
 import MediaInfoSidebar from '../components/Sidebar/MediaInfoSidebar';
 import AlbumInfoSidebar from '../components/Sidebar/AlbumInfoSidebar';

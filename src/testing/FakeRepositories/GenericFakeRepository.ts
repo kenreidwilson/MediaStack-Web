@@ -22,7 +22,7 @@ export default class GenericFakeRepository<TEntity extends { id: number, name: s
                 }
 
                 if (query.fuzzyName) {
-                    entities = entities.filter(e => e.name === query.fuzzyName);
+                    entities = entities.filter(e => !query.fuzzyName || e.name.indexOf(query.fuzzyName) !== -1);
                 }
 
                 let responeData = entities.slice(query.offset).slice(0, query.count);

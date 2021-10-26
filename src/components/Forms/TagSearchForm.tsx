@@ -5,10 +5,10 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 
 type Props = {
     query: IGenericSearchQuery,
-    setQuery: (query: IGenericSearchQuery) => void
+    setQuery?: (query: IGenericSearchQuery) => void
 }
 
-export default function TagSearchForm({ query, setQuery }: Props) {
+export default function TagSearchForm({ query, setQuery = () => {} }: Props) {
 
     const [fuzzyName, setFuzzyName] = useState<string | undefined>(query.fuzzyName);
 

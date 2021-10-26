@@ -7,7 +7,7 @@ import BasePage from './BasePage';
 import TagEditModal from '../components/Modals/TagEditModal';
 import TagDeleteModal from '../components/Modals/TagDeleteModal';
 import PaginatedTagsTable from '../components/Tables/PaginatedTagsTable';
-import TagSearchForm from '../components/Forms/TagSearchForm';
+import TagSearchMenu from '../components/Menus/TagSearchMenu';
 
 export default function TagsPage() {
 
@@ -34,7 +34,7 @@ export default function TagsPage() {
                 onSave={(tag) => { setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false }); setQuery({}); }}/>}
 
             <div style={{ width: '80%', margin: 'auto' }}>
-                <TagSearchForm query={query} setQuery={setQuery} />
+                <TagSearchMenu onSearch={setQuery}/>
             </div>
             
             <PaginatedTagsTable 
