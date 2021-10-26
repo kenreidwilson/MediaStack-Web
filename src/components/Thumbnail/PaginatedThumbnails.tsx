@@ -4,7 +4,7 @@ import { useState, useEffect, useContext, CSSProperties } from 'react';
 import { ErrorContext } from '../../contexts/ErrorContext';
 import useMedia from '../../hooks/useMedia';
 import { Spinner } from 'react-bootstrap';
-import MediaThumbnails from './MediaThumbnails';
+import Thumbnails from './Thumbnails';
 import MSPagination from '../Misc/MSPagination';
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
     thumbnailContainerStyle?: CSSProperties
 };
 
-export default function PagedThumbnails({ 
+export default function PaginatedThumbnails({ 
     mediaQuery, 
     mediaPerPage, 
     pageNumber, 
@@ -59,7 +59,7 @@ export default function PagedThumbnails({
         <>
             {isMediaLoading ? <Spinner animation='border' variant='primary'/> :
             <div style={thumbnailContainerStyle}>
-                <MediaThumbnails mediaList={mediaList} onClick={onThumbnailClick} distinguishAlbumMedia={distinguishAlbumMedia}/>
+                <Thumbnails mediaList={mediaList} onClick={onThumbnailClick} distinguishAlbumMedia={distinguishAlbumMedia}/>
             </div>}
             <div style={{display: 'flex', marginTop: '5px'}}>
                 <div style={{margin: 'auto'}}>

@@ -1,25 +1,23 @@
 import Media from '../../types/Media';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext';
-import MediaThumbnail from './MediaThumbnail';
+import MediaThumbnail from './Thumbnail';
 
 type Props = {
-    mediaList: Media[]
+    mediaList: Media[],
     distinguishAlbumMedia?: boolean,
-    onClick?: (event: React.MouseEvent, media: Media) => void,
     selectedMedia?: Media[],
     onSelectionChange?: (selectedMedia: Media[]) => void;
     canUnselect?: boolean
 }
 
-export default function MediaThumbnails({ 
+export default function SelectableThumbnails({ 
     mediaList, 
     distinguishAlbumMedia = false, 
-    onClick = () => {},
     selectedMedia,
     onSelectionChange = () => {},
     canUnselect = true }: Props) {
-    
+
     const { theme } = useContext(ThemeContext);
 
     const isMediaEqual = (media: Media, other: Media) => {
@@ -55,7 +53,7 @@ export default function MediaThumbnails({
                             style={{ margin: '130px 0px 0px 185px', position: 'absolute' }} 
                             className='badge badge-primary'>Album</span>}
                     <MediaThumbnail 
-                            onClick={(e, m) => { onClick(e, m); onMediaSelected(m); }} 
+                            onClick={(_, m) => onMediaSelected(m)} 
                             media={media}
                             style={
                                 selectedMedia && isMediaSelected(media) ? 

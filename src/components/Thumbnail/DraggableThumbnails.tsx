@@ -1,13 +1,13 @@
 import Media from '../../types/Media';
 import Reorder, { reorder } from 'react-reorder';
-import MediaThumbnail from './MediaThumbnail';
+import Thumbnail from './Thumbnail';
 
 type Props = {
     mediaList: Media[],
     onReorder: Function
 }
 
-export default function DraggableMediaThumbnails({ mediaList, onReorder }: Props) {
+export default function DraggableThumbnails({ mediaList, onReorder }: Props) {
 
     const _onReorder = (event: any, previousIndex: number, nextIndex: number, fromId: number, toId: number) => {
         onReorder(reorder(mediaList, previousIndex, nextIndex));
@@ -21,7 +21,7 @@ export default function DraggableMediaThumbnails({ mediaList, onReorder }: Props
             >
                 {mediaList.map(media => 
                     <div key={media.id}>
-                        <MediaThumbnail media={media}/>
+                        <Thumbnail media={media}/>
                     </div>
                 )}
             </Reorder>

@@ -1,7 +1,7 @@
 import Media from '../../types/Media';
-import MediaThumbnails from './MediaThumbnails';
 
 import './SelectableThumbnailSlider.css'
+import SelectableThumbnails from './SelectableThumbnails';
 
 type Props = {
     mediaList: Media[],
@@ -15,7 +15,7 @@ export default function SelectableThumbnailSlider({mediaList, selectedMedia, onS
         <div id='thumbnail-slider'>
             <a id='thumbnailslider-nav-next' onClick={() => {}}>&#10094;&#10094;&#10094;</a>
             <div id='thumbnailslider-image-container'>
-                <MediaThumbnails 
+                <SelectableThumbnails 
                     mediaList={mediaList}
                     selectedMedia={[selectedMedia]}                    
                     onSelectionChange={(sm: Media[]) => onSelectMedia(sm.filter(m => m !== selectedMedia)[0])}

@@ -3,7 +3,7 @@ import IMediaSearchQuery from '../../types/IMediaSearchQuery';
 import React, { useState } from 'react';
 import useNavigation from '../../hooks/useNavigation';
 import InfiniteThumbnails from './InfiniteThumbnails';
-import PagedThumbnails from './PagedThumbnails';
+import PaginatedThumbnails from './PaginatedThumbnails';
 
 type Props = {
     mediaQuery: IMediaSearchQuery,
@@ -59,7 +59,7 @@ export default function PageThumbnails({
                     thumbnailContainerStyle={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}/> 
                 :
                 <>
-                    <PagedThumbnails
+                    <PaginatedThumbnails
                         pageNumber={pageNumber}
                         setPageNumber={(pn) => { navigate('/search', { ...navigationData, p: pn }); setPageNumber(pn); }}
                         mediaQuery={mediaQuery}

@@ -8,7 +8,7 @@ type Props = {
     style?: CSSProperties
 }
 
-export default function MediaThumbnail({ media, onClick = () => {}, style }: Props) {
+export default function Thumbnail({ media, onClick = () => {}, style }: Props) {
 
     const { getThumbnailLink } = useMediaFiles();
 

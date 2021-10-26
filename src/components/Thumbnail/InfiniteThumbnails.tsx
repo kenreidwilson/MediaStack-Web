@@ -4,7 +4,7 @@ import { useState, useEffect, CSSProperties } from 'react';
 import useMedia from '../../hooks/useMedia';
 import { Spinner } from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import MediaThumbnails from './MediaThumbnails';
+import Thumbnails from './Thumbnails';
 
 type Props = {
     mediaQuery: IMediaSearchQuery,
@@ -76,7 +76,7 @@ export default function InfiniteThumbnails({
                 loader={<Spinner style={{position: 'absolute'}} animation='border' variant='primary'/>}
             >
                 <div style={thumbnailContainerStyle}>
-                    <MediaThumbnails mediaList={mediaList} onClick={onThumbnailClick} distinguishAlbumMedia={distinguishAlbumMedia}/>
+                    <Thumbnails mediaList={mediaList} onClick={onThumbnailClick} distinguishAlbumMedia={distinguishAlbumMedia}/>
                 </div>
             </InfiniteScroll>
         </>
