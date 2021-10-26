@@ -7,7 +7,7 @@ import useMedia from '../hooks/useMedia';
 import useNavigation from '../hooks/useNavigation';
 import BasePage from './BasePage';
 import MediaGallery from '../components/Media/MediaGallery';
-import DraggableMediaThumbnails from '../components/Thumbnail/DraggableMediaThumbnails';
+import DraggableThumbnails from '../components/Thumbnail/DraggableThumbnails';
 import MediaInfoSidebar from '../components/Sidebar/MediaInfoSidebar';
 import AlbumInfoSidebar from '../components/Sidebar/AlbumInfoSidebar';
 import AlbumEditModal from '../components/Modals/AlbumEditModal';
@@ -133,7 +133,7 @@ function OrganizeAlbumSection({ mediaList, setMediaList, onSave }: Props ) {
 
     return (
             <div>
-                <DraggableMediaThumbnails mediaList={mediaList} onReorder={setMediaList}/>
+                <DraggableThumbnails mediaList={mediaList} onReorder={setMediaList}/>
                 <button className='btn btn-primary' disabled={isLoading} onClick={handleSave}>Save</button>
             </div>
         );

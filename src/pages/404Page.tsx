@@ -2,8 +2,8 @@ import BasePage from './BasePage';
 
 const Error404Page = () => (
    <BasePage>
-      <div>
-         <p>Error: Page does not exist!</p>
+      <div style={{ margin: 'auto', textAlign: 'center' }}>
+         <h1>404 Not Found!</h1>
       </div>
    </BasePage>
 )

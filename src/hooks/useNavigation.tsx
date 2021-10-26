@@ -4,7 +4,7 @@ export default function useNavigation() {
 
     const history = useHistory();
 
-    const   navigate = <T extends object>(name: string, data?: T): void => {
+    const navigate = <T extends object>(name: string, data?: T): void => {
         history.push({
             pathname: name,
             search: data ? new URLSearchParams(objectToRecord(data)).toString() : undefined
