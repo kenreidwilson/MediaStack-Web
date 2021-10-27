@@ -1,7 +1,7 @@
 import Media from '../../types/Media';
 import { useContext } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext';
-import MediaThumbnail from './Thumbnail';
+import DistinguishedThumbnail from './DistinguishedThumbnail';
 
 type Props = {
     mediaList: Media[],
@@ -48,17 +48,14 @@ export default function SelectableThumbnails({
         <>
           {mediaList && mediaList.map(media => 
                 <div key={media.id}>
-                    {distinguishAlbumMedia && media.albumID !== undefined && 
-                        <span 
-                            style={{ margin: '130px 0px 0px 185px', position: 'absolute' }} 
-                            className='badge badge-primary'>Album</span>}
-                    <MediaThumbnail 
-                            onClick={(_, m) => onMediaSelected(m)} 
-                            media={media}
-                            style={
-                                selectedMedia && isMediaSelected(media) ? 
-                                { margin: '2px', border: `3px solid ${theme.style.primaryColor}`, padding: '3px' } : 
-                                { margin: '2px' }}/>
+                    <DistinguishedThumbnail 
+                        media={media}
+                        onClick={(_, m) => onMediaSelected(m)}
+                        distinguishAlbum={!isNaN(media.albumID!) && distinguishAlbumMedia}
+                        style={
+                            selectedMedia && isMediaSelected(media) ? 
+                            { margin: '2px', border: `3px solid ${theme.style.primaryColor}`, padding: '3px' } : 
+                            { margin: '2px' }}/>
                 </div>
             )}  
         </>

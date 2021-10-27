@@ -58,7 +58,7 @@ export default function PaginatedThumbnails({
     return (
         <>
             {isMediaLoading ? <Spinner animation='border' variant='primary'/> :
-            <div style={thumbnailContainerStyle}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <Thumbnails mediaList={mediaList} onClick={onThumbnailClick} distinguishAlbumMedia={distinguishAlbumMedia}/>
             </div>}
             <div style={{display: 'flex', marginTop: '5px'}}>

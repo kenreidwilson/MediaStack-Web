@@ -35,14 +35,15 @@ export default function MediaListUpdate({ mediaList, setMediaList = () => {} }: 
                     mediaList={selectedMedia} 
                     onClose={() => setShowEditModal(false)} 
                     onSave={(mediaList) => { setShowEditModal(false); onSelecteMediaSave(mediaList)}}/>}
-            <Button onClick={() => setShowEditModal(true)}>Save</Button>
-            <div style={{display: 'flex', flexWrap: 'wrap'}}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <SelectableThumbnails 
-                    mediaList={mediaList}
-                    selectedMedia={selectedMedia}
-                    onSelectionChange={setSelectedMedia}/>
+                        mediaList={mediaList}
+                        selectedMedia={selectedMedia}
+                        onSelectionChange={setSelectedMedia}/>
             </div>
-            
+            <div style={{ margin: 'auto', marginTop: '5px' }}>
+                <Button onClick={() => setShowEditModal(true)}>Save</Button>
+            </div>
         </>
     );
 }

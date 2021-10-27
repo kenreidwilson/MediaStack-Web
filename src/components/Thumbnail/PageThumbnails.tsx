@@ -47,33 +47,33 @@ export default function PageThumbnails({
     }
 
     return (
-        <div style={{ margin: 'auto', width: '90%'}}>
-            {isInfinite ? 
-                <InfiniteThumbnails
+        <>
+        {isInfinite ? 
+            <InfiniteThumbnails
+                mediaQuery={mediaQuery}
+                mediaList={mediaList}
+                setMediaList={setMediaList}
+                distinguishAlbumMedia={linkToAlbums}
+                onThumbnailClick={onThumbnailClick}
+                //onMediaLoad={(count) => setPageNumber(count % mediaPerPage)}
+                thumbnailContainerStyle={{}}/> 
+            :
+            <>
+                <PaginatedThumbnails
+                    pageNumber={pageNumber}
+                    setPageNumber={(pn) => { navigate('/search', { ...navigationData, p: pn }); setPageNumber(pn); }}
                     mediaQuery={mediaQuery}
+                    mediaPerPage={mediaPerPage}
                     mediaList={mediaList}
                     setMediaList={setMediaList}
-                    distinguishAlbumMedia={linkToAlbums}
                     onThumbnailClick={onThumbnailClick}
-                    //onMediaLoad={(count) => setPageNumber(count % mediaPerPage)}
-                    thumbnailContainerStyle={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}/> 
-                :
-                <>
-                    <PaginatedThumbnails
-                        pageNumber={pageNumber}
-                        setPageNumber={(pn) => { navigate('/search', { ...navigationData, p: pn }); setPageNumber(pn); }}
-                        mediaQuery={mediaQuery}
-                        mediaPerPage={mediaPerPage}
-                        mediaList={mediaList}
-                        setMediaList={setMediaList}
-                        onThumbnailClick={onThumbnailClick}
-                        distinguishAlbumMedia={linkToAlbums}
-                        thumbnailContainerStyle={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}/>
-                    <div style={{textAlign: 'center'}}>
-                        <a style={{color: 'white'}} className='btn btn-primary' onClick={() => enableInfiniteScrolling()}>Infinite Scrolling</a>
-                    </div>
-                </>
-            }
-        </div>
+                    distinguishAlbumMedia={linkToAlbums}
+                    thumbnailContainerStyle={{}}/>
+                <div style={{textAlign: 'center'}}>
+                    <a style={{color: 'white'}} className='btn btn-primary' onClick={() => enableInfiniteScrolling()}>Infinite Scrolling</a>
+                </div>
+            </>
+        }
+        </>
     );
 }

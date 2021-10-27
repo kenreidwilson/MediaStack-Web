@@ -28,7 +28,7 @@ export default function ThumbnailPageComponent() {
                         <MediaSearchForm query={mediaQuery} />
                     </ToggleableSidebar>
                 </div>
-                <div style={{display: 'flex', flexDirection: 'column'}}>
+                <div style={{ display: 'flex', width: '80%', flexWrap: 'wrap', flexDirection: 'column', justifyContent: 'center' }}>
                     {showEditSidebar ? 
                         <MediaListUpdate mediaList={mediaList}/> :
                         <PageThumbnails
