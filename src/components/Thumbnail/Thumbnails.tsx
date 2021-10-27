@@ -1,4 +1,5 @@
 import Media from '../../types/Media';
+import { Badge } from 'react-bootstrap';
 import Thumbnail from './Thumbnail';
 
 type Props = {
@@ -12,10 +13,8 @@ export default function Thumbnails({ mediaList, distinguishAlbumMedia = false, o
         <>
           {mediaList && mediaList.map(media => 
                 <div key={media.id}>
-                    {distinguishAlbumMedia && media.albumID !== undefined && 
-                        <span 
-                            style={{ margin: '130px 0px 0px 185px', position: 'absolute' }} 
-                            className='badge badge-primary'>Album</span>}
+                    {distinguishAlbumMedia && media.albumID && 
+                    <Badge style={{ margin: '130px 0px 0px 185px', position: 'absolute' }} bg="primary">Album</Badge>}
                     <Thumbnail 
                             onClick={onClick}
                             media={media}

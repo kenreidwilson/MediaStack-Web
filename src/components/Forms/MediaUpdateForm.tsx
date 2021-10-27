@@ -64,7 +64,7 @@ export default function MediaUpdateForm({
             {showAlbum ? 
                 <Form.Group>
                     <Form.Label>Album</Form.Label>
-                    <AlbumSelect isDisabled={newArtistOption === undefined} selectedAlbum={newAlbumOption} onAlbumChange={setNewAlbumOption} isCreatable={isCreatable}/>
+                    <AlbumSelect albumsQuery={{count: 9999, artistId: newArtistOption?.value }} isDisabled={newArtistOption === undefined} selectedAlbum={newAlbumOption} onAlbumChange={setNewAlbumOption} isCreatable={isCreatable}/>
                 </Form.Group> : null}
             
             {showSource ? 

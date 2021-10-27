@@ -82,6 +82,7 @@ export default function MediaListEditModal({
             onClose={onClose} 
             onSave={updateMedia}>
             <AlbumUpdateForm 
+                isCreatable={true}
                 showSource={false}
                 showArtist={false}
                 showCategory={false}

@@ -25,7 +25,7 @@ export default function BaseEditModal({
 
     return (
         <Modal show={isShown} onHide={() => onClose()}>
-            <Modal.Header style={theme.style} closeButton>
+            <Modal.Header closeVariant={theme.name === 'dark' ? 'white' : undefined } style={theme.style} closeButton>
                 <Modal.Title style={theme.style}>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={theme.style}>
