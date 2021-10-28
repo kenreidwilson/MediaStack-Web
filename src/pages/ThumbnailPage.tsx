@@ -4,7 +4,7 @@ import { useState } from 'react';
 import useNavigation from '../hooks/useNavigation';
 import BasePage from './BasePage';
 import PageThumbnails from '../components/Thumbnail/PageThumbnails';
-import MediaThumbnailsSidebar from '../components/Sidebar/MediaThumbnailsSidebar';
+import ThumbnailPageSidebar from '../components/Sidebar/ThumbnailPageSidebar';
 import ToggleableSidebar from '../components/Sidebar/ToggleableSidebar';
 import MediaSearchForm from '../components/Forms/MediaSearchForm';
 import MediaListUpdate from '../components/Media/MediaListUpdate';
@@ -35,13 +35,11 @@ export default function ThumbnailPageComponent() {
             <div style={{ marginRight: '10px' }}>
                 <Button variant='primary' onClick={() => setShowRightSidebar(s => !s)}>Sidebar</Button>
             </div>
-            <ToggleableSidebar width={300} isShown={showRightSidebar} setIsShown={setShowRightSidebar}>
-                <div style={{ marginTop: '10px' }}>
-                    <MediaThumbnailsSidebar 
-                        mediaQuery={mediaQuery}
-                        setMediaQuery={setMediaQuery}
-                        onToggleEditMode={() => setShowEditSidebar(m => !m)}/>
-                </div>
+            <ToggleableSidebar width={400} isShown={showRightSidebar} setIsShown={setShowRightSidebar}>
+                <ThumbnailPageSidebar 
+                    mediaQuery={mediaQuery}
+                    setMediaQuery={setMediaQuery}
+                    onToggleEditMode={() => { setShowEditSidebar(m => !m); !showEditSidebar && setShowRightSidebar(false); }}/>
             </ToggleableSidebar>
         </div>
     );

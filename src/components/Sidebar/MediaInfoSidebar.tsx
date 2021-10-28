@@ -9,9 +9,9 @@ import useCategories from '../../hooks/useCategories';
 import useNavigation from '../../hooks/useNavigation';
 import List from '@mui/material/List';
 import { ListItemButton } from '@mui/material';
-import SidebarTagsItem from './TagSidebarElement';
-import SidebarItem from './SidebarItem';
-import SidebarItemButton from './SidebarItemButton';
+import SidebarTagsItem from './Elements/TagSidebarElement';
+import SidebarItem from './Elements/SidebarItem';
+import SidebarItemButton from './Elements/SidebarItemButton';
 import RatingStars from '../Misc/RatingStars';
 
 type Props = {

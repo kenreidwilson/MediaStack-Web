@@ -5,6 +5,7 @@ export const DarkTheme: Theme = {
     style: {
         backgroundColor: '#1d1d1d',
         color: 'rgb(200, 200, 200)',
-        primaryColor: 'rgb(0, 102, 255)'
+        primaryColor: 'rgb(0, 102, 255)',
+        secondaryBackgroundColor: '#2b2b2b'
     }
 }

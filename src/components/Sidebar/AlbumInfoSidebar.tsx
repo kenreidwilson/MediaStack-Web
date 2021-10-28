@@ -8,8 +8,8 @@ import useAlbums from '../../hooks/useAlbums';
 import useNavigation from '../../hooks/useNavigation';
 import { List, ListItemButton } from '@mui/material';
 import RatingStars from '../Misc/RatingStars';
-import SidebarItem from './SidebarItem';
-import SidebarTagsItem from './TagSidebarElement';
+import SidebarItem from './Elements/SidebarItem';
+import SidebarTagsItem from './Elements/TagSidebarElement';
 
 type Props = {
     album: Album,
