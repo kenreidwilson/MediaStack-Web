@@ -1,23 +1,32 @@
 import IMediaSearchQuery from '../../types/IMediaSearchQuery';
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSearch } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from '../Sidebar/Sidebar';
-import ToggleableSidebar from '../Sidebar/ToggleableSidebar';
 import MediaSearchForm from '../Forms/MediaSearchForm';
+import { Button, Accordion } from 'react-bootstrap';
 
 type Props = {
-    onSearchQueryClick?: (e?: React.MouseEvent) => void,
-    onEditClick?: (e?: React.MouseEvent) => void
+    onToggleEditMode?: () => void,
+    mediaQuery?: IMediaSearchQuery,
+    setMediaQuery?: (query: IMediaSearchQuery) => void
 }
 
-export default function MediaThumbnailsSidebar({ onSearchQueryClick, onEditClick }: Props) {
+export default function MediaThumbnailsSidebar({ 
+    onToggleEditMode = () => {}, 
+    mediaQuery = {}, 
+    setMediaQuery = () => {} }: Props) {
     
     return (
         <Sidebar width={'auto'}>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                <FontAwesomeIcon onClick={onSearchQueryClick} style={{fontSize: 50}} icon={faSearch}/>
-                <FontAwesomeIcon onClick={onEditClick} style={{fontSize: 50}} icon={faEdit}/>
+            <div>
+                <Button onClick={onToggleEditMode} variant='primary'>Toggle Edit Mode</Button>
+                <Accordion>
+                    <Accordion.Item eventKey="0">
+                        <Accordion.Header>Search</Accordion.Header>
+                        <Accordion.Body>
+                            <MediaSearchForm onChange={setMediaQuery} query={mediaQuery} />
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
             </div>
         </Sidebar>
     );

@@ -8,35 +8,67 @@ import MediaThumbnailsSidebar from '../components/Sidebar/MediaThumbnailsSidebar
 import ToggleableSidebar from '../components/Sidebar/ToggleableSidebar';
 import MediaSearchForm from '../components/Forms/MediaSearchForm';
 import MediaListUpdate from '../components/Media/MediaListUpdate';
+import { Button } from 'react-bootstrap';
 
 export default function ThumbnailPageComponent() {
     
     const { getNavigationData } = useNavigation();
     const [mediaQuery, setMediaQuery] = useState<IMediaSearchQuery>(getNavigationData());
     const [mediaList, setMediaList] = useState<Media[]>([]);
-    const [showSearchSidebar, setShowSearchSidebar] = useState<boolean>(false);
+    const [showRightSidebar, setShowRightSidebar] = useState<boolean>(false);
     const [showEditSidebar, setShowEditSidebar] = useState<boolean>(false);
+
+    const TopBar = (): JSX.Element => (
+        <div style={{ textAlign: 'center' }}>
+            
+        </div>
+    );
+
+    const RightSide = (): JSX.Element => (
+        <div>
+
+        </div>
+    );
+
+    const LeftSide = (): JSX.Element => (
+        <div style={{ margin: '0 5px 0 5px', display: 'flex', flexDirection: 'column', marginRight: '5px'}}>
+            <div style={{ marginRight: '10px' }}>
+                <Button variant='primary' onClick={() => setShowRightSidebar(s => !s)}>Sidebar</Button>
+            </div>
+            <ToggleableSidebar width={300} isShown={showRightSidebar} setIsShown={setShowRightSidebar}>
+                <div style={{ marginTop: '10px' }}>
+                    <MediaThumbnailsSidebar 
+                        mediaQuery={mediaQuery}
+                        setMediaQuery={setMediaQuery}
+                        onToggleEditMode={() => setShowEditSidebar(m => !m)}/>
+                </div>
+            </ToggleableSidebar>
+        </div>
+    );
+
+    const MainBody = (): JSX.Element => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'column', justifyContent: 'center' }}>
+        {showEditSidebar ? 
+            <MediaListUpdate mediaList={mediaList}/> :
+            <PageThumbnails
+                mediaQuery={mediaQuery}
+                mediaPerPage={10}
+                mediaList={mediaList}
+                setMediaList={setMediaList}
+                isInfinite={+getNavigationData()['p'] === -1}/>}
+        </div>
+    );
 
     return ( 
         <BasePage>
-            <div style={{ display: 'flex' }}>
-                <div style={{ display: 'flex'}}>
-                    <MediaThumbnailsSidebar 
-                        onSearchQueryClick={() => setShowSearchSidebar(p => !p)}
-                        onEditClick={() => setShowEditSidebar(p => !p)}/>
-                    <ToggleableSidebar width={300} isShown={showSearchSidebar} setIsShown={setShowSearchSidebar}>
-                        <MediaSearchForm query={mediaQuery} />
-                    </ToggleableSidebar>
-                </div>
-                <div style={{ display: 'flex', width: '80%', flexWrap: 'wrap', flexDirection: 'column', justifyContent: 'center' }}>
-                    {showEditSidebar ? 
-                        <MediaListUpdate mediaList={mediaList}/> :
-                        <PageThumbnails
-                                mediaQuery={mediaQuery}
-                                mediaPerPage={30}
-                                mediaList={mediaList}
-                                setMediaList={setMediaList}
-                                isInfinite={+getNavigationData()['p'] === -1}/>}
+            <div>
+                <div style={{ display: 'flex' }}>
+                    {LeftSide()}
+                    <div>
+                        {TopBar()}
+                        {MainBody()}
+                    </div>
+                    {RightSide()}
                 </div>
             </div>
         </BasePage>
