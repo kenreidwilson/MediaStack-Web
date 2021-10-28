@@ -1,10 +1,13 @@
 import Media from '../../types/Media';
+import Tag from '../../types/Tag';
 import IKeyBasedAPI from '../../types/IKeyBasedAPI';
 import ISearchResponse from '../../types/ISearchResponse';
 import IMediaSearchQuery from '../../types/IMediaSearchQuery';
 import IMediaUpdateRequest from '../../types/IMediaUpdateRequest';
 import BaseFakeRepository from './BaseFakeRepository';
 import { SeedMedia } from '../SeedData/SeedMedia';
+import FakeTagRepository from './FakeTagRepository';
+import FakeAlbumRepository from './FakeAlbumRepository';
 
 export default class FakeMediaRepository extends BaseFakeRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
 
@@ -94,7 +97,47 @@ export default class FakeMediaRepository extends BaseFakeRepository<Media, IMedi
         });
     }
 
-    update(e: IMediaUpdateRequest): Promise<Media> {
-        throw new Error('Method not implemented.');
+    async update(updateRequest: IMediaUpdateRequest): Promise<Media> {
+
+        let ftr = new FakeTagRepository(this.API);
+        let newTags: Promise<Tag[]> | undefined;
+        if (updateRequest.tagIDs) {
+            newTags = Promise.all(updateRequest.tagIDs.map(tagid => ftr.get(tagid)));
+        }
+
+        let media = await this.get(updateRequest.ID);
+
+        if (updateRequest.categoryID) media.categoryID = updateRequest.categoryID;
+
+        if (updateRequest.artistID && media.categoryID) {
+            media.artistID = updateRequest.artistID;
+        } else if (updateRequest.artistID) {
+            throw Error('Bad Request');
+        }
+
+        if (updateRequest.albumID && media.artistID) {
+            let afr = new FakeAlbumRepository(this.API);
+            let album = await afr.get(updateRequest.albumID);
+            if (album.artistID != media.artistID) {
+                throw new Error('Bad Request');
+            }
+            media.albumID = updateRequest.albumID;
+        } else if (updateRequest.albumID) {
+            throw new Error('Bad Request');
+        }
+
+        if (updateRequest.albumOrder) media.albumOrder = updateRequest.albumOrder;
+        if (updateRequest.score) media.score = updateRequest.score;
+        if (updateRequest.source) media.source = updateRequest.source;
+        
+        if (newTags) media.tags = await newTags;
+
+        return this.API.get<Media[]>(this.entitiesKey)
+            .then(entities => {
+                entities = entities.filter(et => et.id !== updateRequest.ID);
+                entities.push(media);
+                this.API.set(this.entitiesKey, entities).then(_ => media);
+                return media;
+            });
     }
 }
