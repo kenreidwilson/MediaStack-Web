@@ -24,7 +24,7 @@ export default function ToggleableSidebar({ children, width = 'auto', isShown = 
             {isShown && <Sidebar width={width}>{children}</Sidebar>}
         </div> : 
         
-        <Offcanvas show={isShown} onHide={() => setIsShown(false)}>
+        <Offcanvas style={{ width }} show={isShown} onHide={() => setIsShown(false)}>
             <Offcanvas.Header style={theme.style} closeButton>
                 <Offcanvas.Title style={theme.style}>Thumbnail Page</Offcanvas.Title>
             </Offcanvas.Header>
