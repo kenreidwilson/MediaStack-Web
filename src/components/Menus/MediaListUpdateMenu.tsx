@@ -4,21 +4,24 @@ type Props = {
     onEdit?: () => void,
     onSelectAll?: () => void,
     onDeselectAll?: () => void,
-    onCancel?: () => void
+    onCancel?: () => void,
+    onOrganize?: () => void
 }
 
 export default function MediaListUpdateMenu({ 
-    onEdit = () => {}, 
-    onSelectAll = () => {}, 
-    onDeselectAll = () => {},
-    onCancel = () => {} }: Props) {
+    onEdit, 
+    onSelectAll, 
+    onDeselectAll,
+    onCancel,
+    onOrganize }: Props) {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between', width: '350px'}}>
-            <Button onClick={onEdit}>Edit</Button>
-            <Button variant='secondary' onClick={onDeselectAll}>Deselect All</Button>
-            <Button variant='secondary' onClick={onSelectAll}>Select All</Button>
-            <Button variant='secondary' onClick={onCancel}>Cancel</Button>
+            {onEdit && <Button onClick={onEdit}>Edit</Button>}
+            {onDeselectAll && <Button variant='secondary' onClick={onDeselectAll}>Deselect All</Button>}
+            {onSelectAll && <Button variant='secondary' onClick={onSelectAll}>Select All</Button>}
+            {onCancel && <Button variant='secondary' onClick={onCancel}>Cancel</Button>}
+            {onOrganize && <Button variant='primary' onClick={onOrganize}>Organize</Button>}
         </div>
     );
 }

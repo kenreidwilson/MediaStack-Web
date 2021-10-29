@@ -5,6 +5,7 @@ import { ErrorContext } from '../contexts/ErrorContext';
 import useAlbums from '../hooks/useAlbums';
 import useMedia from '../hooks/useMedia';
 import useNavigation from '../hooks/useNavigation';
+import { Button } from 'react-bootstrap';
 import BasePage from './BasePage';
 import MediaGallery from '../components/Media/MediaGallery';
 import DraggableThumbnails from '../components/Thumbnail/DraggableThumbnails';
@@ -12,6 +13,7 @@ import MediaInfoSidebar from '../components/Sidebar/MediaInfoSidebar';
 import AlbumInfoSidebar from '../components/Sidebar/AlbumInfoSidebar';
 import AlbumEditModal from '../components/Modals/AlbumEditModal';
 import MediaInfoModal from '../components/Modals/MediaEditModal';
+import MediaListUpdate from '../components/Media/MediaListUpdate';
 
 export default function AlbumMediaPage() {
     const [album, setAlbum] = useState<Album>();
@@ -61,12 +63,12 @@ export default function AlbumMediaPage() {
     }
 
     const toggleOrganize = () => {
-        setIsOrganizeMode(!isOrganizeMode);
+        setIsOrganizeMode(io => !io);
     }
 
     return (
         <BasePage>
-            <div id='mediapage'>
+            <div>
                 {album !== undefined && showAlbumEditModal ? 
                     <AlbumEditModal 
                         isShown={showAlbumEditModal} 
@@ -84,21 +86,26 @@ export default function AlbumMediaPage() {
                         onClose={() => setShowMediaEditModal(false)}
                     /> 
                 : null}
-                <div id='mediapage-sidebar'>
+                <div>
                     {mediaList !== undefined && selectedMedia !== undefined ? 
                         <div>
-                            <button className='edit_button btn btn-primary' onClick={() => setShowMediaEditModal(true)}>Edit Media</button>
+                            <Button onClick={() => setShowMediaEditModal(true)}>Edit Media</Button>
                             {mediaList.length > 0 ? <MediaInfoSidebar media={selectedMedia} setMedia={updateSelectedMedia}/> : null }
-                            <button className='edit_button btn btn-primary' onClick={() => setShowAlbumEditModal(true)}>Edit Album</button>
+                            <Button onClick={() => setShowAlbumEditModal(true)}>Edit Album</Button>
                             <AlbumInfoSidebar album={album!} setAlbum={setAlbum} mediaList={mediaList}updateMediaList={updateMediaList}/>
-                            <button className='btn btn-primary' onClick={toggleOrganize}>Organize</button>
+                            <Button onClick={toggleOrganize}>Organize</Button>
                         </div> : null}
                 </div>
-                {selectedMedia !== undefined ? 
-                    isOrganizeMode ? 
-                        <OrganizeAlbumSection mediaList={mediaList} setMediaList={setMediaList} onSave={toggleOrganize}/> : 
-                        <MediaGallery mediaList={mediaList} presentedMedia={selectedMedia} setPresentedMedia={setSelectdMedia}/> : null}
-                
+                <div>
+                    {selectedMedia !== undefined ? 
+                        isOrganizeMode ? 
+                            <MediaListUpdate 
+                                mediaList={mediaList} 
+                                setMediaList={(mediaList) => { setMediaList(mediaList); toggleOrganize() }}
+                                onCancel={() => toggleOrganize()}/> : 
+                            <MediaGallery mediaList={mediaList} presentedMedia={selectedMedia} setPresentedMedia={setSelectdMedia}/> 
+                    : null}
+                </div>
             </div>
         </BasePage>
      );

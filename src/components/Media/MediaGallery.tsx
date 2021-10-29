@@ -37,10 +37,10 @@ export default function MediaGallery({ mediaList, presentedMedia, setPresentedMe
     );
 
     return (
-        <div id='mediapage-content'>
+        <div>
         {mediaList !== undefined && mediaList.length > 0 ? 
             <div>
-                {isMediaLoading ? <Spinner id='imageLoadingSpinner' animation='border' variant='primary' /> : null}
+                {isMediaLoading ? <Spinner animation='border' variant='primary' /> : null}
                 <MediaContainer onLoad={() => setIsMediaLoading(false)} onClick={mediaClickEventHandler} media={presentedMedia}/>
             </div>
         : null}
@@ -48,7 +48,7 @@ export default function MediaGallery({ mediaList, presentedMedia, setPresentedMe
         (global.matchMedia(`(min-width: 768px)`).matches ?
             <SelectableThumbnailSlider mediaList={mediaList} selectedMedia={presentedMedia} onSelectMedia={setPresentedMedia}/>
             : 
-            <div id='thumbnails'>
+            <div>
                 <SelectableThumbnails 
                     canUnselect={false}
                     mediaList={mediaList} 
