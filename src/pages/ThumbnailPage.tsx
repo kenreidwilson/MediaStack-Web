@@ -56,7 +56,7 @@ export default function ThumbnailPageComponent() {
                 onCancel={() => setIsEditMode(false)}/> :
             <PageThumbnails
                 mediaQuery={mediaQuery}
-                mediaPerPage={10}
+                mediaPerPage={30}
                 mediaList={mediaList}
                 setMediaList={setMediaList}
                 isInfinite={+getNavigationData()['p'] === -1}/>}

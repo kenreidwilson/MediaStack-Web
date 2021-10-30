@@ -104,7 +104,7 @@ export default function MediaInfoSidebar({ media, setMedia }: Props) {
             
             {albumName && 
             <SidebarItem header='Album'>
-                <SidebarItemButton onClick={() => onSidebarNavClick({ mode: 1, albumID: media.albumID })} body={albumName}/>
+                <SidebarItemButton onClick={() => navigate('/album', { 'id': media.albumID })} body={albumName}/>
             </SidebarItem>}
 
             {media.source && 

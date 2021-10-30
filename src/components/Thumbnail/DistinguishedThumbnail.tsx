@@ -5,9 +5,9 @@ import Thumbnail from './Thumbnail';
 
 type Props = {
     media: Media,
+    distinguishAlbum: boolean,
     onClick?: (event: React.MouseEvent, media: Media) => void,
-    style?: CSSProperties,
-    distinguishAlbum: boolean
+    style?: CSSProperties
 }
 
 export default function DistinguishedThumbnail({ media, onClick, style, distinguishAlbum = false }: Props) {

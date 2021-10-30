@@ -35,7 +35,7 @@ export default function MediaPage() {
                     onClose={() => setShowEditModal(false)}
                     onSave={(updatedMedia: Media) => {setMedia(updatedMedia); setShowEditModal(false)}}/>}
                     
-                <div id='mediapage-sidebar'>
+                <div style={{ width: '230px' }}>
                     {media !== null ? 
                         <div>
                             <button className='edit_button btn btn-primary' onClick={() => setShowEditModal(true)}>Edit</button>

@@ -86,26 +86,29 @@ export default function AlbumMediaPage() {
                         onClose={() => setShowMediaEditModal(false)}
                     /> 
                 : null}
-                <div>
-                    {mediaList !== undefined && selectedMedia !== undefined ? 
-                        <div>
-                            <Button onClick={() => setShowMediaEditModal(true)}>Edit Media</Button>
-                            {mediaList.length > 0 ? <MediaInfoSidebar media={selectedMedia} setMedia={updateSelectedMedia}/> : null }
-                            <Button onClick={() => setShowAlbumEditModal(true)}>Edit Album</Button>
-                            <AlbumInfoSidebar album={album!} setAlbum={setAlbum} mediaList={mediaList}updateMediaList={updateMediaList}/>
-                            <Button onClick={toggleOrganize}>Organize</Button>
-                        </div> : null}
+                <div style={{ display: 'flex' }}>
+                    <div style={{ width: '230px' }} >
+                        {mediaList !== undefined && selectedMedia !== undefined ? 
+                            <div>
+                                <Button onClick={() => setShowMediaEditModal(true)}>Edit Media</Button>
+                                {mediaList.length > 0 ? <MediaInfoSidebar media={selectedMedia} setMedia={updateSelectedMedia}/> : null }
+                                <Button onClick={() => setShowAlbumEditModal(true)}>Edit Album</Button>
+                                <AlbumInfoSidebar album={album!} setAlbum={setAlbum} mediaList={mediaList}updateMediaList={updateMediaList}/>
+                                <Button onClick={toggleOrganize}>Organize</Button>
+                            </div> : null}
+                    </div>
+                    <div>
+                        {selectedMedia !== undefined ? 
+                            isOrganizeMode ? 
+                                <MediaListUpdate 
+                                    mediaList={mediaList} 
+                                    setMediaList={(mediaList) => { setMediaList(mediaList); toggleOrganize() }}
+                                    onCancel={() => toggleOrganize()}/> : 
+                                <MediaGallery mediaList={mediaList} presentedMedia={selectedMedia} setPresentedMedia={setSelectdMedia}/> 
+                        : null}
+                    </div>
                 </div>
-                <div>
-                    {selectedMedia !== undefined ? 
-                        isOrganizeMode ? 
-                            <MediaListUpdate 
-                                mediaList={mediaList} 
-                                setMediaList={(mediaList) => { setMediaList(mediaList); toggleOrganize() }}
-                                onCancel={() => toggleOrganize()}/> : 
-                            <MediaGallery mediaList={mediaList} presentedMedia={selectedMedia} setPresentedMedia={setSelectdMedia}/> 
-                    : null}
-                </div>
+                
             </div>
         </BasePage>
      );

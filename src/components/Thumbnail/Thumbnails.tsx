@@ -15,7 +15,7 @@ export default function Thumbnails({ mediaList, distinguishAlbumMedia = false, o
                     style={{ margin: '2px' }}
                     media={media}
                     onClick={onClick}
-                    distinguishAlbum={!isNaN(media.albumID!) && distinguishAlbumMedia} />
+                    distinguishAlbum={media.albumID !== undefined && media.albumID !== null && distinguishAlbumMedia} />
             )}  
         </>
     );
