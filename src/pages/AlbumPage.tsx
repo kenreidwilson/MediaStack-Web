@@ -15,7 +15,7 @@ import AlbumEditModal from '../components/Modals/AlbumEditModal';
 import MediaInfoModal from '../components/Modals/MediaEditModal';
 import MediaListUpdate from '../components/Media/MediaListUpdate';
 
-export default function AlbumMediaPage() {
+export default function AlbumPage() {
     const [album, setAlbum] = useState<Album>();
     const [mediaList, setMediaList] = useState<Media[]>([]);
     const [selectedMedia, setSelectdMedia] = useState<Media | undefined>(undefined);

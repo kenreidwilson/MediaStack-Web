@@ -3,10 +3,9 @@ import useDependencies from './hooks/useDependencies';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import IndexPage from './pages/IndexPage';
 import MediaPage from './pages/MediaPage';
-import AlbumMediaPage from './pages/AlbumMediaPage';
+import AlbumPage from './pages/AlbumPage';
 import ThumbnailPage from './pages/ThumbnailPage';
-import TagsPage from './pages/TagsPage';
-import ExplorePage from './pages/ExplorePage';
+import AttributesPage from './pages/AttributesPage';
 import Error404Page from './pages/404Page';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,10 +21,9 @@ export default function App() {
 				<Switch>
 					<Route path="/" component={IndexPage} exact/>
 					<Route path="/media" component={MediaPage} exact/>
-					<Route path="/album" component={AlbumMediaPage} exact/>
+					<Route path="/album" component={AlbumPage} exact/>
 					<Route path="/search" component={ThumbnailPage} exact/>
-					<Route path="/tags" component={TagsPage} exact/>
-					<Route path="/explore" component={ExplorePage} exact/>
+					<Route path="/attributes" component={AttributesPage} exact/>
 					<Route component={Error404Page}/>
 				</Switch>
 			</BrowserRouter>

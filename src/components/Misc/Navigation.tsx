@@ -19,8 +19,7 @@ export default function Navigation() {
             <Navbar.Collapse id='responsive-navbar-nav'>
                 <Nav className='mr-auto'>
                     <NavLink page='/search' body='Media' pageData={{ mode: 2 }} />
-                    <NavLink page='/explore' body='Explore'/>
-                    <NavLink page='/tags' body='Tags'/>
+                    <NavLink page='/attributes' body='Attributes'/>
                     <NavLink page='/upload' body='Upload'/>
                     <NavLink page='/login' body='Login'/>
                 </Nav>

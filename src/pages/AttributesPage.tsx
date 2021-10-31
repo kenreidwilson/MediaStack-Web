@@ -9,7 +9,7 @@ import TagDeleteModal from '../components/Modals/TagDeleteModal';
 import PaginatedTagsTable from '../components/Tables/PaginatedTagsTable';
 import TagSearchMenu from '../components/Menus/TagSearchMenu';
 
-export default function TagsPage() {
+export default function AttributesPage() {
 
     const { navigate } = useNavigation(); 
 
