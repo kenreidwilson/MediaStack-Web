@@ -2,7 +2,6 @@ import Media from '../../types/Media';
 import IMediaSearchQuery from '../../types/IMediaSearchQuery';
 import  { useState, useEffect, useContext } from 'react';
 import { ErrorContext } from '../../contexts/ErrorContext';
-import useMedia from '../../hooks/useMedia';
 import useAlbums from '../../hooks/useAlbums';
 import useArtists from '../../hooks/useArtists';
 import useCategories from '../../hooks/useCategories';
@@ -16,10 +15,9 @@ import RatingStars from '../Misc/RatingStars';
 
 type Props = {
     media: Media,
-    setMedia: Function
 }
 
-export default function MediaInfoSidebar({ media, setMedia }: Props) {
+export default function MediaInfoSidebar({ media }: Props) {
 
     const [categoryName, setCategoryName] = useState<string | undefined>(undefined);
     const [artistName, setArtistName] = useState<string | undefined>(undefined);
@@ -31,7 +29,6 @@ export default function MediaInfoSidebar({ media, setMedia }: Props) {
     const { get: getCategory } = useCategories();
     const { get: getArtist } = useArtists();
     const { get: getAlbum } = useAlbums();
-    const { update: updateMedia } = useMedia();
 
     useEffect(() => {
         if (media.categoryID) {
@@ -59,14 +56,6 @@ export default function MediaInfoSidebar({ media, setMedia }: Props) {
 
     const onSidebarNavClick = (query: IMediaSearchQuery) => {
         navigate('/search', query);
-    }
-
-    const handleScoreEdit = async (newScore: number) => {
-        if (media.score !== newScore) {
-            await updateMedia({ ID: media.id, score : newScore })
-                .then(response => setMedia(response))
-                .catch(error => addError(error));
-        }
     }
 
     const getTypeBody = (type: number): string | undefined => {

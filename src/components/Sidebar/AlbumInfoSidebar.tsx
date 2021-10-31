@@ -2,9 +2,6 @@ import Media from '../../types/Media';
 import Album from '../../types/Album';
 import Tag from '../../types/Tag';
 import IMediaSearchQuery from '../../types/IMediaSearchQuery';
-import { useContext } from 'react';
-import { ErrorContext } from '../../contexts/ErrorContext';
-import useAlbums from '../../hooks/useAlbums';
 import useNavigation from '../../hooks/useNavigation';
 import { List, ListItemButton } from '@mui/material';
 import RatingStars from '../Misc/RatingStars';
@@ -13,15 +10,11 @@ import SidebarTagsItem from './Elements/TagSidebarElement';
 
 type Props = {
     album: Album,
-    setAlbum: Function,
-    mediaList: Media[],
-    updateMediaList: Function
+    mediaList: Media[]
 }
 
-export default function AlbumInfoSidebar({album, setAlbum, mediaList, updateMediaList }: Props) {
+export default function AlbumInfoSidebar({album, mediaList }: Props) {
 
-    const { addError } = useContext(ErrorContext);
-    const { update } = useAlbums();
     const { navigate } = useNavigation();
 
     const onSidebarNavClick = (query: IMediaSearchQuery) => {
@@ -50,17 +43,11 @@ export default function AlbumInfoSidebar({album, setAlbum, mediaList, updateMedi
         return tags;
     }
 
-    const handleScoreEdit = async (newScore: number) => {
-        let score = newScore === getAlbumScore() ? 0 : newScore;
-        await update({ ID: album.id, score}) 
-            .then(() => updateMediaList(album)).catch(error => addError(error));
-    }
-
     return ( 
         <List dense>
             <SidebarItem header='Rating'>
                 <ListItemButton>
-                    <RatingStars value={getAlbumScore()} onChange={handleScoreEdit}/>
+                    <RatingStars value={getAlbumScore()} onChange={() => onSidebarNavClick({ score: getAlbumScore() })}/>
                 </ListItemButton>
             </SidebarItem>
             <SidebarItem header='Tags'>

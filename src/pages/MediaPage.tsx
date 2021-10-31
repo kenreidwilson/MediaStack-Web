@@ -2,13 +2,12 @@ import Media from '../types/Media';
 import { useEffect, useState } from 'react';
 import useMedia from '../hooks/useMedia';
 import useNavigation from '../hooks/useNavigation';
-import Spinner from 'react-bootstrap/Spinner'
+import Spinner from 'react-bootstrap/Spinner';
+import { Button } from 'react-bootstrap';
 import BasePage from './BasePage';
 import MediaContainer from '../components/Media/MediaContainer';
 import MediaInfoSidebar from '../components/Sidebar/MediaInfoSidebar';
 import MediaInfoModal from '../components/Modals/MediaEditModal';
-
-import './MediaPage.css';
 
 export default function MediaPage() {
     const [media, setMedia] = useState<Media | null>(null);
@@ -27,7 +26,7 @@ export default function MediaPage() {
 
     return ( 
         <BasePage>
-            <div id='mediapage'>
+            <div style={{ display: 'grid', gridTemplateColumns: '230px auto' }}>
                 {media && 
                 <MediaInfoModal 
                     media={media} 
@@ -35,16 +34,17 @@ export default function MediaPage() {
                     onClose={() => setShowEditModal(false)}
                     onSave={(updatedMedia: Media) => {setMedia(updatedMedia); setShowEditModal(false)}}/>}
                     
-                <div style={{ width: '230px' }}>
-                    {media !== null ? 
-                        <div>
-                            <button className='edit_button btn btn-primary' onClick={() => setShowEditModal(true)}>Edit</button>
-                            <MediaInfoSidebar media={media} setMedia={setMedia}/> 
-                        </div>
-                        : null}
-                </div>
-                <div id='mediapage-content'>
-                    {isMediaLoading ? <Spinner id='imageLoadingSpinner' animation='border' variant='primary' /> : null}
+                {media && 
+                    <div>
+                        <Button variant='primary' onClick={() => setShowEditModal(true)}>Edit</Button>
+                        <MediaInfoSidebar media={media} /> 
+                    </div>}
+                <div>
+                    {isMediaLoading && 
+                        <Spinner 
+                            animation='border' 
+                            variant='primary' 
+                            style={{ width: '75px', height: '75px', position: 'absolute', margin: '17.5% 42.5%' }}/>}
                     <MediaContainer media={media as Media} onLoad={() => setIsMediaLoading(false)}/>
                 </div>
             </div>

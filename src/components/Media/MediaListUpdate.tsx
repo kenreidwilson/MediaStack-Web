@@ -6,11 +6,11 @@ import MediaListUpdateMenu from '../Menus/MediaListUpdateMenu';
 
 type Props = {
     mediaList: Media[],
-    setMediaList?: (mediaList: Media[]) => void,
+    onSave?: (mediaList: Media[]) => void,
     onCancel?: () => void
 }
 
-export default function MediaListUpdate({ mediaList, setMediaList = () => {}, onCancel }: Props) {
+export default function MediaListUpdate({ mediaList, onSave = () => {}, onCancel }: Props) {
 
     const [selectedMedia, setSelectedMedia] = useState<Media[]>([]);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
@@ -23,7 +23,7 @@ export default function MediaListUpdate({ mediaList, setMediaList = () => {}, on
             updatedMediaList.push(possibleSelectedMedia ? possibleSelectedMedia : media);
         }
 
-        setMediaList(updatedMediaList);
+        onSave(updatedMediaList);
     }
 
     return (
@@ -34,22 +34,22 @@ export default function MediaListUpdate({ mediaList, setMediaList = () => {}, on
                     mediaList={selectedMedia} 
                     onClose={() => setShowEditModal(false)} 
                     onSave={(mediaList) => { setShowEditModal(false); onSelecteMediaSave(mediaList)}}/>}
-                    <div style={{ textAlign: 'center'}}><h2>Edit Mode: Select Media</h2></div>
+
+                <div style={{ textAlign: 'center'}}><h2>Edit Mode: Select Media</h2></div>
+                <div style={{ marginBottom: '5px', display: 'flex', justifyContent: 'center'}}>
+                    <MediaListUpdateMenu 
+                        onEdit={() => setShowEditModal(true)}
+                        onDeselectAll={() => setSelectedMedia([])}
+                        onSelectAll={() => setSelectedMedia(mediaList)}
+                        onCancel={onCancel}/>
+                </div>
                     
-                    <div style={{ marginBottom: '5px', display: 'flex', justifyContent: 'center'}}>
-                        <MediaListUpdateMenu 
-                            onEdit={() => setShowEditModal(true)}
-                            onDeselectAll={() => setSelectedMedia([])}
-                            onSelectAll={() => setSelectedMedia(mediaList)}
-                            onCancel={onCancel}/>
-                    </div>
-                    
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <SelectableThumbnails 
-                        mediaList={mediaList}
-                        selectedMedia={selectedMedia}
-                        onSelectionChange={setSelectedMedia}/>
-            </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <SelectableThumbnails 
+                            mediaList={mediaList}
+                            selectedMedia={selectedMedia}
+                            onSelectionChange={setSelectedMedia}/>
+                </div>
         </>
     );
 }

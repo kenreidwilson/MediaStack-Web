@@ -7,7 +7,11 @@ export default function useMediaFiles(): IMediaFileLinkGenerator {
     const { mediaFileLinkGenerator } = useContext(DependencyContext);
 
     return { 
-        getFileLink: (m) => mediaFileLinkGenerator!.getFileLink(m),
-        getThumbnailLink: (m) => mediaFileLinkGenerator!.getThumbnailLink(m)
+        getFileLink: mediaFileLinkGenerator ?  
+            (m) => mediaFileLinkGenerator.getFileLink(m) : 
+            () => { throw new Error("Unable to resolve MediaFileLinkGenerator") },
+        getThumbnailLink: mediaFileLinkGenerator ? 
+            (m) => mediaFileLinkGenerator.getThumbnailLink(m) : 
+            () => { throw new Error("Unable to resolve MediaFileLinkGenerator") }
     }
 }

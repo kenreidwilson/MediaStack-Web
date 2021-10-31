@@ -1,28 +1,28 @@
 import Media from '../types/Media';
 import Album from '../types/Album';
-import { useState, useEffect, useContext } from 'react';
-import { ErrorContext } from '../contexts/ErrorContext';
+import { useState, useEffect } from 'react';
 import useAlbums from '../hooks/useAlbums';
 import useMedia from '../hooks/useMedia';
 import useNavigation from '../hooks/useNavigation';
-import { Button } from 'react-bootstrap';
 import BasePage from './BasePage';
 import MediaGallery from '../components/Media/MediaGallery';
-import DraggableThumbnails from '../components/Thumbnail/DraggableThumbnails';
-import MediaInfoSidebar from '../components/Sidebar/MediaInfoSidebar';
-import AlbumInfoSidebar from '../components/Sidebar/AlbumInfoSidebar';
 import AlbumEditModal from '../components/Modals/AlbumEditModal';
 import MediaInfoModal from '../components/Modals/MediaEditModal';
 import MediaListUpdate from '../components/Media/MediaListUpdate';
+import AlbumPageSidebar from '../components/Sidebar/AlbumPageSidebar';
+import OrganizeAlbumMedia from '../components/Media/OrganizeAlbumMedia';
+
+type PageMode = 'default' | 'edit' | 'organize';
 
 export default function AlbumPage() {
+    // TODO: use useReduer.
     const [album, setAlbum] = useState<Album>();
     const [mediaList, setMediaList] = useState<Media[]>([]);
     const [selectedMedia, setSelectdMedia] = useState<Media | undefined>(undefined);
     const [showMediaEditModal, setShowMediaEditModal] = useState<boolean>(false);
     const [showAlbumEditModal, setShowAlbumEditModal] = useState<boolean>(false);
-    const [isOrganizeMode, setIsOrganizeMode] = useState<boolean>(false);
-
+    const [pageMode, setPageMode] = useState<PageMode>('default');
+    
     const { get: getAlbum } = useAlbums();
     const { search: searchMedia } = useMedia();
 
@@ -30,121 +30,92 @@ export default function AlbumPage() {
 
     useEffect(() => {
         let albumID = +getNavigationData()['id'];
-        getAlbum(albumID).then(response => {
-            setAlbum(response);
-            updateMediaList(response).then(mediaList => {
-                if (mediaList !== undefined && selectedMedia === undefined) {
-                    setSelectdMedia(mediaList[0]);
-                }
-            });
+        getAlbum(albumID).then(album => {
+            setAlbum(album);
+            refreshMediaList(album);
         }).catch(error => { 
             //setAlerts([...alerts, <MSBannerAlert variant='danger' heading='API Error:' body={error.message}/>]);
         });
         
     }, []);
 
-    const updateSelectedMedia = (media: Media) => {
-        let newMediaList: Media[] = [...mediaList];
-        newMediaList[mediaList.indexOf(media)] = media;
-        setMediaList(newMediaList);
-    }
-
-    const updateMediaList = async (album: Album) => {
+    const refreshMediaList = async (album: Album) => {
 
         if (album === undefined) {
             return;
         }
 
-        return searchMedia({ albumID: album!.id, mode: 1, count: 999 }).then(response => {
-            response.data.sort((a: Media, b: Media) => (a.albumOrder > b.albumOrder) ? 1 : -1);
-            setMediaList(response.data);
-            return response.data;
-        });
+        let albumMedia: Media[] = (await searchMedia({ albumID: album!.id, mode: 1, count: 999 })).data;
+        albumMedia = albumMedia.sort((a: Media, b: Media) => (a.albumOrder > b.albumOrder) ? 1 : -1);
+        setMediaList(albumMedia);
+        setSelectdMedia(psm => psm ? albumMedia.find(m => m.id === psm.id) : albumMedia[0]);
     }
 
-    const toggleOrganize = () => {
-        setIsOrganizeMode(io => !io);
+    const Body = (): JSX.Element | null => {
+
+        if (!selectedMedia) {
+            return null;
+        }
+
+        switch(pageMode) {
+            case 'organize':
+                return (
+                    <OrganizeAlbumMedia 
+                        initialMediaList={mediaList} 
+                        onSave={(mediaList) => { setMediaList(mediaList); setPageMode('default'); }}
+                        onCancel={() => setPageMode('default')}/>
+                );
+            case 'edit':
+                return (
+                    <MediaListUpdate 
+                        mediaList={mediaList} 
+                        onSave={(mediaList) => { refreshMediaList(album!); setPageMode('default') }}
+                        onCancel={() => setPageMode('default')}
+                    />);
+            default:
+                return (
+                    <MediaGallery mediaList={mediaList} presentedMedia={selectedMedia} setPresentedMedia={setSelectdMedia}/> 
+                );
+        }
     }
 
     return (
         <BasePage>
             <div>
-                {album !== undefined && showAlbumEditModal ? 
+                {album && showAlbumEditModal && 
                     <AlbumEditModal 
                         isShown={showAlbumEditModal} 
                         onClose={() => setShowAlbumEditModal(false)}
-                        onSave={(album: Album) => {setAlbum(album); updateMediaList(album); setShowAlbumEditModal(false);}}
+                        onSave={(album: Album) => { setAlbum(album); refreshMediaList(album); setShowAlbumEditModal(false); }}
                         mediaList={mediaList}
                         album={album}
-                    /> 
-                    : null}
-                {mediaList !== undefined && showMediaEditModal ?
+                    />}
+                {album && mediaList && showMediaEditModal &&
                     <MediaInfoModal
                         isShown={showMediaEditModal}
-                        media={selectedMedia!}
-                        onSave={(updatedMedia: Media) => {updateSelectedMedia(updatedMedia); setShowMediaEditModal(false);}}
+                        onSave={() => { refreshMediaList(album); setShowMediaEditModal(false); }}
                         onClose={() => setShowMediaEditModal(false)}
-                    /> 
-                : null}
+                        media={selectedMedia!}
+                    />}
+                    
                 <div style={{ display: 'flex' }}>
                     <div style={{ width: '230px' }} >
-                        {mediaList !== undefined && selectedMedia !== undefined ? 
-                            <div>
-                                <Button onClick={() => setShowMediaEditModal(true)}>Edit Media</Button>
-                                {mediaList.length > 0 ? <MediaInfoSidebar media={selectedMedia} setMedia={updateSelectedMedia}/> : null }
-                                <Button onClick={() => setShowAlbumEditModal(true)}>Edit Album</Button>
-                                <AlbumInfoSidebar album={album!} setAlbum={setAlbum} mediaList={mediaList}updateMediaList={updateMediaList}/>
-                                <Button onClick={toggleOrganize}>Organize</Button>
-                            </div> : null}
+                        {mediaList && selectedMedia && album && 
+                            <AlbumPageSidebar 
+                                album={album} 
+                                mediaList={mediaList} 
+                                selectedMedia={selectedMedia}
+                                onEditAlbum={() => setShowAlbumEditModal(true)} 
+                                onEditMedia={() => setShowMediaEditModal(true)} 
+                                onEditAlbumMedia={() => setPageMode(pm => pm === 'edit' ? 'default' : 'edit')}
+                                onOrganizeAlbumMedia={() => setPageMode(pm => pm === 'organize' ? 'default' : 'organize')}
+                            />}
                     </div>
-                    <div>
-                        {selectedMedia !== undefined ? 
-                            isOrganizeMode ? 
-                                <MediaListUpdate 
-                                    mediaList={mediaList} 
-                                    setMediaList={(mediaList) => { setMediaList(mediaList); toggleOrganize() }}
-                                    onCancel={() => toggleOrganize()}/> : 
-                                <MediaGallery mediaList={mediaList} presentedMedia={selectedMedia} setPresentedMedia={setSelectdMedia}/> 
-                        : null}
+                    <div style={{ width: '100%' }}>
+                        {Body()}
                     </div>
                 </div>
-                
             </div>
         </BasePage>
      );
-}
-
-type Props = {
-    mediaList: Media[],
-    setMediaList: Function,
-    onSave: Function
-}
-
-function OrganizeAlbumSection({ mediaList, setMediaList, onSave }: Props ) {
-
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { update } = useMedia();
-
-    const { addError } = useContext(ErrorContext);
-
-    const handleSave = async () => {
-
-        setIsLoading(true);
-        for (let m of mediaList){
-            try {
-                await update({ ID: m.id, albumOrder: mediaList.indexOf(m)});
-                setIsLoading(false);
-                onSave();
-            } catch (e) {
-                addError(e as Error);
-            }
-        }   
-    }
-
-    return (
-            <div>
-                <DraggableThumbnails mediaList={mediaList} onReorder={setMediaList}/>
-                <button className='btn btn-primary' disabled={isLoading} onClick={handleSave}>Save</button>
-            </div>
-        );
 }

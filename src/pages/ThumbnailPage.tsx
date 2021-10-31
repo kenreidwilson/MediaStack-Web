@@ -52,7 +52,7 @@ export default function ThumbnailPageComponent() {
         {isEditMode ? 
             <MediaListUpdate 
                 mediaList={mediaList} 
-                setMediaList={setMediaList} 
+                onSave={setMediaList} 
                 onCancel={() => setIsEditMode(false)}/> :
             <PageThumbnails
                 mediaQuery={mediaQuery}
