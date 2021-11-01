@@ -11,7 +11,7 @@ export default function IndexPage() {
         <BasePage>
             <MediaSearchMenu 
                 initialQuery={{ mode: 2 }}
-                onSearch={(searchQuery: IMediaSearchQuery) => navigate('search', searchQuery)}/>
+                onSearch={(searchQuery: IMediaSearchQuery) => navigate({name: 'search', data: searchQuery })}/>
         </BasePage>
     );
 };

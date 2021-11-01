@@ -40,6 +40,11 @@ export default function PaginatedThumbnails({
         fetchMediaList(pageNumber);
     }, [pageNumber]);
 
+    useEffect(() => {
+        setMediaList([]);
+        fetchMediaList(pageNumber);
+    }, [mediaQuery]);
+
     const fetchMediaList = (pageNumber: number) => {
         setIsMediaLoading(true);
         let finalQuery = mediaQuery;

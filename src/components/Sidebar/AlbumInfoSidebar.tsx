@@ -18,7 +18,7 @@ export default function AlbumInfoSidebar({album, mediaList }: Props) {
     const { navigate } = useNavigation();
 
     const onSidebarNavClick = (query: IMediaSearchQuery) => {
-        navigate('search', query);
+        navigate({ name: 'search', data: query });
     }
 
     const getAlbumScore = () => {

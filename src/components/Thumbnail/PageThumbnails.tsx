@@ -34,15 +34,15 @@ export default function PageThumbnails({
 
     const enableInfiniteScrolling = () => {
         setMediaList([]);
-        navigate('/search', { ...navigationData, p: -1 });
+        navigate({ name: 'search', data: { ...navigationData, p: -1 }});
     }
 
     const onThumbnailClick = (event: React.MouseEvent, media: Media) => {
         if (linkToAlbums && media.albumID) {
-            navigate('/album', { id: media.albumID });
+            navigate({ name: 'album', data: { id: media.albumID } });
         }
         else {
-            navigate('/media', { id: media.id });
+            navigate({ name: 'media', data: { id: media.id } });
         }
     }
 
@@ -61,7 +61,7 @@ export default function PageThumbnails({
             <>
                 <PaginatedThumbnails
                     pageNumber={pageNumber}
-                    setPageNumber={(pn) => { navigate('/search', { ...navigationData, p: pn }); setPageNumber(pn); }}
+                    setPageNumber={(pn) => { navigate({name: 'search', data: { ...navigationData, p: pn }}); setPageNumber(pn); }}
                     mediaQuery={mediaQuery}
                     mediaPerPage={mediaPerPage}
                     mediaList={mediaList}

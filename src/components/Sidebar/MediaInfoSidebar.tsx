@@ -55,7 +55,7 @@ export default function MediaInfoSidebar({ media }: Props) {
     }, [media]);
 
     const onSidebarNavClick = (query: IMediaSearchQuery) => {
-        navigate('/search', query);
+        navigate({ name: 'search', data: query });
     }
 
     const getTypeBody = (type: number): string | undefined => {
@@ -93,7 +93,7 @@ export default function MediaInfoSidebar({ media }: Props) {
             
             {albumName && 
             <SidebarItem header='Album'>
-                <SidebarItemButton onClick={() => navigate('/album', { 'id': media.albumID })} body={albumName}/>
+                <SidebarItemButton onClick={() => navigate({ name: 'album', data: { id: media.albumID }})} body={albumName}/>
             </SidebarItem>}
 
             {media.source && 

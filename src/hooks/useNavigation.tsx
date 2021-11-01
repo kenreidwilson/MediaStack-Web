@@ -1,13 +1,32 @@
 import { useHistory } from 'react-router-dom';
+import IMediaSearchQuery from '../types/IMediaSearchQuery';
+
+type NavigationActionName = 'index' | 'media' | 'album' | 'search' | 'attributes' | 'upload' | 'login';
+
+type Action = {
+    name: NavigationActionName,
+    data?: any
+}
+
+type NavigationAction = Action & (
+    { name: 'index', data?: IMediaSearchQuery } |
+    { name: 'media', data: { id: number } } |
+    { name: 'album', data: { id: number } } |
+    { name: 'search', data?: { p: number } & IMediaSearchQuery } |
+    { name: 'attributes' } |
+    { name: 'upload' } |
+    { name: 'login' })
 
 export default function useNavigation() {
 
     const history = useHistory();
 
-    const navigate = <T extends object>(name: string, data?: T): void => {
+    const navigate = (action: NavigationAction): void => {
+        let path = action.name === 'index' ? '' : action.name;
+
         history.push({
-            pathname: name,
-            search: data ? new URLSearchParams(objectToRecord(data)).toString() : undefined
+            pathname: `/${path}`,
+            search: action.data ? new URLSearchParams(objectToRecord(action.data)).toString() : undefined
         });
     };
 
@@ -34,4 +53,8 @@ export default function useNavigation() {
     };
 
     return { navigate, getNavigationData };
+}
+
+export type {
+    NavigationAction
 }

@@ -41,7 +41,7 @@ export default function AttributesPage() {
                 baseQuery={query} 
                 onTagEdit={(tag) => setModalState({ selectedTag: tag, showEditModal: true, showDeleteModal: false })}
                 onTagDelete={(tag) => setModalState({ selectedTag: tag, showEditModal: false, showDeleteModal: true })}
-                onTagClick={(tag: Tag) => navigate<IMediaSearchQuery>('/search', { whitelistTagIDs: [tag.id] })}/>
+                onTagClick={(tag: Tag) => navigate({ name: 'search', data: { whitelistTagIDs: [tag.id] } })}/>
         </>
         </BasePage>
      );
