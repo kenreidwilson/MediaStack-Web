@@ -1,10 +1,10 @@
 import Album from '../types/Album';
-import Tag from '../types/Tag';
 import IRestAPI from '../types/IRestAPI';
 import ISearchResponse from '../types/ISearchResponse';
 import IAlbumSearchQuery from '../types/IAlbumSearchQuery';
 import IAlbumUpdateRequest from '../types/IAlbumUpdateRequest';
 import IMediaUpdateRequest from '../types/IMediaUpdateRequest';
+import { manageTags } from '../repositories/DomainHelpers';
 import MediaRepository from './MediaRepository';
 import BaseRepository from './BaseRepository';
 
@@ -49,22 +49,11 @@ export default class AlbumRepository extends BaseRepository<Album, IAlbumSearchQ
             let mediaUpdateRequest: IMediaUpdateRequest = { ID: media.id, score: updateRequest.score, source: updateRequest.source };
 
             if (updateRequest.removeTagIDs !== undefined || updateRequest.addTagIDs !== undefined) {
-                let tags: Tag[] = [...media.tags];
-                let newTagIDs: number[] = [];
-
-                tags.forEach(tag => {
-                    if (!updateRequest.removeTagIDs?.find(tID => tID === tag.id)) {
-                        newTagIDs.push(tag.id);
-                    }
-                });
-
-                updateRequest.addTagIDs?.forEach(tagID => {
-                    if (!newTagIDs.find(tID_1 => tID_1 === tagID)) {
-                        newTagIDs.push(tagID);
-                    }
-                });
-
-                mediaUpdateRequest.tagIDs = newTagIDs;
+                mediaUpdateRequest.tagIDs = manageTags(
+                    media.tags, 
+                    updateRequest.addTagIDs?.map(tid => ({ name: '', id: tid })),
+                    updateRequest.removeTagIDs?.map(tid => ({ name: '', id: tid }))
+                    ).map(t => t.id);
             }
 
             await mediaRepository.update(mediaUpdateRequest);

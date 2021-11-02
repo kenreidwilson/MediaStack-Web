@@ -1,11 +1,11 @@
 import Album from '../../types/Album';
 import Media from '../../types/Media';
-import Tag from '../../types/Tag';
 import IKeyBasedAPI from '../../types/IKeyBasedAPI';
 import IAlbumSearchQuery from '../../types/IAlbumSearchQuery';
 import IAlbumUpdateRequest from '../../types/IAlbumUpdateRequest';
 import IMediaUpdateRequest from '../../types/IMediaUpdateRequest';
 import ISearchResponse from '../../types/ISearchResponse';
+import { manageTags } from '../../repositories/DomainHelpers';
 import BaseFakeRepository from './BaseFakeRepository';
 import { SeedAlbums } from '../SeedData/SeedAlbums';
 import FakeMediaRepository from './FakeMediaRepository';
@@ -55,22 +55,11 @@ export default class FakeAlbumRepository extends BaseFakeRepository<Album, IAlbu
             let mediaUpdateRequest: IMediaUpdateRequest = { ID: media.id, score: updateRequest.score, source: updateRequest.source };
 
             if (updateRequest.removeTagIDs !== undefined || updateRequest.addTagIDs !== undefined) {
-                let tags: Tag[] = [...media.tags];
-                let newTagIDs: number[] = [];
-
-                tags.forEach(tag => {
-                    if (!updateRequest.removeTagIDs?.find(tID => tID === tag.id)) {
-                        newTagIDs.push(tag.id);
-                    }
-                });
-
-                updateRequest.addTagIDs?.forEach(tagID => {
-                    if (!newTagIDs.find(tID_1 => tID_1 === tagID)) {
-                        newTagIDs.push(tagID);
-                    }
-                });
-
-                mediaUpdateRequest.tagIDs = newTagIDs;
+                mediaUpdateRequest.tagIDs = manageTags(
+                    media.tags, 
+                    updateRequest.addTagIDs?.map(tid => ({ name: '', id: tid })),
+                    updateRequest.removeTagIDs?.map(tid => ({ name: '', id: tid }))
+                    ).map(t => t.id);
             }
 
             await fmr.update(mediaUpdateRequest);
