@@ -9,7 +9,7 @@ type Props = {
     onSearch?: (query: IGenericSearchQuery) => void
 }
 
-export default function TagSearchMenu({ initialQuery = {}, onQueryUpdate = () => {}, onSearch = () => {} }: Props) {
+export default function GenericSearchMenu({ initialQuery = {}, onQueryUpdate = () => {}, onSearch = () => {} }: Props) {
 
     const [query, setQuery] = useState<IGenericSearchQuery>(initialQuery);
 

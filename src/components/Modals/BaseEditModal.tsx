@@ -34,7 +34,7 @@ export default function BaseEditModal({
             </Modal.Body>
             <Modal.Footer style={theme.style}>
                 <Button variant='secondary' onClick={onClose}>Close</Button>
-                <Button variant='primary' onClick={onSave}>Save Changes {isLoading && "..."}</Button>
+                <Button variant='primary' onClick={onSave}>Save {isLoading && "..."}</Button>
             </Modal.Footer>
         </Modal>
     );

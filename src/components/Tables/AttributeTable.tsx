@@ -1,24 +1,21 @@
-import Tag from '../../types/Tag';
 import { useContext } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { Button, Table } from 'react-bootstrap';
 
-type Props = {
-    tags: Tag[],
-    onTagClick?: (tag: Tag) => void,
-    onTagDelete?: (tag: Tag) => void,
-    onTagEdit?: (tag: Tag) => void
+type Attribute = { id: number, name: string };
+
+type Props<T extends Attribute> = {
+    attributeObjects: T[],
+    onAttributeClick?: (attribute: T) => void,
+    onAttributeEdit?: (attribute: T) => void,
+    onAttributeDelete?: (attribute: T) => void
 }
 
-interface TagInfo extends Tag {
-    mediaCount?: number
-}
-
-export default function TagsTable({ 
-    tags, 
-    onTagClick = () => {}, 
-    onTagDelete = () => {}, 
-    onTagEdit = () => {} }: Props) {
+export default function AttributeTable<T extends Attribute>({
+    attributeObjects,
+    onAttributeClick = () => {},
+    onAttributeEdit = () => {},
+    onAttributeDelete = () => {}}: Props<T>) {
 
     const { theme } = useContext(ThemeContext);
 
@@ -33,16 +30,16 @@ export default function TagsTable({
                 </tr>
             </thead>
             <tbody style={theme.style}>
-                {tags.map(tag =>
-                    <tr style={theme.style} key={tag.id}>
-                        <td style={theme.style}>{tag.id}</td>
-                        <td style={theme.style}><a onClick={() => onTagClick(tag)}>{tag.name}</a></td>
+                {attributeObjects.map(att =>
+                    <tr style={theme.style} key={att.id}>
+                        <td style={theme.style}>{att.id}</td>
+                        <td style={theme.style}><a onClick={() => onAttributeClick(att)}>{att.name}</a></td>
                         <td style={{ ...theme.style, color: theme.style.primaryColor }}>
                             <div className='spinner-border spinner-border-sm' role='status'></div>
                         </td>
                         <td style={theme.style}>
-                            <Button style={{ marginRight: "5px"}} variant='primary' onClick={() => onTagEdit(tag)}>Edit</Button>
-                            <Button variant='danger' onClick={() => onTagDelete(tag)}> Delete</Button>
+                            <Button style={{ marginRight: "5px"}} variant='primary' onClick={() => onAttributeEdit(att)}>Edit</Button>
+                            <Button variant='danger' onClick={() => onAttributeDelete(att)}> Delete</Button>
                         </td>
                     </tr>
                 )}

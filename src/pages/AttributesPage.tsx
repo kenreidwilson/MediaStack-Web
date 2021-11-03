@@ -1,48 +1,29 @@
-import Tag from '../types/Tag';
-import IGenericSearchQuery from '../types/IGenericSearchQuery';
-import IMediaSearchQuery from '../types/IMediaSearchQuery';
-import { useState } from 'react';
-import useNavigation from '../hooks/useNavigation';
+import { useContext } from 'react';
 import BasePage from './BasePage';
-import TagEditModal from '../components/Modals/TagEditModal';
-import TagDeleteModal from '../components/Modals/TagDeleteModal';
-import PaginatedTagsTable from '../components/Tables/PaginatedTagsTable';
-import TagSearchMenu from '../components/Menus/TagSearchMenu';
+import { Tabs, Tab } from 'react-bootstrap';
+import TagAttributeTable from '../components/PageComponents/TagAttributeTable';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 export default function AttributesPage() {
 
-    const { navigate } = useNavigation(); 
-
-    const [query, setQuery] = useState<IGenericSearchQuery>({});
-    const [ { selectedTag, showEditModal, showDeleteModal }, setModalState ] = 
-        useState<{ selectedTag: Tag | undefined, showEditModal: boolean, showDeleteModal: boolean }>
-            ({ selectedTag: undefined, showEditModal: false, showDeleteModal: false });
+    const { theme } = useContext(ThemeContext);
 
     return ( 
         <BasePage>
-        <>
-            {selectedTag && <TagEditModal 
-                tag={selectedTag} 
-                isShown={showEditModal} 
-                onClose={() => setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false })} 
-                onSave={(tag) => { setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false }); setQuery({}); }}/>} 
-
-            {selectedTag && <TagDeleteModal
-                tag={selectedTag}
-                isShown={showDeleteModal}
-                onClose={() => setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false })}
-                onSave={(tag) => { setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false }); setQuery({}); }}/>}
-
-            <div style={{ width: '80%', margin: 'auto' }}>
-                <TagSearchMenu onSearch={setQuery}/>
-            </div>
-            
-            <PaginatedTagsTable 
-                baseQuery={query} 
-                onTagEdit={(tag) => setModalState({ selectedTag: tag, showEditModal: true, showDeleteModal: false })}
-                onTagDelete={(tag) => setModalState({ selectedTag: tag, showEditModal: false, showDeleteModal: true })}
-                onTagClick={(tag: Tag) => navigate({ name: 'search', data: { whitelistTagIDs: [tag.id] } })}/>
-        </>
+            <Tabs defaultActiveKey='tags' className='mb-3' variant='pills'>
+                <Tab eventKey='tags' title='Tags'>
+                    <TagAttributeTable />
+                </Tab>
+                <Tab eventKey='categories' title='Categories'>
+                    <p>Implement</p>
+                </Tab>
+                <Tab eventKey='artists' title='Artists'>
+                    <p>Implement</p>
+                </Tab>
+                <Tab eventKey='albums' title='Albums'>
+                    <p>Implement</p>
+                </Tab>
+            </Tabs>
         </BasePage>
      );
 }

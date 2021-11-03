@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import usePagination from './usePagination';
-import ISearchResponse from '../types/ISearchResponse';
 import usePromise from './usePromise';
+
+type PaginatedData<T> = { data: T[], total: number };
 
 type Props<T> = {
     dataPerPage: number,
-    getData: (startIndex: number, endIndex: number) => Promise<ISearchResponse<T>>
+    getData: (startIndex: number, endIndex: number) => Promise<PaginatedData<T>>
 }
 
 export default function usePaginatedPromiseData<T>({ getData, dataPerPage }: Props<T>) {
@@ -22,7 +23,7 @@ export default function usePaginatedPromiseData<T>({ getData, dataPerPage }: Pro
     }, [currentPage, getData]);
 
     useEffect(() => {
-        if (result !== undefined && result.count !== totalSize) {
+        if (result !== undefined && result.data.length !== totalSize) {
             setTotalSize(result.total);
         }
     }, [result]);
@@ -30,9 +31,13 @@ export default function usePaginatedPromiseData<T>({ getData, dataPerPage }: Pro
     return { 
         isLoading: isLoading,
         error: error,
-        data: result, 
+        data: result?.data, 
         totalPages,
         currentPage,
         setPage
     };
+}
+
+export type {
+    PaginatedData
 }

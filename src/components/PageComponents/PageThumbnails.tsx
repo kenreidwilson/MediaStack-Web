@@ -2,8 +2,8 @@ import Media from '../../types/Media';
 import IMediaSearchQuery from '../../types/IMediaSearchQuery';
 import React, { useState } from 'react';
 import useNavigation from '../../hooks/useNavigation';
-import InfiniteThumbnails from './InfiniteThumbnails';
-import PaginatedThumbnails from './PaginatedThumbnails';
+import InfiniteThumbnails from '../Thumbnail/InfiniteThumbnails';
+import PaginatedThumbnails from '../Thumbnail/PaginatedThumbnails';
 
 type Props = {
     mediaQuery: IMediaSearchQuery,

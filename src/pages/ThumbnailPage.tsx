@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import BasePage from './BasePage';
-import PageThumbnails from '../components/Thumbnail/PageThumbnails';
+import PageThumbnails from '../components/PageComponents/PageThumbnails';
 import ThumbnailPageSidebar from '../components/Sidebar/ThumbnailPageSidebar';
 import ToggleableSidebar from '../components/Sidebar/ToggleableSidebar';
 import MediaListUpdate from '../components/Media/MediaListUpdate';
