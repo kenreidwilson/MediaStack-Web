@@ -8,7 +8,7 @@ type Props = {
     setQuery?: (query: IGenericSearchQuery) => void
 }
 
-export default function TagSearchForm({ query, setQuery = () => {} }: Props) {
+export default function GenericSearchForm({ query, setQuery = () => {} }: Props) {
 
     const [fuzzyName, setFuzzyName] = useState<string | undefined>(query.fuzzyName);
 

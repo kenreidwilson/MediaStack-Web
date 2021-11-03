@@ -1,6 +1,6 @@
 import IGenericSearchQuery from '../../types/IGenericSearchQuery';
 import { useEffect, useState } from 'react';
-import TagSearchForm from '../Forms/TagSearchForm';
+import GenericSearchForm from '../Forms/GenericSearchForm';
 import { Button } from 'react-bootstrap';
 
 type Props = {
@@ -19,7 +19,7 @@ export default function GenericSearchMenu({ initialQuery = {}, onQueryUpdate = (
 
     return (
         <>
-            <TagSearchForm query={query} setQuery={setQuery}/>
+            <GenericSearchForm query={query} setQuery={setQuery}/>
             <Button onClick={() => onSearch(query)}>Search</Button>
         </>
     );

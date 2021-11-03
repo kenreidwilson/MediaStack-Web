@@ -1,20 +1,21 @@
-import Tag from '../../types/Tag';
-import useTags from '../../hooks/useTags';
 import { useEffect } from 'react';
 import usePromise from '../../hooks/usePromise';
 import BaseEditModal from './BaseEditModal';
 
-type Props = {
-    tag: Tag,
+type Props<T> = {
+    entity: T,
     isShown: boolean,
+    deleteEntity: (entity: T) => Promise<void>,
+    title?: string,
+    body?: string,
     onClose?: () => void,
-    onSave?: (tag: Tag) => void
+    onSave?: (entity: T) => void
 };
 
-export default function TagDeleteModal({ tag, isShown, onClose, onSave = () => {} }: Props) {
+export default function GenericDeleteModal<T>
+    ({entity, isShown, deleteEntity, title, body, onClose, onSave = () => {} }: Props<T>) {
 
-    const { delete: deleteTag } = useTags();
-    const { isLoading, error, result, resolve, reset } = usePromise(() => deleteTag(tag));
+    const { isLoading, error, result, resolve, reset } = usePromise(() => deleteEntity(entity));
 
     useEffect(() => {
         if (result) {
@@ -30,13 +31,13 @@ export default function TagDeleteModal({ tag, isShown, onClose, onSave = () => {
 
     return (
         <BaseEditModal 
-            title="Delete Tag" 
+            title={title}
             isShown={isShown} 
             isLoading={isLoading}
             errorMessage={error?.message}
             onClose={onClose} 
             onSave={resolve}>
-            <p>Delete tag: {tag.name}? (ID: {tag.id})</p>
+            <p>{body}</p>
         </BaseEditModal>
     );
 }

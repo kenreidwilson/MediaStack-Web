@@ -1,29 +1,30 @@
-import Tag from '../../types/Tag';
 import { useState, useEffect, useContext } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext'; 
 import { Form } from 'react-bootstrap';
 
-type Props = {
-    request: Tag,
-    onChange?: (tag: Tag) => void
+type Entity = { id: number, name: string };
+
+type Props<T extends Entity> = {
+    request: T,
+    onChange?: (tag: T) => void
 }
 
-export default function TagUpdateForm({ request, onChange = () => {} }: Props) {
+export default function GenericUpdateForm<T extends Entity>({ request, onChange = () => {} }: Props<T>) {
 
-    const [newTagName, setNewTagName] = useState<string>(request.name);
+    const [newName, setNewName] = useState<string>(request.name);
 
     const { theme } = useContext(ThemeContext);
 
     useEffect(() => {
-        setNewTagName(request.name);
+        setNewName(request.name);
     }, [request]);
 
     useEffect(() => {
         onChange({
-            id: request.id,
-            name: newTagName
+            ...request,
+            name: newName
         });
-    }, [newTagName]);
+    }, [newName]);
 
     return (
         <Form>
@@ -31,8 +32,8 @@ export default function TagUpdateForm({ request, onChange = () => {} }: Props) {
                 <Form.Label style={theme.style}>Name</Form.Label>
                 <Form.Control 
                     style={theme.style} 
-                    value={newTagName} 
-                    onChange={(event) => setNewTagName(event.target.value)}/>
+                    value={newName} 
+                    onChange={(event) => setNewName(event.target.value)}/>
              </Form.Group>
         </Form>
     );

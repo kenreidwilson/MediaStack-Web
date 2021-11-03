@@ -1,15 +1,17 @@
 import Tag from '../../types/Tag';
 import IGenericSearchQuery from '../../types/IGenericSearchQuery';
 import { useState } from 'react';
+import useTags from '../../hooks/useTags';
 import useNavigation from '../../hooks/useNavigation';
-import TagEditModal from '../Modals/TagEditModal';
-import TagDeleteModal from '../Modals/TagDeleteModal';
+import GenericEditModal from '../Modals/GenericEditModal';
+import GenericDeleteModal from '../Modals/GenericDeleteModal';
 import PaginatedTagsTable from '../Tables/PaginatedTagsTable';
 import GenericSearchMenu from '../Menus/GenericSearchMenu';
 
 export default function TagAttributeTable() {
 
     const { navigate } = useNavigation();
+    const { delete: deleteTag, update: editTag } = useTags();
 
     const [query, setQuery] = useState<IGenericSearchQuery>({});
 
@@ -19,15 +21,20 @@ export default function TagAttributeTable() {
 
     return (
         <>
-            {selectedTag && <TagEditModal
-                tag={selectedTag}
+            {selectedTag && <GenericEditModal
+                entity={selectedTag}
                 isShown={showEditModal}
+                editEntity={editTag}
+                title={`Edit Tag: ${selectedTag.id}`}
                 onClose={() => setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false })}
                 onSave={(tag) => { setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false }); setQuery({}); }} />}
 
-            {selectedTag && <TagDeleteModal
-                tag={selectedTag}
+            {selectedTag && <GenericDeleteModal
+                entity={selectedTag}
                 isShown={showDeleteModal}
+                deleteEntity={deleteTag}
+                title={`Delete Tag: ${selectedTag.id}`}
+                body={`Delete tag: ${selectedTag.name}? (ID: ${selectedTag.id})`}
                 onClose={() => setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false })}
                 onSave={(tag) => { setModalState({ selectedTag: undefined, showEditModal: false, showDeleteModal: false }); setQuery({}); }} />}
 
