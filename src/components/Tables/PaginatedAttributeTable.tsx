@@ -4,8 +4,6 @@ import usePaginatedPromiseData, { PaginatedData } from '../../hooks/usePaginated
 import AttributeTable from './AttributeTable';
 import MSPagination from '../Misc/MSPagination';
 
-type Attribute = { id: number, name: string };
-
 type Props<T> = {
     loadMore: (start: number, end: number) => Promise<PaginatedData<T>>,
     onAttributeClick?: (attribute: T) => void,
@@ -13,7 +11,7 @@ type Props<T> = {
     onAttributeDelete?: (attribute: T) => void
 };
 
-export default function PaginatedAttributeTable<T extends Attribute>({
+export default function PaginatedAttributeTable<T extends { id: number, name: string }>({
     loadMore,
     onAttributeClick,
     onAttributeEdit,
@@ -38,8 +36,8 @@ export default function PaginatedAttributeTable<T extends Attribute>({
                 <AttributeTable 
                     attributeObjects={data} 
                     onAttributeClick={onAttributeClick} 
-                    onAttributeDelete={onAttributeEdit} 
-                    onAttributeEdit={onAttributeDelete}/>
+                    onAttributeDelete={onAttributeDelete} 
+                    onAttributeEdit={onAttributeEdit}/>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <MSPagination 
                         pageNumber={currentPage} 

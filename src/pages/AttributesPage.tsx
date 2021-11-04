@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import BasePage from './BasePage';
 import { Tabs, Tab } from 'react-bootstrap';
 import TagAttributeTable from '../components/PageComponents/TagAttributeTable';
+import CategoryAttributeTable from '../components/PageComponents/CategoryAttributeTable';
 import { ThemeContext } from '../contexts/ThemeContext';
 
 export default function AttributesPage() {
@@ -15,7 +16,7 @@ export default function AttributesPage() {
                     <TagAttributeTable />
                 </Tab>
                 <Tab eventKey='categories' title='Categories'>
-                    <p>Implement</p>
+                    <CategoryAttributeTable />
                 </Tab>
                 <Tab eventKey='artists' title='Artists'>
                     <p>Implement</p>

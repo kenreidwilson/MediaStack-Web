@@ -2,16 +2,14 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { Button, Table } from 'react-bootstrap';
 
-type Attribute = { id: number, name: string };
-
-type Props<T extends Attribute> = {
+type Props<T> = {
     attributeObjects: T[],
     onAttributeClick?: (attribute: T) => void,
     onAttributeEdit?: (attribute: T) => void,
     onAttributeDelete?: (attribute: T) => void
 }
 
-export default function AttributeTable<T extends Attribute>({
+export default function AttributeTable<T extends { id: number, name: string }>({
     attributeObjects,
     onAttributeClick = () => {},
     onAttributeEdit = () => {},
