@@ -2,6 +2,7 @@ import Media from '../../types/Media';
 import { useContext, useEffect, useRef } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import useSwipeable from '../../hooks/useSwipeable';
+import { Backdrop } from '@mui/material';
 import { Modal, Button, Card } from 'react-bootstrap';
 import MediaContainer from './MediaContainer';
 
@@ -17,7 +18,7 @@ export default function MediaPreview({ media, show, onNext, onPrevious, onClose 
 
     const { theme } = useContext(ThemeContext);
     const previewRef = useRef<HTMLDivElement | null>(null);
-    const { enable, disable } = useSwipeable(previewRef, onNext, onPrevious);
+    const { enable, disable, resetPosition } = useSwipeable(previewRef, onNext, onPrevious);
 
     useEffect(() => {
         if (show) {
@@ -28,13 +29,11 @@ export default function MediaPreview({ media, show, onNext, onPrevious, onClose 
     }, [show]);
 
     return (
-        <Modal centered={true} size='xl' show={show} onHide={onClose}>
-            <Modal.Body ref={previewRef} style={{ ...theme.style, maxHeight: '80vh' }}>
+        <Backdrop open={show} onClick={onClose}>
+            <Card ref={previewRef} 
+                style={{ ...theme.style, maxHeight: '70vh', maxWidth: '97vw', overflow: 'hidden' }}>
                 <MediaContainer media={media} />
-            </Modal.Body>
-            <Modal.Footer>
-                <Button>asdf</Button>
-            </Modal.Footer>
-        </Modal>
+            </Card>
+        </Backdrop>
     );
 }

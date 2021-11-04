@@ -5,28 +5,59 @@ export default function useSwipeable(
     onNext?: () => void, 
     onPrevious?: () => void) {
     
-    let initialPosition: number | null = null;
+    let initialTouchPosition: number | null = null;
+    let initialDivX: number | null = null;
 
     const touchStart = useCallback((event: TouchEvent) => {
-        console.log('start');
         if (divRef.current != null) {
-            initialPosition = event.touches[0].clientX;
+            divRef.current.style.transition = '';
+            initialTouchPosition = event.touches[0].clientX;
+            initialDivX = divRef.current.offsetLeft;
         }
     }, [divRef]);
 
     const touchEnd = useCallback((event: TouchEvent) => {
-        console.log('end');
+        if (divRef.current != null && initialTouchPosition != null) {
+            divRef.current.style.transition = '0.3s ease-in-out';
+            let diff = event.changedTouches[0].clientX - initialTouchPosition;
+
+            if (Math.abs(diff) > 0.5 * divRef.current.offsetWidth) { 
+                let newPos = divRef.current.offsetWidth * 1.2;
+                let isLeft = diff < 0;
+                if (isLeft) {
+                    newPos = newPos * -1;
+                }
+                divRef.current.style.transform = `translateX(${newPos}px)`;
+
+                if (isLeft) {
+                    onPrevious && onPrevious();
+                } else {
+                    onNext && onNext();
+                }
+
+            } else {
+                divRef.current.style.transform = `translateX(${initialDivX}px)`;
+            }
+        }
     }, [divRef]);
     
     const touchMove = useCallback((event: TouchEvent) => {
-        console.log('moving');
-        if (divRef.current != null && initialPosition != null) {
-            let diff = event.touches[0].clientX - initialPosition;
+        if (divRef.current != null && initialTouchPosition != null) {
+            divRef.current.style.transition = '';
+            let diff = event.touches[0].clientX - initialTouchPosition;
             divRef.current.style.transform = `translateX(${diff}px)`;
         }
     }, [divRef]);
 
+    const resetPosition = useCallback(() => {
+        if (divRef.current != null) {
+            divRef.current.style.transition = '0.3s ease-in-out';
+            divRef.current.style.transform = `translateX(${initialDivX}px)`;
+        }
+    }, [divRef]);
+
     const registerEvents = () => {
+
         window.addEventListener('touchstart', touchStart);
         window.addEventListener('touchmove', touchMove);
         window.addEventListener('touchend', touchEnd);
@@ -43,5 +74,5 @@ export default function useSwipeable(
         return unregisterEvents;
     }, []);
 
-    return { enable: registerEvents, disable: unregisterEvents };
+    return { enable: registerEvents, disable: unregisterEvents, resetPosition };
 }

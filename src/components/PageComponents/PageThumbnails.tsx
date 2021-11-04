@@ -1,9 +1,10 @@
 import Media from '../../types/Media';
 import IMediaSearchQuery from '../../types/IMediaSearchQuery';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import useNavigation from '../../hooks/useNavigation';
 import InfiniteThumbnails from '../Thumbnail/InfiniteThumbnails';
 import PaginatedThumbnails from '../Thumbnail/PaginatedThumbnails';
+import MediaPreview from '../Media/MediaPreview';
 
 type Props = {
     mediaQuery: IMediaSearchQuery,
@@ -37,7 +38,11 @@ export default function PageThumbnails({
         navigate({ name: 'search', data: { ...navigationData, p: -1 }});
     }
 
+    const [ previewState, setPreviewState ] = useState<{ selectedMedia?: Media, show: boolean }>({ show: false });
+
     const onThumbnailClick = (event: React.MouseEvent, media: Media) => {
+        //setPreviewState({ selectedMedia: media, show: true })
+        //return;
         if (linkToAlbums && media.albumID) {
             navigate({ name: 'album', data: { id: media.albumID } });
         }
@@ -46,8 +51,33 @@ export default function PageThumbnails({
         }
     }
 
+    const previewNextMedia = useCallback(() => {
+        if (previewState.selectedMedia) {
+            let currentMediaIndex = mediaList.indexOf(previewState.selectedMedia);
+            let nextMediaIndex = mediaList.length < currentMediaIndex ? 0 : currentMediaIndex + 1;
+            setPreviewState(ps => ({ ...ps, selectedMedia: mediaList[nextMediaIndex] }));
+        }
+    }, [mediaList, previewState]);
+
+    const previewPreviousMedia = useCallback(() => {
+        if (previewState.selectedMedia) {
+            let currentMediaIndex = mediaList.indexOf(previewState.selectedMedia);
+            let nextMediaIndex = mediaList.length >= currentMediaIndex ? 0 : currentMediaIndex + 1;
+            setPreviewState(ps => ({ ...ps, selectedMedia: mediaList[nextMediaIndex] }));
+        }
+    }, [mediaList, previewState])
+
     return (
         <>
+        {previewState.selectedMedia && 
+            <MediaPreview 
+                media={previewState.selectedMedia} 
+                show={previewState.show} 
+                onClose={() => setPreviewState({ show: false })}
+                onNext={previewNextMedia}
+                onPrevious={previewPreviousMedia}
+            />
+        }
         {isInfinite ? 
             <InfiniteThumbnails
                 mediaQuery={mediaQuery}
