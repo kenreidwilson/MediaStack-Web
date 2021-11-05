@@ -18,7 +18,18 @@ export default function MediaPreview({ media, show, onNext, onPrevious, onClose 
 
     const { theme } = useContext(ThemeContext);
     const previewRef = useRef<HTMLDivElement | null>(null);
-    const { enable, disable, resetPosition } = useSwipeable(previewRef, onNext, onPrevious);
+
+    const handleNext = () => {
+        onNext && onNext();
+        resetPosition();
+    }
+
+    const handlePrevious = () => {
+        onPrevious && onPrevious();
+        resetPosition();
+    }
+
+    const { enable, disable, resetPosition } = useSwipeable(previewRef, handleNext, handlePrevious);
 
     useEffect(() => {
         if (show) {

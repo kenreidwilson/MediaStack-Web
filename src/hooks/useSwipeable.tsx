@@ -7,6 +7,7 @@ export default function useSwipeable(
     
     let initialTouchPosition: number | null = null;
     let initialDivX: number | null = null;
+    let showFromLeft = false;
 
     const touchStart = useCallback((event: TouchEvent) => {
         if (divRef.current != null) {
@@ -28,6 +29,8 @@ export default function useSwipeable(
                     newPos = newPos * -1;
                 }
                 divRef.current.style.transform = `translateX(${newPos}px)`;
+
+                showFromLeft = isLeft;
 
                 if (isLeft) {
                     onPrevious && onPrevious();
@@ -51,6 +54,8 @@ export default function useSwipeable(
 
     const resetPosition = useCallback(() => {
         if (divRef.current != null) {
+            divRef.current.style.transition = '';
+            divRef.current.style.transform = `translateX(${showFromLeft ? window.innerWidth * -1 : window.innerWidth}px)`;
             divRef.current.style.transition = '0.3s ease-in-out';
             divRef.current.style.transform = `translateX(${initialDivX}px)`;
         }
