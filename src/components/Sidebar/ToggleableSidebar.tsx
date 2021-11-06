@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext';
-import useMobile from '../../hooks/useMobile';
+import usePlatform from '../../hooks/usePlatform';
 import { Offcanvas } from 'react-bootstrap';
 import Sidebar from './Sidebar';
 
@@ -13,7 +13,7 @@ type Props = {
 
 export default function ToggleableSidebar({ children, width = 'auto', isShown = true, setIsShown = () => {} }: Props) {
 
-    const { isMobile } = useMobile();
+    const { isMobile } = usePlatform();
     const { theme } = useContext(ThemeContext);
 
     return (

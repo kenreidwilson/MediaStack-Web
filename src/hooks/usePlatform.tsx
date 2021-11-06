@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useWindowSize from "./useWindowSize";
 
-export default function useMobile() {
+export default function usePlatform() {
 
     const mobileWidthThreshhold = 768;
 

@@ -46,7 +46,7 @@ export default function MediaPreview({ media, show, onNext, onPrevious, onMediaC
     }, [show]);
 
     return (
-        <Backdrop open={show} onClick={onClose}>
+        <Backdrop style={{ zIndex: 10 }} open={show} onClick={onClose}>
             <Card ref={previewRef} 
                 style={{ ...theme.style, maxHeight: '70vh', maxWidth: '97vw', overflow: 'hidden' }}>
                 {isLoading && <p>Loading...</p>}

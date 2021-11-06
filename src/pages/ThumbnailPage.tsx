@@ -2,6 +2,7 @@ import Media from '../types/Media';
 import IMediaSearchQuery from '../types/IMediaSearchQuery';
 import { useState } from 'react';
 import useNavigation from '../hooks/useNavigation';
+import usePlatform from '../hooks/usePlatform';
 import { Button } from 'react-bootstrap';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,6 +15,8 @@ import MediaListUpdate from '../components/Media/MediaListUpdate';
 export default function ThumbnailPageComponent() {
     
     const { getNavigationData } = useNavigation();
+    const { isMobile } = usePlatform();
+
     const [mediaQuery, setMediaQuery] = useState<IMediaSearchQuery>(getNavigationData());
     const [mediaList, setMediaList] = useState<Media[]>([]);
     const [showRightSidebar, setShowRightSidebar] = useState<boolean>(false);
@@ -67,7 +70,7 @@ export default function ThumbnailPageComponent() {
         <BasePage>
             <div>
                 <div style={{ display: 'flex' }}>
-                    {LeftSide()}
+                    {!isMobile && LeftSide()}
                     <div>
                         {TopBar()}
                         {MainBody()}
