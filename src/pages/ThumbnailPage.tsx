@@ -1,6 +1,6 @@
 import Media from '../types/Media';
 import IMediaSearchQuery from '../types/IMediaSearchQuery';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import useNavigation from '../hooks/useNavigation';
 import usePlatform from '../hooks/usePlatform';
 import { Button } from 'react-bootstrap';

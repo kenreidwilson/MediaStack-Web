@@ -103,12 +103,10 @@ export default function PageThumbnails({
             :
             <>
                 <PaginatedThumbnails
-                    pageNumber={pageNumber}
                     setPageNumber={(pn) => { navigate({name: 'search', data: { ...navigationData, p: pn }}); setPageNumber(pn); }}
                     mediaQuery={mediaQuery}
                     mediaPerPage={mediaPerPage}
-                    mediaList={mediaList}
-                    setMediaList={setMediaList}
+                    onMediaListUpdate={setMediaList}
                     onThumbnailClick={onThumbnailClick}
                     distinguishAlbumMedia={linkToAlbums}
                     thumbnailContainerStyle={{}}/>

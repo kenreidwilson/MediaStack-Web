@@ -2,8 +2,8 @@ import React, { useEffect, useCallback } from 'react';
 
 export default function useSwipeable(
     divRef: React.MutableRefObject<HTMLDivElement | null>, 
-    onNext?: () => Promise<void>, 
-    onPrevious?: () => Promise<void>) {
+    onNext?: () => void, 
+    onPrevious?: () => void) {
 
     let initialTouchPosition: number | null = null;
     let initialDivX: number | null = null;
@@ -51,15 +51,15 @@ export default function useSwipeable(
         }
     }
     
-    const touchMove = useCallback((event: TouchEvent) => {
+    const touchMove =(event: TouchEvent) => {
         if (divRef.current != null && initialTouchPosition != null) {
             divRef.current.style.transition = '';
             let diff = event.touches[0].clientX - initialTouchPosition;
             divRef.current.style.transform = `translateX(${diff}px)`;
         }
-    }, [divRef]);
+    }
 
-    const resetPosition = useCallback(() => {
+    const resetPosition = () => {
         if (divRef.current != null) {
             divRef.current.style.transition = '';
             divRef.current.style.transform = `translateX(${showFromLeft ? window.innerWidth : window.innerWidth * -1}px)`;
@@ -70,25 +70,28 @@ export default function useSwipeable(
                 }
             });
         }
-    }, [divRef]);
+    }
 
     const registerEvents = () => {
-
-        window.addEventListener('touchstart', touchStart);
-        window.addEventListener('touchmove', touchMove);
-        window.addEventListener('touchend', touchEnd);
+        if (divRef.current !== null) {
+            divRef.current.addEventListener('touchstart', touchStart);
+            divRef.current.addEventListener('touchmove', touchMove);
+            divRef.current.addEventListener('touchend', touchEnd);
+        }
     }
 
     const unregisterEvents = () => {
-        window.removeEventListener('touchstart', touchStart);
-        window.removeEventListener('touchmove', touchMove);
-        window.removeEventListener('touchend', touchEnd);
+        if (divRef.current !== null) {
+            divRef.current.removeEventListener('touchstart', touchStart);
+            divRef.current.removeEventListener('touchmove', touchMove);
+            divRef.current.removeEventListener('touchend', touchEnd);
+        }
     }
     
     useEffect(() => {
         registerEvents();
         return unregisterEvents;
-    }, []);
+    }, [divRef.current]);
 
     return { enable: registerEvents, disable: unregisterEvents, resetPosition };
 }
