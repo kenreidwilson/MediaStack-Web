@@ -8,12 +8,14 @@ export default function useSwipeable(
     let initialTouchPosition: number | null = null;
     let initialDivX: number | null = null;
     let showFromLeft = false;
+    let touchStartTime = window.performance.now();
 
     const touchStart = (event: TouchEvent) => {
         if (divRef.current != null) {
             divRef.current.style.transition = '';
             initialTouchPosition = event.touches[0].clientX;
             initialDivX = divRef.current.offsetLeft;
+            touchStartTime = window.performance.now();
         }
     }
 
@@ -22,7 +24,12 @@ export default function useSwipeable(
             divRef.current.style.transition = '0.3s ease-in-out';
             let diff = event.changedTouches[0].clientX - initialTouchPosition;
 
-            if (Math.abs(diff) > 0.5 * divRef.current.offsetWidth) { 
+            let threshhold = 0.4;
+            if (window.performance.now() - touchStartTime < 100) {
+                threshhold = 0.03;
+            }
+
+            if (Math.abs(diff) > threshhold * divRef.current.offsetWidth) { 
                 let newPos = divRef.current.offsetWidth * 1.2;
                 let isLeft = diff < 0;
                 if (isLeft) {

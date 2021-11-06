@@ -38,24 +38,14 @@ export default function MediaContainer({ media, onClick, onLoad }: Props) {
         return null;
     }
 
-    return <div style={{textAlign: 'center'}}>
-        {getMediaComponent()}
-    </div>;
+    return getMediaComponent();
 }
 
 function MediaImage({ media, onClick = () => {}, onLoad }: Props) {
     
     const { getFileLink } = useMediaFiles();
-    const { innerWidth: width } = window;
     
-    const getImageStyle = () => {
-        if (width <= 768) {
-            return { width: 'auto', height: 'auto'};
-        }
-        return { maxWidth: '100%', height: '75vh' };
-    }
-    
-    return <img style={getImageStyle()}
+    return <img style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                 onClick={(e) => onClick(e, media)}
                 onLoad={() => onLoad ? onLoad() : () => {}} 
                 alt={media.tags.toString()} 
