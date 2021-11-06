@@ -1,33 +1,39 @@
 import Media from '../../types/Media';
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import useSwipeable from '../../hooks/useSwipeable';
+import { Card } from 'react-bootstrap';
 import { Backdrop } from '@mui/material';
-import { Modal, Button, Card } from 'react-bootstrap';
 import MediaContainer from './MediaContainer';
 
 type Props = {
     media: Media,
     show: boolean,
-    onNext?: () => void,
-    onPrevious?: () => void,
+    onNext?: () => Promise<void>,
+    onPrevious?: () => Promise<void>,
+    onMediaClick?: (event: React.MouseEvent<HTMLImageElement, MouseEvent>, media: Media) => void,
     onClose?: () => void
 }
 
-export default function MediaPreview({ media, show, onNext, onPrevious, onClose }: Props) {
+export default function MediaPreview({ media, show, onNext, onPrevious, onMediaClick = () => {}, onClose }: Props) {
 
     const { theme } = useContext(ThemeContext);
     const previewRef = useRef<HTMLDivElement | null>(null);
+    const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
-    const handleNext = () => {
-        onNext && onNext();
-        resetPosition();
+    useEffect(() => {
+        setIsLoading(true);
+    }, [media]);
+
+    const handleNext = async () => {
+        onNext && await onNext();
+        await resetPosition();
     }
 
-    const handlePrevious = () => {
-        onPrevious && onPrevious();
-        resetPosition();
-    }
+    const handlePrevious = async () => {
+        onPrevious && await onPrevious();
+        await resetPosition();
+    };
 
     const { enable, disable, resetPosition } = useSwipeable(previewRef, handleNext, handlePrevious);
 
@@ -43,7 +49,10 @@ export default function MediaPreview({ media, show, onNext, onPrevious, onClose 
         <Backdrop open={show} onClick={onClose}>
             <Card ref={previewRef} 
                 style={{ ...theme.style, maxHeight: '70vh', maxWidth: '97vw', overflow: 'hidden' }}>
-                <MediaContainer media={media} />
+                {isLoading && <p>Loading...</p>}
+                <div style={{ visibility: isLoading ? 'hidden' : 'visible', height: '70vh', width: '97vw' }}>
+                    <MediaContainer onClick={(e, m) => onMediaClick(e, m)} onLoad={() => setIsLoading(false)} media={media} />
+                </div>
             </Card>
         </Backdrop>
     );

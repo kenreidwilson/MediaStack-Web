@@ -2,22 +2,22 @@ import React, { useEffect, useCallback } from 'react';
 
 export default function useSwipeable(
     divRef: React.MutableRefObject<HTMLDivElement | null>, 
-    onNext?: () => void, 
-    onPrevious?: () => void) {
-    
+    onNext?: () => Promise<void>, 
+    onPrevious?: () => Promise<void>) {
+
     let initialTouchPosition: number | null = null;
     let initialDivX: number | null = null;
     let showFromLeft = false;
 
-    const touchStart = useCallback((event: TouchEvent) => {
+    const touchStart = (event: TouchEvent) => {
         if (divRef.current != null) {
             divRef.current.style.transition = '';
             initialTouchPosition = event.touches[0].clientX;
             initialDivX = divRef.current.offsetLeft;
         }
-    }, [divRef]);
+    }
 
-    const touchEnd = useCallback((event: TouchEvent) => {
+    const touchEnd = (event: TouchEvent) => {
         if (divRef.current != null && initialTouchPosition != null) {
             divRef.current.style.transition = '0.3s ease-in-out';
             let diff = event.changedTouches[0].clientX - initialTouchPosition;
@@ -29,20 +29,27 @@ export default function useSwipeable(
                     newPos = newPos * -1;
                 }
                 divRef.current.style.transform = `translateX(${newPos}px)`;
-
                 showFromLeft = isLeft;
 
-                if (isLeft) {
-                    onPrevious && onPrevious();
-                } else {
-                    onNext && onNext();
-                }
-
+                new Promise(resolve => setTimeout(resolve, 300)).then(() => {
+                    if (isLeft) {
+                        if (onPrevious) {
+                            onPrevious();
+                        }
+                    } else {
+                        if (onNext) {
+                            onNext();
+                        }
+                    }
+                });   
+                
             } else {
-                divRef.current.style.transform = `translateX(${initialDivX}px)`;
+                if (initialDivX !== null) {
+                    divRef.current.style.transform = `translateX(${initialDivX - 5}px)`;
+                }
             }
         }
-    }, [divRef]);
+    }
     
     const touchMove = useCallback((event: TouchEvent) => {
         if (divRef.current != null && initialTouchPosition != null) {
@@ -55,9 +62,13 @@ export default function useSwipeable(
     const resetPosition = useCallback(() => {
         if (divRef.current != null) {
             divRef.current.style.transition = '';
-            divRef.current.style.transform = `translateX(${showFromLeft ? window.innerWidth * -1 : window.innerWidth}px)`;
-            divRef.current.style.transition = '0.3s ease-in-out';
-            divRef.current.style.transform = `translateX(${initialDivX}px)`;
+            divRef.current.style.transform = `translateX(${showFromLeft ? window.innerWidth : window.innerWidth * -1}px)`;
+            new Promise(resolve => setTimeout(resolve, 50)).then(() => {
+                if (divRef.current != null && initialDivX !== null) {
+                    divRef.current.style.transition = '0.3s ease-in-out';
+                    divRef.current.style.transform = `translateX(${initialDivX - 5}px)`;
+                }
+            });
         }
     }, [divRef]);
 

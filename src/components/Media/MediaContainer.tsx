@@ -4,7 +4,7 @@ import useMediaFiles from '../../hooks/useMediaFiles';
 
 type Props = {
     media: Media,
-    onClick?: (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => void | undefined,
+    onClick?: (event: React.MouseEvent<HTMLImageElement, MouseEvent>, media: Media) => void | undefined,
     onLoad?: () => void | undefined
 }
 
@@ -43,7 +43,7 @@ export default function MediaContainer({ media, onClick, onLoad }: Props) {
     </div>;
 }
 
-function MediaImage({ media, onClick, onLoad }: Props) {
+function MediaImage({ media, onClick = () => {}, onLoad }: Props) {
     
     const { getFileLink } = useMediaFiles();
     const { innerWidth: width } = window;
@@ -56,7 +56,7 @@ function MediaImage({ media, onClick, onLoad }: Props) {
     }
     
     return <img style={getImageStyle()}
-                onClick={onClick}
+                onClick={(e) => onClick(e, media)}
                 onLoad={() => onLoad ? onLoad() : () => {}} 
                 alt={media.tags.toString()} 
                 src={getFileLink(media)}/>
