@@ -9,7 +9,8 @@ type Props = {
 
 export default function useSwipeable({ divRef, onNext, onPrevious, move = true }: Props) {
 
-    let initialTouchPosition: number | null = null;
+    let initialTouchX: number | null = null;
+    let initialTouchY: number | null = null;
     let initialDivX: number | null = null;
     let showFromLeft = false;
     let touchStartTime = window.performance.now();
@@ -17,23 +18,35 @@ export default function useSwipeable({ divRef, onNext, onPrevious, move = true }
     const touchStart = (event: TouchEvent) => {
         if (divRef.current != null) {
             divRef.current.style.transition = '';
-            initialTouchPosition = event.touches[0].clientX;
+            initialTouchX = event.touches[0].clientX;
+            initialTouchY = event.touches[0].clientY;
             initialDivX = divRef.current.offsetLeft;
             touchStartTime = window.performance.now();
         }
     }
 
+    const isVerticalSwipe = (event: TouchEvent, previousTouchX: number, previousTouchY: number): boolean => {
+        if (event.changedTouches.length != 1) {
+            return false;
+        }
+
+        let yDiff = event.changedTouches[0].clientY - previousTouchY;
+        let xDiff = event.changedTouches[0].clientX - previousTouchX;
+
+        return Math.abs(xDiff) > Math.abs(yDiff);
+    }
+
     const touchEnd = (event: TouchEvent) => {
-        if (divRef.current != null && initialTouchPosition != null) {
+        if (divRef.current != null && initialTouchX != null && initialTouchY) {
             divRef.current.style.transition = '0.3s ease-in-out';
-            let diff = event.changedTouches[0].clientX - initialTouchPosition;
+            let diff = event.changedTouches[0].clientX - initialTouchX;
 
             let threshhold = 0.4;
             if (window.performance.now() - touchStartTime < 200) {
                 threshhold = 0.03;
             }
 
-            if (Math.abs(diff) > threshhold * divRef.current.offsetWidth) { 
+            if (Math.abs(diff) > threshhold * divRef.current.offsetWidth && isVerticalSwipe(event, initialTouchX, initialTouchY)) { 
                 let newPos = divRef.current.offsetWidth * 1.2;
                 let isLeft = diff < 0;
                 if (isLeft) {
@@ -63,9 +76,9 @@ export default function useSwipeable({ divRef, onNext, onPrevious, move = true }
     }
     
     const touchMove =(event: TouchEvent) => {
-        if (divRef.current != null && initialTouchPosition != null) {
+        if (divRef.current != null && initialTouchX != null) {
             divRef.current.style.transition = '';
-            let diff = event.touches[0].clientX - initialTouchPosition;
+            let diff = event.touches[0].clientX - initialTouchX;
             divRef.current.style.transform = `translateX(${diff}px)`;
         }
     }

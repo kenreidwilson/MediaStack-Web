@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Spinner } from 'react-bootstrap';
 import Media from '../../types/Media';
 import MediaContainer from './MediaContainer';
@@ -20,7 +20,7 @@ export default function MediaGallery({ mediaList, presentedMedia, setPresentedMe
     }, [presentedMedia]);
 
     const mediaClickEventHandler = useCallback(
-        (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+        (event: React.MouseEvent<HTMLImageElement> | React.MouseEvent<HTMLVideoElement>) => {
             if (event === undefined || mediaList.length === 1) {
                 return;
             }
@@ -33,8 +33,7 @@ export default function MediaGallery({ mediaList, presentedMedia, setPresentedMe
             }
     
             setPresentedMedia(mediaList[index]);
-        }, [presentedMedia]
-    );
+        }, [presentedMedia]);
 
     return (
         <div>

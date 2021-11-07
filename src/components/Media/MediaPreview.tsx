@@ -11,7 +11,7 @@ type Props = {
     show: boolean,
     onNext?: () => Promise<void>,
     onPrevious?: () => Promise<void>,
-    onMediaClick?: (event: React.MouseEvent<HTMLImageElement, MouseEvent>, media: Media) => void,
+    onMediaClick?: (event: React.MouseEvent, media: Media) => void,
     onClose?: () => void
 }
 
@@ -46,14 +46,28 @@ export default function MediaPreview({ media, show, onNext, onPrevious, onMediaC
         }
     }, [show]);
 
+    const onMediaContainerClick = (
+        event: React.MouseEvent<HTMLImageElement> | React.MouseEvent<HTMLVideoElement>, 
+        media: Media) => {
+
+        console.log(event);
+        onMediaClick(event, media);
+    }
+
     return (
-        <Backdrop style={{ zIndex: 10 }} open={show} onClick={onClose}>
-            <div onClick={onClose} ref={previewRef} 
+        <Backdrop style={{ zIndex: 10, touchAction: 'none' }} open={show} onClick={onClose}>
+            <div 
+                ref={previewRef} 
                 style={{ ...theme.style, maxHeight: '70vh', maxWidth: '97vw', overflow: 'hidden', backgroundColor: 'none', borderRadius: '10px' }}>
                 {isLoading && <p>Loading...</p>}
-                <div style={{ visibility: isLoading ? 'hidden' : 'visible', height: '70vh', width: '97vw', backgroundColor: 'red' }}>
-                    <span style={{ display: 'inline-block', height: '100%', verticalAlign: 'middle' }}></span>
-                    <MediaContainer onClick={(e, m) => onMediaClick(e, m)} onLoad={() => setIsLoading(false)} media={media} />
+                <div 
+                    style={{ visibility: isLoading ? 'hidden' : 'visible', height: '70vh', width: '97vw' }}>
+                    
+                    <MediaContainer 
+                        onClick={onMediaContainerClick} 
+                        onLoad={() => setIsLoading(false)} 
+                        media={media} 
+                        videoProps={{ controls: false }}/>
                 </div>
             </div>
         </Backdrop>

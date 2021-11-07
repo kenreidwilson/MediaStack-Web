@@ -47,7 +47,7 @@ export default function PageThumbnails({
         }
     }
 
-    const onPreviewClick = (event: React.MouseEvent<HTMLImageElement, MouseEvent>, media: Media) => {
+    const onPreviewClick = (event: React.MouseEvent, media: Media) => {
         if (linkToAlbums && media.albumID) {
             navigate({ name: 'album', data: { id: media.albumID } });
         }
@@ -109,7 +109,8 @@ export default function PageThumbnails({
                     onMediaListUpdate={setMediaList}
                     onThumbnailClick={onThumbnailClick}
                     distinguishAlbumMedia={linkToAlbums}
-                    thumbnailContainerStyle={{}}/>
+                    thumbnailContainerStyle={{}}
+                    isSwipable={!previewState.show}/>
                 <div style={{textAlign: 'center'}}>
                     <a style={{color: 'white'}} className='btn btn-primary' onClick={() => enableInfiniteScrolling()}>Infinite Scrolling</a>
                 </div>

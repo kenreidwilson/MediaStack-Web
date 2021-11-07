@@ -2,17 +2,27 @@ import Media from '../../types/Media';
 import React from 'react';
 import useMediaFiles from '../../hooks/useMediaFiles';
 
-type Props = {
-    media: Media,
-    onClick?: (event: React.MouseEvent<HTMLImageElement, MouseEvent>, media: Media) => void | undefined,
-    onLoad?: () => void | undefined,
-    style?: React.CSSProperties
+type mediaClickEvent = React.MouseEvent<HTMLImageElement> | React.MouseEvent<HTMLVideoElement>;
+
+type videoProps = {
+    autoPlay?: boolean,
+    controls?: boolean,
+    loop?: boolean,
+    muted?: boolean
 }
 
-export default function MediaContainer({ media, onClick, onLoad, style }: Props) {
+type Props = {
+    media: Media,
+    onClick?: (event: mediaClickEvent, media: Media) => void,
+    onLoad?: () => void | undefined,
+    style?: React.CSSProperties,
+    videoProps?: videoProps
+}
+
+export default function MediaContainer({ media, onClick, onLoad, style, videoProps }: Props) {
 
     const mediaStyle: React.CSSProperties = 
-        { width: '100%', height: '100%', objectFit: 'contain', ...style };
+        { width: '100%', height: '100%', objectFit: 'scale-down', ...style };
 
     const getMediaComponent = () => {
         switch(media.type) {
@@ -34,7 +44,9 @@ export default function MediaContainer({ media, onClick, onLoad, style }: Props)
                 return <MediaVideo 
                     media={media}
                     onLoad={onLoad}
+                    onClick={onClick}
                     style={mediaStyle}
+                    videoProps={videoProps}
                 />;
             default:
                 return null;
@@ -55,7 +67,12 @@ const MediaImage = ({ media, onClick = () => {}, onLoad, style }: Props) => {
                 src={getFileLink(media)}/>
 }
 
-const MediaVideo = ({ media, onLoad, style }: Props) => {
+const MediaVideo = ({ 
+    media, 
+    onLoad, 
+    onClick = () => {}, 
+    style, 
+    videoProps = { autoPlay: true, controls: true, loop: true, muted: true } }: Props) => {
 
     const { getFileLink } = useMediaFiles();
 
@@ -63,9 +80,10 @@ const MediaVideo = ({ media, onLoad, style }: Props) => {
                 style={style}
                 src={getFileLink(media)} 
                 onLoadStart={onLoad} 
-                autoPlay
-                controls 
-                loop
-                muted 
+                onClick={(e) => onClick(e, media)}
+                autoPlay={videoProps.autoPlay !== undefined ? videoProps.autoPlay : true}
+                controls={videoProps.controls !== undefined ? videoProps.controls : true}
+                loop={videoProps.loop !== undefined ? videoProps.loop : true}
+                muted ={videoProps.muted !== undefined ? videoProps.muted : true}
                 key={media.id}/>
 }

@@ -51,26 +51,20 @@ export default function PaginatedThumbnails({
         }
     }, [data])
 
-    /*
-    const thumbnailsRef = useRef(null);
-    const { resetPosition, enable, disable } = useSwipeable(
-        thumbnailsRef, 
-        () => setPage(currentPage == 1 ? 1 : currentPage - 1), 
-        () => setPage(currentPage == totalPages ? 1 : currentPage + 1));
-
-    useEffect(() => {
-        if (isSwipable) {
-            enable();
-        } else {
-            disable();
-        }
-    }, [isSwipable]);
-    */
+    const thumbnailsRef = useRef<HTMLDivElement | null>(null);
+    
+    const { resetPosition, enable, disable } = useSwipeable({
+        divRef: thumbnailsRef, 
+        onNext: () => setPage(currentPage == 1 ? 1 : currentPage - 1), 
+        onPrevious: () => setPage(currentPage == totalPages ? 1 : currentPage + 1),
+        move: false});
 
     return (
-        <>
+        <div style={{ width: '100vw', overflow: 'hidden' }}>
             {isLoading ? <Spinner animation='border' variant='primary'/> : 
-            <div /*ref={thumbnailsRef}*/ style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div 
+                ref={thumbnailsRef} 
+                style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <Thumbnails mediaList={data!} onClick={onThumbnailClick} distinguishAlbumMedia={distinguishAlbumMedia}/>
             </div>}
             <div style={{display: 'flex', marginTop: '5px'}}>
@@ -78,6 +72,6 @@ export default function PaginatedThumbnails({
                     <MSPagination pageNumber={currentPage} numberOfPages={totalPages} onNavigate={(pn) => { setPage(pn); setPageNumber(pn); }}/>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
