@@ -32,7 +32,7 @@ export default function DistinguishedThumbnail({ media, onClick, style, distingu
                 media={media} 
                 onClick={onClick} 
                 style={style}
-                thumbnailRef={thumbnailRef as React.LegacyRef<HTMLImageElement>} />
+                thumbnailRef={thumbnailRef} />
         </div>
     );
 }

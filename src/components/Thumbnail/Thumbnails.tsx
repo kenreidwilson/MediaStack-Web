@@ -8,6 +8,7 @@ type Props = {
 }
 
 export default function Thumbnails({ mediaList, distinguishAlbumMedia = false, onClick = () => {} }: Props) {
+
     return ( 
         <>
           {mediaList && mediaList.map(media => 

@@ -45,7 +45,7 @@ export default function MediaPage() {
                             animation='border' 
                             variant='primary' 
                             style={{ width: '75px', height: '75px', position: 'absolute', margin: '17.5% 42.5%' }}/>}
-                    <MediaContainer media={media as Media} onLoad={() => setIsMediaLoading(false)}/>
+                    {media !== null && <MediaContainer media={media} onLoad={() => setIsMediaLoading(false)}/>}
                 </div>
             </div>
         </BasePage>

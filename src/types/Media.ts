@@ -7,7 +7,7 @@ export default interface Media {
     albumID?: number,
     tags: Tag[],
     hash: string,
-    type: number,
+    type: 1 | 2 | 3,
     created: string,
     albumOrder: number,
     score: number,

@@ -5,67 +5,62 @@ import useMediaFiles from '../../hooks/useMediaFiles';
 type Props = {
     media: Media,
     onClick?: (event: React.MouseEvent<HTMLImageElement, MouseEvent>, media: Media) => void | undefined,
-    onLoad?: () => void | undefined
+    onLoad?: () => void | undefined,
+    style?: React.CSSProperties
 }
 
-export default function MediaContainer({ media, onClick, onLoad }: Props) {
+export default function MediaContainer({ media, onClick, onLoad, style }: Props) {
+
+    const mediaStyle: React.CSSProperties = 
+        { width: '100%', height: '100%', objectFit: 'contain', ...style };
 
     const getMediaComponent = () => {
         switch(media.type) {
             case 1:
                 return <MediaImage 
+                    media={media}
                     onLoad={onLoad}
                     onClick={onClick}
-                    media={media}
+                    style={mediaStyle}
                 />;
             case 2:
                 return <MediaImage 
+                    media={media}
                     onLoad={onLoad}
                     onClick={onClick}
-                    media={media}
+                    style={mediaStyle}
                 />;
             case 3:
                 return <MediaVideo 
-                    onLoad={onLoad}
                     media={media}
+                    onLoad={onLoad}
+                    style={mediaStyle}
                 />;
             default:
                 return null;
         }
     }
 
-    if (media === null) {
-        return null;
-    }
-
     return getMediaComponent();
 }
 
-function MediaImage({ media, onClick = () => {}, onLoad }: Props) {
+const MediaImage = ({ media, onClick = () => {}, onLoad, style }: Props) => {
     
     const { getFileLink } = useMediaFiles();
     
-    return <img style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+    return <img style={style}
                 onClick={(e) => onClick(e, media)}
-                onLoad={() => onLoad ? onLoad() : () => {}} 
+                onLoad={onLoad} 
                 alt={media.tags.toString()} 
                 src={getFileLink(media)}/>
 }
 
-function MediaVideo({ media, onLoad }: Props) {
+const MediaVideo = ({ media, onLoad, style }: Props) => {
 
     const { getFileLink } = useMediaFiles();
-    const { innerWidth: width } = window;
-
-    const getVideoStyle = () => {
-        if (width <= 768) {
-            return { width: 'auto', height: 'auto'};
-        }
-        return { maxWidth: '100%', height: '75vh' };
-    }
 
     return <video 
-                style={getVideoStyle()}
+                style={style}
                 src={getFileLink(media)} 
                 onLoadStart={onLoad} 
                 autoPlay

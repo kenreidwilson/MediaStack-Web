@@ -35,7 +35,8 @@ export default function MediaPreview({ media, show, onNext, onPrevious, onMediaC
         await resetPosition();
     };
 
-    const { enable, disable, resetPosition } = useSwipeable(previewRef, handleNext, handlePrevious);
+    const { enable, disable, resetPosition } = useSwipeable(
+        { divRef: previewRef, onNext: handleNext, onPrevious: handlePrevious });
 
     useEffect(() => {
         if (show) {
@@ -47,10 +48,10 @@ export default function MediaPreview({ media, show, onNext, onPrevious, onMediaC
 
     return (
         <Backdrop style={{ zIndex: 10 }} open={show} onClick={onClose}>
-            <div ref={previewRef} 
+            <div onClick={onClose} ref={previewRef} 
                 style={{ ...theme.style, maxHeight: '70vh', maxWidth: '97vw', overflow: 'hidden', backgroundColor: 'none', borderRadius: '10px' }}>
                 {isLoading && <p>Loading...</p>}
-                <div style={{ visibility: isLoading ? 'hidden' : 'visible', height: '70vh', width: '97vw' }}>
+                <div style={{ visibility: isLoading ? 'hidden' : 'visible', height: '70vh', width: '97vw', backgroundColor: 'red' }}>
                     <span style={{ display: 'inline-block', height: '100%', verticalAlign: 'middle' }}></span>
                     <MediaContainer onClick={(e, m) => onMediaClick(e, m)} onLoad={() => setIsLoading(false)} media={media} />
                 </div>

@@ -51,6 +51,7 @@ export default function PaginatedThumbnails({
         }
     }, [data])
 
+    /*
     const thumbnailsRef = useRef(null);
     const { resetPosition, enable, disable } = useSwipeable(
         thumbnailsRef, 
@@ -64,11 +65,12 @@ export default function PaginatedThumbnails({
             disable();
         }
     }, [isSwipable]);
+    */
 
     return (
         <>
             {isLoading ? <Spinner animation='border' variant='primary'/> : 
-            <div ref={thumbnailsRef} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div /*ref={thumbnailsRef}*/ style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <Thumbnails mediaList={data!} onClick={onThumbnailClick} distinguishAlbumMedia={distinguishAlbumMedia}/>
             </div>}
             <div style={{display: 'flex', marginTop: '5px'}}>

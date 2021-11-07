@@ -1,5 +1,5 @@
 import Media from '../../types/Media';
-import { CSSProperties, useMemo } from 'react';
+import React, { CSSProperties, useMemo, useCallback, useEffect } from 'react';
 import useMediaFiles from '../../hooks/useMediaFiles';
 import usePlatform from '../../hooks/usePlatform';
 
@@ -7,7 +7,7 @@ type Props = {
     media: Media,
     onClick?: (event: React.MouseEvent, media: Media) => void,
     style?: CSSProperties,
-    thumbnailRef?: React.LegacyRef<HTMLImageElement>
+    thumbnailRef?: React.MutableRefObject<HTMLImageElement | undefined>
 }
 
 export default function Thumbnail({ media, onClick = () => {}, style, thumbnailRef }: Props) {
@@ -17,8 +17,8 @@ export default function Thumbnail({ media, onClick = () => {}, style, thumbnailR
 
     const { getThumbnailLink } = useMediaFiles();
     const { isMobile } = usePlatform();
-    
-    const MediaAlt = useMemo(() => {
+
+    const mediaAlt = useMemo(() => {
         let alt: string = '';
         media.tags.forEach(tag => alt += `${tag.name} `);
         return alt;
@@ -26,9 +26,9 @@ export default function Thumbnail({ media, onClick = () => {}, style, thumbnailR
 
     return (
         <img 
-            ref={thumbnailRef}
+            ref={thumbnailRef as React.LegacyRef<HTMLImageElement>}
             style={{ width: isMobile ? 175 : baseWidth , height: isMobile ? 112 : baseHeight, borderRadius: '8px', ...style }}
-            alt={MediaAlt}
+            alt={mediaAlt}
             src={getThumbnailLink(media)}
             onClick={(event) => onClick(event, media)}>
         </img>

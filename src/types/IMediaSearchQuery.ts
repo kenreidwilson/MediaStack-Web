@@ -14,5 +14,5 @@ export default interface IMediaSearchQuery extends ISearchQuery {
     greaterThanScore?: number;
     sortBy?: string;
     type?: number;
-    mode?: number;
+    mode?: 1 | 2 | 3;
 }
