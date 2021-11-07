@@ -22,7 +22,7 @@ type Props = {
 export default function MediaContainer({ media, onClick, onLoad, style, videoProps }: Props) {
 
     const mediaStyle: React.CSSProperties = 
-        { width: '100%', height: '100%', objectFit: 'scale-down', ...style };
+        { width: '100%', height: '100%', objectFit: 'contain', ...style };
 
     const getMediaComponent = () => {
         switch(media.type) {

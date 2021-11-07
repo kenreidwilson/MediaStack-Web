@@ -24,7 +24,7 @@ export default function AlbumPageSidebar({
     onOrganizeAlbumMedia }: Props) {
 
     return(
-        <div>
+        <div style={{ width: '100%'}}>
             <Button onClick={onEditMedia}>Edit Media</Button>
             {mediaList.length > 0 ? <MediaInfoSidebar media={selectedMedia}/> : null }
             <Button onClick={onEditAlbum}>Edit Album</Button>

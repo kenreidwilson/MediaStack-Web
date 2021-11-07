@@ -61,9 +61,11 @@ export default function BasePage({ children }: Props) {
                                 color: ${theme.style.color};
                             }
                         `} />
-                    <Navigation />
-                    {alerts.map(alert => <MSBannerAlert variant={getMSBannerAlertVariant(alert)} heading={getAlertHeading(alert)} body={alert.message ? alert.message : ''}/>)}
-                    {children}
+                    <div style={{ maxHeight: '100vh' }}>
+                        <Navigation />
+                        {alerts.map(alert => <MSBannerAlert variant={getMSBannerAlertVariant(alert)} heading={getAlertHeading(alert)} body={alert.message ? alert.message : ''}/>)}
+                        {children}
+                    </div>
                 </ThemeContext.Provider>
             </ErrorContext.Provider>
     );

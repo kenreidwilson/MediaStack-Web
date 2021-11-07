@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import useAlbums from '../hooks/useAlbums';
 import useMedia from '../hooks/useMedia';
 import useNavigation from '../hooks/useNavigation';
+import usePlatform from '../hooks/usePlatform';
 import BasePage from './BasePage';
 import MediaGallery from '../components/Media/MediaGallery';
 import AlbumEditModal from '../components/Modals/AlbumEditModal';
@@ -27,6 +28,8 @@ export default function AlbumPage() {
     const { search: searchMedia } = useMedia();
 
     const { getNavigationData } = useNavigation();
+
+    const { isMobile } = usePlatform();
 
     useEffect(() => {
         let albumID = +getNavigationData()['id'];
@@ -97,9 +100,12 @@ export default function AlbumPage() {
                         onClose={() => setShowMediaEditModal(false)}
                         media={selectedMedia!}
                     />}
-                    
-                <div style={{ display: 'flex' }}>
-                    <div style={{ width: '230px' }} >
+
+                <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
+                    <div style={{ width: '100%' }}>
+                        {Body()}
+                    </div>
+                    <div style={{ width: '100%' }} >
                         {mediaList && selectedMedia && album && 
                             <AlbumPageSidebar 
                                 album={album} 
@@ -110,9 +116,6 @@ export default function AlbumPage() {
                                 onEditAlbumMedia={() => setPageMode(pm => pm === 'edit' ? 'default' : 'edit')}
                                 onOrganizeAlbumMedia={() => setPageMode(pm => pm === 'organize' ? 'default' : 'organize')}
                             />}
-                    </div>
-                    <div style={{ width: '100%' }}>
-                        {Body()}
                     </div>
                 </div>
             </div>

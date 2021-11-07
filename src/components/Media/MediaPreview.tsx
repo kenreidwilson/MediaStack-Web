@@ -50,7 +50,8 @@ export default function MediaPreview({ media, show, onNext, onPrevious, onMediaC
         event: React.MouseEvent<HTMLImageElement> | React.MouseEvent<HTMLVideoElement>, 
         media: Media) => {
 
-        console.log(event);
+        //TODO: Close if not clicking on image.
+
         onMediaClick(event, media);
     }
 
