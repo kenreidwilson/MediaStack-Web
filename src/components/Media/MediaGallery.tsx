@@ -68,7 +68,7 @@ export default function MediaGallery({ mediaList, presentedMedia, setPresentedMe
             {mediaList !== undefined && mediaList.length > 0 ? 
                 <div>
                     {isMediaLoading ? <Spinner style={{ width: '75px', height: '75px', position: 'absolute', margin: '17.5% 42.5%' }} animation='border' variant='primary' /> : null}
-                    <MediaContainer onLoad={() => setIsMediaLoading(false)} onClick={mediaClickEventHandler} media={presentedMedia}/>
+                    {!showPreview && <MediaContainer onLoad={() => setIsMediaLoading(false)} onClick={mediaClickEventHandler} media={presentedMedia}/>}
                 </div>
             : null}
             {mediaList !== undefined ? 
