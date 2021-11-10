@@ -1,6 +1,6 @@
 import Media from '../../types/Media';
 
-import './SelectableThumbnailSlider.css'
+//import './SelectableThumbnailSlider.css'
 import SelectableThumbnails from './SelectableThumbnails';
 
 type Props = {

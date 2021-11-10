@@ -19,7 +19,7 @@ import { IDependencyContext } from '../contexts/DependencyContext';
 export default function useDependencies(): IDependencyContext {
     
     const fakeApi: IKeyBasedAPI = ((): IKeyBasedAPI => {
-        switch(process.env.FAKE_API_TYPE) {
+        switch(process?.env.FAKE_API_TYPE) {
             case('memory'):
                 throw new Error("Not Implemented.");
             case('local'):
