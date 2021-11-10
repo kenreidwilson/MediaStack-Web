@@ -2,6 +2,7 @@ import IMediaSearchQuery from '../../types/IMediaSearchQuery';
 import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import MediaSearchForm from '../Forms/MediaSearchForm';
+import { Button } from 'react-bootstrap';
 
 type Props = {
     initialQuery?: IMediaSearchQuery,
@@ -35,7 +36,7 @@ export default function MediaSearchMenu({ initialQuery = {}, onQueryUpdate = () 
                 showRatingValue={showAdvancedOptions}/>
                 
             <div>
-                <button style={{ marginTop: '5px' }} className='btn btn-primary' onClick={() => onSearch(query)}>Search</button>
+                <Button style={{ marginTop: '5px' }} onClick={() => onSearch(query)}>Search</Button>
                 <a 
                     onClick={() => setShowAdvancedOptions(!showAdvancedOptions)} 
                     style={{ float: 'right', color: theme.style.primaryColor }}>
