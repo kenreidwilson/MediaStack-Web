@@ -47,7 +47,7 @@ export default function useDependencies(): IDependencyContext {
         mediaFileLinkGenerator: new MediaFileLinkGenerator(process.env.REACT_APP_API!)
     }
 
-    const useRealDependencies: boolean = process.env.REACT_APP_API !== undefined;
+    const useRealDependencies: boolean = process.env.NODE_ENV === 'production' || process.env.REACT_APP_API !== undefined;
 
     return useRealDependencies ? realDependencies : fakeDependencies;
 }
