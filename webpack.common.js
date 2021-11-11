@@ -58,7 +58,11 @@ module.exports = {
             favicon: './public/favicon.ico'
         }),
         new DefinePlugin({
-            'process.env': JSON.stringify(dotenv.config().parsed)
+            'process.env': JSON.stringify(
+                dotenv.config().parsed !== undefined ? 
+                dotenv.config().parsed : 
+                {}
+            )
         })
     ],
     stats: 'errors-only',
