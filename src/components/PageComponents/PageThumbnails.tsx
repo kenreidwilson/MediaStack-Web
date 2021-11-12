@@ -5,6 +5,8 @@ import useNavigation from '../../hooks/useNavigation';
 import InfiniteThumbnails from '../Thumbnail/InfiniteThumbnails';
 import PaginatedThumbnails from '../Thumbnail/PaginatedThumbnails';
 import MediaPreview from '../Media/MediaPreview';
+import usePlatform from '../../hooks/usePlatform';
+import { NavItem } from 'react-bootstrap';
 
 type Props = {
     mediaQuery: IMediaSearchQuery,
@@ -22,7 +24,7 @@ export default function PageThumbnails({
     linkToAlbums = mediaQuery.mode === 2, 
     isInfinite = false }: Props) {
 
-    const { navigate, getNavigationData } = useNavigation();
+    const { navigate, navigateToNewWindow, getNavigationData } = useNavigation();
     const navigationData = getNavigationData();
     const pageNumberKey = 'p';
 
@@ -40,19 +42,34 @@ export default function PageThumbnails({
 
     const [ previewState, setPreviewState ] = useState<{ selectedMedia?: Media, show: boolean }>({ show: false });
 
-    const onThumbnailClick = (event: React.MouseEvent, media: Media) => {
+    const { isMobile } = usePlatform();
+
+    const showMediaPreview = (media: Media) => {
         let selectedMedia = mediaList.find(m => m.id == media.id);
-        if (selectedMedia) {
-            setPreviewState({ selectedMedia: media, show: true });
+
+        if (isMobile) {
+            if (selectedMedia) {
+                setPreviewState({ selectedMedia: media, show: true });
+            }
+        } else {
+            navigateToMediaPage(media);
         }
     }
 
-    const onPreviewClick = (event: React.MouseEvent, media: Media) => {
+    const navigateToMediaPage = (media: Media) => {
         if (linkToAlbums && media.albumID) {
             navigate({ name: 'album', data: { id: media.albumID } });
         }
         else {
             navigate({ name: 'media', data: { id: media.id } });
+        }
+    }
+
+    const navigateToMediaPageInNewTab = (media: Media) => {
+        if (linkToAlbums && !isNaN(media.albumID as number)) {
+            navigateToNewWindow({ name: 'album', data: { id: media.albumID } });
+        } else {
+            navigateToNewWindow({ name: 'media', data: { id: media.id } });
         }
     }
 
@@ -86,7 +103,7 @@ export default function PageThumbnails({
                 media={previewState.selectedMedia} 
                 show={previewState.show} 
                 onClose={() => setPreviewState({ show: false })}
-                onMediaClick={onPreviewClick}
+                onMediaClick={(_, m) => navigateToMediaPage(m)}
                 onNext={previewNextMedia}
                 onPrevious={previewPreviousMedia}
             />
@@ -97,7 +114,7 @@ export default function PageThumbnails({
                 mediaList={mediaList}
                 setMediaList={setMediaList}
                 distinguishAlbumMedia={linkToAlbums}
-                onThumbnailClick={onThumbnailClick}
+                onThumbnailClick={(_, m) => showMediaPreview(m)}
                 //onMediaLoad={(count) => setPageNumber(count % mediaPerPage)}
                 thumbnailContainerStyle={{}}/> 
             :
@@ -107,7 +124,8 @@ export default function PageThumbnails({
                     mediaQuery={mediaQuery}
                     mediaPerPage={mediaPerPage}
                     onMediaListUpdate={setMediaList}
-                    onThumbnailClick={onThumbnailClick}
+                    onThumbnailClick={(_, m) => showMediaPreview(m)}
+                    onThumbnailMiddleClick={(_, m) => navigateToMediaPageInNewTab(m)}
                     distinguishAlbumMedia={linkToAlbums}
                     thumbnailContainerStyle={{}}
                     isSwipable={!previewState.show}/>

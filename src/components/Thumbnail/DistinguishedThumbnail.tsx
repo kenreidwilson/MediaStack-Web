@@ -8,10 +8,11 @@ type Props = {
     media: Media,
     distinguishAlbum: boolean,
     onClick?: (event: React.MouseEvent, media: Media) => void,
+    onMiddleClick?: (event: React.MouseEvent, media: Media) => void,
     style?: CSSProperties
 }
 
-export default function DistinguishedThumbnail({ media, onClick, style, distinguishAlbum = false }: Props) {
+export default function DistinguishedThumbnail({ media, onClick, onMiddleClick, style, distinguishAlbum = false }: Props) {
 
     const { isMobile } = usePlatform();
     const thumbnailRef = useRef<HTMLImageElement>();
@@ -31,6 +32,7 @@ export default function DistinguishedThumbnail({ media, onClick, style, distingu
             <Thumbnail 
                 media={media} 
                 onClick={onClick} 
+                onMiddleClick={onMiddleClick}
                 style={style}
                 thumbnailRef={thumbnailRef} />
         </div>

@@ -3,7 +3,6 @@ import { Spinner } from 'react-bootstrap';
 import Media from '../../types/Media';
 import MediaContainer from './MediaContainer';
 import SelectableThumbnails from '../Thumbnail/SelectableThumbnails';
-import SelectableThumbnailSlider from '../Thumbnail/SelectableThumbnailSlider';
 import MediaPreview from '../Media/MediaPreview';
 
 type Props = {
@@ -65,25 +64,21 @@ export default function MediaGallery({ mediaList, presentedMedia, setPresentedMe
                     onClose={() => setShowPreview(false)}
                     onNext={() => previous(mediaList, presentedMedia)}
                     onPrevious={() => next(mediaList, presentedMedia)}/>}
-            {mediaList !== undefined && mediaList.length > 0 ? 
+
+            {mediaList !== undefined &&  mediaList.length > 0 && !showPreview &&
                 <div>
                     {isMediaLoading ? <Spinner style={{ width: '75px', height: '75px', position: 'absolute', margin: '17.5% 42.5%' }} animation='border' variant='primary' /> : null}
-                    {!showPreview && <MediaContainer onLoad={() => setIsMediaLoading(false)} onClick={mediaClickEventHandler} media={presentedMedia}/>}
-                </div>
-            : null}
-            {mediaList !== undefined ? 
-            (global.matchMedia(`(min-width: 768px)`).matches ?
-                <SelectableThumbnailSlider mediaList={mediaList} selectedMedia={presentedMedia} onSelectMedia={setPresentedMedia}/>
-                : 
+                    <MediaContainer onLoad={() => setIsMediaLoading(false)} onClick={mediaClickEventHandler} media={presentedMedia}/>
+                </div>}
+
+            {mediaList !== undefined && 
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                     <SelectableThumbnails 
                         canUnselect={false}
                         mediaList={mediaList} 
                         selectedMedia={[presentedMedia]} 
                         onSelectionChange={(sm: Media[]) => setPresentedMedia(sm.filter(m => m !== presentedMedia)[0])} />
-                </div>
-            ) 
-            : null}
+                </div>}
         </div>
     );
 }
