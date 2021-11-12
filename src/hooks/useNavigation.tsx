@@ -30,6 +30,13 @@ export default function useNavigation() {
         });
     };
 
+    const navigateToNewWindow = (action: NavigationAction): void => {
+        let path = action.name === 'index' ? '' : action.name;
+
+        const win = window.open(`/${path}?${new URLSearchParams(objectToRecord(action.data)).toString()}`);
+        win?.focus();
+    }
+
     const objectToRecord = (object: { [property: string]: any }): Record<string, string> => {
         let query: Record<string, string> = {};
         for (let variable in object) {
@@ -52,7 +59,7 @@ export default function useNavigation() {
         return record;
     };
 
-    return { navigate, getNavigationData };
+    return { navigate, navigateToNewWindow, getNavigationData };
 }
 
 export type {

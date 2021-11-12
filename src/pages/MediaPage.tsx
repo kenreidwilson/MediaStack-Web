@@ -29,7 +29,7 @@ export default function MediaPage() {
 
     return ( 
         <BasePage>
-            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row-reverse' }}>
                 {media && 
                 <MediaInfoModal 
                     media={media} 

@@ -19,7 +19,7 @@ import { IDependencyContext } from '../contexts/DependencyContext';
 export default function useDependencies(): IDependencyContext {
     
     const fakeApi: IKeyBasedAPI = ((): IKeyBasedAPI => {
-        switch(process.env.FAKE_API_TYPE) {
+        switch(process?.env.FAKE_API_TYPE) {
             case('memory'):
                 throw new Error("Not Implemented.");
             case('local'):
@@ -47,7 +47,7 @@ export default function useDependencies(): IDependencyContext {
         mediaFileLinkGenerator: new MediaFileLinkGenerator(process.env.REACT_APP_API!)
     }
 
-    const useRealDependencies: boolean = process.env.REACT_APP_API !== undefined;
+    const useRealDependencies: boolean = process.env.NODE_ENV === 'production' || process.env.REACT_APP_API !== undefined;
 
     return useRealDependencies ? realDependencies : fakeDependencies;
 }

@@ -9,7 +9,7 @@ import AttributesPage from './pages/AttributesPage';
 import Error404Page from './pages/404Page';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css/style.css';
+//import './css/style.css';
 
 export default function App() {
 

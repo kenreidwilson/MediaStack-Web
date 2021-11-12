@@ -101,11 +101,11 @@ export default function AlbumPage() {
                         media={selectedMedia!}
                     />}
 
-                <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
+                <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row-reverse' }}>
                     <div style={{ width: '100%' }}>
                         {Body()}
                     </div>
-                    <div style={{ width: '100%' }} >
+                    <div style={{ width: isMobile ? '100%' : '350px' }} >
                         {mediaList && selectedMedia && album && 
                             <AlbumPageSidebar 
                                 album={album} 

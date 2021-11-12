@@ -1,6 +1,6 @@
 import Media from '../../types/Media';
 import IMediaSearchQuery from '../../types/IMediaSearchQuery';
-import { CSSProperties, useEffect, useContext, useCallback, useRef } from 'react';
+import React, { CSSProperties, useEffect, useContext, useCallback, useRef } from 'react';
 import { ErrorContext } from '../../contexts/ErrorContext';
 import useMedia from '../../hooks/useMedia';
 import usePaginatedPromiseData, { PaginatedData } from '../../hooks/usePaginatedPromiseData';
@@ -15,6 +15,7 @@ type Props = {
     onMediaListUpdate: (mediaList: Media[]) => void,
     setPageNumber?: (pageNumber: number) => void,
     onThumbnailClick?: (event: React.MouseEvent, media: Media) => void,
+    onThumbnailMiddleClick?: (event: React.MouseEvent, media: Media) => void,
     isSwipable?: boolean,
     distinguishAlbumMedia?: boolean,
     thumbnailContainerStyle?: CSSProperties
@@ -25,7 +26,8 @@ export default function PaginatedThumbnails({
     mediaPerPage, 
     onMediaListUpdate,
     setPageNumber = () => {},
-    onThumbnailClick = () => {},
+    onThumbnailClick,
+    onThumbnailMiddleClick,
     isSwipable = true,
     distinguishAlbumMedia = false}: Props) {
 
@@ -65,7 +67,11 @@ export default function PaginatedThumbnails({
             <div 
                 ref={thumbnailsRef} 
                 style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <Thumbnails mediaList={data!} onClick={onThumbnailClick} distinguishAlbumMedia={distinguishAlbumMedia}/>
+                <Thumbnails 
+                    mediaList={data!} 
+                    onClick={onThumbnailClick} 
+                    onMiddleClick={onThumbnailMiddleClick}
+                    distinguishAlbumMedia={distinguishAlbumMedia}/>
             </div>}
             <div style={{display: 'flex', marginTop: '5px'}}>
                 <div style={{margin: 'auto'}}>
