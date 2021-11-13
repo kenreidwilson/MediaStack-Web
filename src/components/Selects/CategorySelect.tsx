@@ -32,7 +32,7 @@ export default function CategorySelect({ categoriesQuery, selectedCategory, onCa
 
         setIsLoading(true);
         getCategories().then(options => {
-            setCategoryOptions(options);
+            setCategoryOptions([ { label: '<No Category>', value: null }, ...options ]);
             setIsLoading(false);
         });
     }

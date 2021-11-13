@@ -52,31 +52,49 @@ export default function MediaUpdateForm({
             {showCategory ? 
                 <Form.Group>
                     <Form.Label>Category</Form.Label>
-                    <CategorySelect selectedCategory={newCategoryOption} onCategoryChange={setNewCategoryOption} isCreatable={isCreatable}/>
+                    <CategorySelect 
+                        selectedCategory={newCategoryOption} 
+                        onCategoryChange={setNewCategoryOption} 
+                        isCreatable={isCreatable}/>
                 </Form.Group> : null}
             
             {showArtist ? 
                 <Form.Group>
                     <Form.Label>Artist</Form.Label>
-                    <ArtistSelect isDisabled={newCategoryOption === undefined} selectedArtist={newArtistOption} onArtistChange={setNewArtistOption} isCreatable={isCreatable}/>
+                    <ArtistSelect 
+                        isDisabled={newCategoryOption === undefined} 
+                        selectedArtist={newArtistOption} 
+                        onArtistChange={setNewArtistOption} 
+                        isCreatable={isCreatable}/>
                 </Form.Group> : null}
             
             {showAlbum ? 
                 <Form.Group>
                     <Form.Label>Album</Form.Label>
-                    <AlbumSelect albumsQuery={{count: 9999, artistId: newArtistOption?.value }} isDisabled={newArtistOption === undefined} selectedAlbum={newAlbumOption} onAlbumChange={setNewAlbumOption} isCreatable={isCreatable}/>
+                    <AlbumSelect 
+                        albumsQuery={{count: 9999, artistId: newArtistOption?.value }} 
+                        isDisabled={newArtistOption === undefined} 
+                        albumArtistId={newArtistOption?.value}
+                        selectedAlbum={newAlbumOption} 
+                        onAlbumChange={setNewAlbumOption} 
+                        isCreatable={isCreatable}/>
                 </Form.Group> : null}
             
             {showSource ? 
                 <Form.Group>
                     <Form.Label>Source</Form.Label>
-                    <Form.Control value={newSource} onChange={(event) => setNewSource(event.target.value)}/>
+                    <Form.Control 
+                        value={newSource} 
+                        onChange={(event) => setNewSource(event.target.value)}/>
                 </Form.Group> : null}
 
             {showTags ? 
                 <Form.Group>
                     <Form.Label>Tags</Form.Label>
-                    <TagSelect selectedTags={selectedTagOptions} onTagsChange={setSelectedTagOptions} isCreatable={isCreatable}/>
+                    <TagSelect 
+                        selectedTags={selectedTagOptions} 
+                        onTagsChange={setSelectedTagOptions} 
+                        isCreatable={isCreatable}/>
                 </Form.Group> : null}
         </Form>
     );

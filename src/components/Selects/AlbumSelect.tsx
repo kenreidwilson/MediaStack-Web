@@ -1,6 +1,7 @@
 import IAlbumSearchQuery from '../../types/IAlbumSearchQuery';
 import SelectOption from '../../types/SelectOption';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { ErrorContext } from '../../contexts/ErrorContext';
 import useAlbums from '../../hooks/useAlbums';
 import BaseSingleSelect from './BaseSingleSelect';
 
@@ -15,6 +16,7 @@ type Props = {
 
 export default function AlbumSelect({  selectedAlbum, onAlbumChange: onChange, albumsQuery, albumArtistId, isCreatable = false, isDisabled = false } : Props) {
 
+    const { addError } = useContext(ErrorContext);
     const { search, add } = useAlbums();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [albumOptions, setAlbumOptions] = useState<SelectOption[] | undefined>(undefined);
@@ -46,7 +48,7 @@ export default function AlbumSelect({  selectedAlbum, onAlbumChange: onChange, a
 
         setIsLoading(true);
         getAlbums().then(options => {
-            setAlbumOptions(options);
+            setAlbumOptions([ { label: '<No Album>', value: null }, ...options ]);
             setIsLoading(false);
         });
     }
@@ -66,7 +68,8 @@ export default function AlbumSelect({  selectedAlbum, onAlbumChange: onChange, a
         }
 
         if (!canCreateAlbum()) {
-            throw 'Can\'t create album with unknown Artist.';
+            addError(new Error('Can\'t create album with unknown Artist.'));
+            return Promise.resolve();
         }
 
         setIsLoading(true);
