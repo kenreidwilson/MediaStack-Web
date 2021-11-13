@@ -1,5 +1,6 @@
 import Media from '../../types/Media';
 import Album from '../../types/Album';
+import MediaStackRestAPI from '../../api/MediaStackRestAPI';
 import { Button } from 'react-bootstrap';
 import MediaInfoSidebar from './MediaInfoSidebar';
 import AlbumInfoSidebar from './AlbumInfoSidebar';
@@ -23,6 +24,11 @@ export default function AlbumPageSidebar({
     onEditAlbumMedia,
     onOrganizeAlbumMedia }: Props) {
 
+    const sortAlbum = () => {
+        new MediaStackRestAPI()
+            .put(`${process.env.REACT_APP_API}/albums/sort?AlbumID=${album.id}&Property=path`);
+    }
+
     return(
         <div style={{ width: '100%'}}>
             <Button onClick={onEditMedia}>Edit Media</Button>
@@ -32,6 +38,7 @@ export default function AlbumPageSidebar({
             <div>
                 <Button onClick={onEditAlbumMedia}>Edit Album Media</Button>
                 <Button onClick={onOrganizeAlbumMedia}>Organize</Button>
+                <Button onClick={sortAlbum}>Sort</Button>
             </div>
         </div>
     );
