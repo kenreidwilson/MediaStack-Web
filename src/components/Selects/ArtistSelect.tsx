@@ -31,7 +31,11 @@ export default function ArtistSelect({ selectedArtist, onArtistChange: onChange,
 
         setIsLoading(true);
         getArtists().then((options) => {
-            setArtistOptions([{ label: '<No Artist>', value: null }, ...options]);
+            if (isCreatable) {
+                setArtistOptions([{ label: '<No Artist>', value: null }, ...options]);
+            } else {
+                setArtistOptions(options);
+            }
             setIsLoading(false);
         });
     }

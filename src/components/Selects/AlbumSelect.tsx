@@ -48,7 +48,11 @@ export default function AlbumSelect({  selectedAlbum, onAlbumChange: onChange, a
 
         setIsLoading(true);
         getAlbums().then(options => {
-            setAlbumOptions([ { label: '<No Album>', value: null }, ...options ]);
+            if (isCreatable) {
+                setAlbumOptions([ { label: '<No Album>', value: null }, ...options ]);
+            } else {
+                setAlbumOptions(options);
+            }
             setIsLoading(false);
         });
     }
