@@ -122,6 +122,7 @@ export default function PageThumbnails({
                     mediaQuery={mediaQuery}
                     mediaPerPage={mediaPerPage}
                     onMediaListUpdate={setMediaList}
+                    initialPageNumber={getPageNumber()}
                     onThumbnailClick={(_, m) => showMediaPreview(m)}
                     onThumbnailMiddleClick={(_, m) => navigateToMediaPageInNewTab(m)}
                     distinguishAlbumMedia={linkToAlbums}

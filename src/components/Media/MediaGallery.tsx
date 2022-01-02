@@ -1,6 +1,7 @@
 import { Media } from '../../types';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Spinner } from 'react-bootstrap';
+import usePlatform from '../../hooks/usePlatform';
 import MediaContainer from './MediaContainer';
 import SelectableThumbnails from '../Thumbnail/SelectableThumbnails';
 import MediaPreview from '../Media/MediaPreview';
@@ -17,6 +18,8 @@ export default function MediaGallery({ mediaList, presentedMedia, setPresentedMe
     const [showPreview, setShowPreview] = useState<boolean>(false);
 
     const previewMediaIndex = useRef<number | null>(null);
+
+    const { isMobile } = usePlatform();
 
     useEffect(() => {
         setIsMediaLoading(true);
@@ -44,10 +47,10 @@ export default function MediaGallery({ mediaList, presentedMedia, setPresentedMe
             if (event === undefined || mediaList.length === 1) {
                 return;
             }
-            
-            if (event.pageX - event.currentTarget.offsetLeft >= event.currentTarget.width * 0.75) {
+
+            if (event.pageX - event.currentTarget.offsetLeft >= event.currentTarget.clientWidth * 0.75) {
                 next(mediaList, presentedMedia);
-            } else if (event.pageX - event.currentTarget.offsetLeft < event.currentTarget.width * 0.25) {
+            } else if (event.pageX - event.currentTarget.offsetLeft < event.currentTarget.clientWidth * 0.25) {
                 previous(mediaList, presentedMedia);
             } else {
                 setShowPreview(true);
@@ -56,7 +59,7 @@ export default function MediaGallery({ mediaList, presentedMedia, setPresentedMe
         }, [presentedMedia]);
 
     return (
-        <div>
+        <div style={!isMobile ? { height: '77.5vh' } : {}}>
             {showPreview && presentedMedia && 
                 <MediaPreview 
                     show={showPreview} 
@@ -66,10 +69,10 @@ export default function MediaGallery({ mediaList, presentedMedia, setPresentedMe
                     onPrevious={() => next(mediaList, presentedMedia)}/>}
 
             {mediaList !== undefined &&  mediaList.length > 0 && !showPreview &&
-                <div>
+                <>
                     {isMediaLoading ? <Spinner style={{ width: '75px', height: '75px', position: 'absolute', margin: '17.5% 42.5%' }} animation='border' variant='primary' /> : null}
-                    <MediaContainer onLoad={() => setIsMediaLoading(false)} onClick={mediaClickEventHandler} media={presentedMedia}/>
-                </div>}
+                    <MediaContainer style={isMobile ? { maxHeight: '100%' } : {}} onLoad={() => setIsMediaLoading(false)} onClick={mediaClickEventHandler} media={presentedMedia}/>
+                </>}
 
             {mediaList !== undefined && 
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>

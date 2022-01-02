@@ -76,7 +76,10 @@ export default function AlbumPage() {
                     />);
             default:
                 return (
-                    <MediaGallery mediaList={mediaList} presentedMedia={selectedMedia} setPresentedMedia={setSelectdMedia}/> 
+                    <div style={!isMobile ? { maxHeight: '90vh' } : {}}>
+                        <MediaGallery mediaList={mediaList} presentedMedia={selectedMedia} setPresentedMedia={setSelectdMedia}/> 
+                    </div>
+                    
                 );
         }
     }

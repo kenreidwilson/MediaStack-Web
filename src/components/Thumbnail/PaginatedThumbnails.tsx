@@ -1,5 +1,5 @@
-import Media from '../../types/Media';
-import IMediaSearchQuery from '../../types/IMediaSearchQuery';
+import { Media } from '../../types';
+import { MediaSearchQuery } from '../../types';
 import React, { CSSProperties, useEffect, useContext, useCallback, useRef } from 'react';
 import { ErrorContext } from '../../contexts/ErrorContext';
 import useMedia from '../../hooks/useMedia';
@@ -10,9 +10,10 @@ import Thumbnails from './Thumbnails';
 import MSPagination from '../Misc/MSPagination';
 
 type Props = {
-    mediaQuery: IMediaSearchQuery,
+    mediaQuery: MediaSearchQuery,
     mediaPerPage: number,
     onMediaListUpdate: (mediaList: Media[]) => void,
+    initialPageNumber?: number,
     setPageNumber?: (pageNumber: number) => void,
     onThumbnailClick?: (event: React.MouseEvent, media: Media) => void,
     onThumbnailMiddleClick?: (event: React.MouseEvent, media: Media) => void,
@@ -25,6 +26,7 @@ export default function PaginatedThumbnails({
     mediaQuery, 
     mediaPerPage, 
     onMediaListUpdate,
+    initialPageNumber,
     setPageNumber = () => {},
     onThumbnailClick,
     onThumbnailMiddleClick,
@@ -39,7 +41,7 @@ export default function PaginatedThumbnails({
     }, [mediaQuery]);
 
     const { isLoading, error, data, totalPages, currentPage, setPage } = 
-        usePaginatedPromiseData<Media>({ getData: fetchMediaList, dataPerPage: mediaPerPage});
+        usePaginatedPromiseData<Media>({ getData: fetchMediaList, dataPerPage: mediaPerPage, initialPageNumber});
 
     useEffect(() => {
         if (error !== undefined) {

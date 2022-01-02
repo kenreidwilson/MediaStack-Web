@@ -1,4 +1,4 @@
-import Media from '../types/Media';
+import { Media } from '../types';
 import { useEffect, useState } from 'react';
 import useMedia from '../hooks/useMedia';
 import useNavigation from '../hooks/useNavigation';
@@ -43,7 +43,7 @@ export default function MediaPage() {
                             animation='border' 
                             variant='primary' 
                             style={{ width: '75px', height: '75px', position: 'absolute', margin: '17.5% 42.5%' }}/>}
-                    {media !== null && <MediaContainer style={{ maxHeight: '100vh' }} media={media} onLoad={() => setIsMediaLoading(false)}/>}
+                    {media !== null && <MediaContainer style={{ maxHeight: '90vh' }} media={media} onLoad={() => setIsMediaLoading(false)}/>}
                 </div>
                 <div style={{ width: isMobile ? '100%' : '350px' }}>
                     {media && <>
