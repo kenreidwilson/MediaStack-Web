@@ -1,4 +1,4 @@
-import Theme, { ThemeName } from '../types/Theme';
+import { Theme, ThemeName } from '../types';
 import { LightTheme } from '../themes/LightTheme';
 import { createContext } from 'react';
 

@@ -1,5 +1,4 @@
-import Media from '../types/Media';
-import Tag from '../types/Tag';
+import { Media, Tag } from "../types";
 
 const getAverageScore = (mediaList: Media[]): number => {
 

@@ -1,4 +1,4 @@
-import Media from '../../types/Media';
+import { Media } from '../../types';
 import { useState, useContext } from 'react';
 import useMedia from '../../hooks/useMedia';
 import { ErrorContext } from '../../contexts/ErrorContext';

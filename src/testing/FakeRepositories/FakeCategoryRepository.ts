@@ -1,5 +1,4 @@
-import Category from '../../types/Category';
-import IKeyBasedAPI from '../../types/IKeyBasedAPI';
+import { Category, IKeyBasedAPI } from '../../types';
 import GenericFakeRepository from './GenericFakeRepository';
 import { SeedCategories } from '../SeedData/SeedCategories';
 

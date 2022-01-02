@@ -1,6 +1,6 @@
+import { Media } from '../../types';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Spinner } from 'react-bootstrap';
-import Media from '../../types/Media';
 import MediaContainer from './MediaContainer';
 import SelectableThumbnails from '../Thumbnail/SelectableThumbnails';
 import MediaPreview from '../Media/MediaPreview';

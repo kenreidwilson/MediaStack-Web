@@ -1,5 +1,4 @@
-import Tag from '../types/Tag';
-import IRestAPI from '../types/IRestAPI';
+import { IRestAPI, Tag } from '../types';
 import GenericRepository from './GenericRepository';
 
 export default class TagRepository extends GenericRepository<Tag> {

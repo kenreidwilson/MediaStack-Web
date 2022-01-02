@@ -1,4 +1,4 @@
-import Media from '../../types/Media';
+import { Media } from '../../types';
 import { useState } from 'react';
 import SelectableThumbnails from '../Thumbnail/SelectableThumbnails';
 import MediaListEditModal from '../Modals/MediaListEditModal';

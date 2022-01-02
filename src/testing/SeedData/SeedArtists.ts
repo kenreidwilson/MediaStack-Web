@@ -1,4 +1,4 @@
-import Artist from '../../types/Artist';
+import { Artist } from "../../types";
 
 export const SeedArtists: Artist[] = ((): Artist[] => {
     return [

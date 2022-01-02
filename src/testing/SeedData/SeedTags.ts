@@ -1,4 +1,4 @@
-import Tag from '../../types/Tag';
+import { Tag } from "../../types";
 
 export const SeedTags: Tag[] = ((): Tag[] => {
     return [

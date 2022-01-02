@@ -1,4 +1,4 @@
-import Tag from '../../types/Tag';
+import { Tag } from '../../types';
 import useTags from '../../hooks/useTags';
 import useNavigation from '../../hooks/useNavigation';
 import GenericAttributeTable from '../PageComponents/GenericAttributeTable';

@@ -1,5 +1,4 @@
-import Media from '../types/Media';
-import Album from '../types/Album';
+import { Album, Media } from '../types';
 import { useState, useEffect } from 'react';
 import useAlbums from '../hooks/useAlbums';
 import useMedia from '../hooks/useMedia';

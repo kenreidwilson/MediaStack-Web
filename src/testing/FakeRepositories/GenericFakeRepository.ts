@@ -1,6 +1,4 @@
-import IKeyBasedAPI from '../../types/IKeyBasedAPI';
-import IGenericSearchQuery from '../../types/IGenericSearchQuery';
-import ISearchResponse from '../../types/ISearchResponse';
+import { IKeyBasedAPI, GenericSearchQuery, SearchResponse } from '../../types';
 import BaseFakeRepository from './BaseFakeRepository';
 
 export default class GenericFakeRepository<TEntity extends { id: number, name: string }> extends BaseFakeRepository<TEntity>  {
@@ -9,7 +7,7 @@ export default class GenericFakeRepository<TEntity extends { id: number, name: s
         super(api, entitiesKey, defaultEntities);
     }
 
-    search(query: IGenericSearchQuery): Promise<ISearchResponse<TEntity>> {
+    search(query: GenericSearchQuery): Promise<SearchResponse<TEntity>> {
         return this.API.get<TEntity[]>(this.entitiesKey)
             .then(entities => {
 

@@ -1,5 +1,5 @@
+import { MediaSearchQuery } from '../types';
 import { useHistory } from 'react-router-dom';
-import IMediaSearchQuery from '../types/IMediaSearchQuery';
 
 type NavigationActionName = 'index' | 'media' | 'album' | 'search' | 'attributes' | 'upload' | 'login';
 
@@ -9,10 +9,10 @@ type Action = {
 }
 
 type NavigationAction = Action & (
-    { name: 'index', data?: IMediaSearchQuery } |
+    { name: 'index', data?: MediaSearchQuery } |
     { name: 'media', data: { id: number } } |
     { name: 'album', data: { id: number } } |
-    { name: 'search', data?: { p: number } & IMediaSearchQuery } |
+    { name: 'search', data?: { p: number } & MediaSearchQuery } |
     { name: 'attributes' } |
     { name: 'upload' } |
     { name: 'login' })

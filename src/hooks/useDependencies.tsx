@@ -1,3 +1,4 @@
+import { IKeyBasedAPI } from '../types';
 import MediaStackRestAPI from '../api/MediaStackRestAPI';
 import TagRepository from '../repositories/TagRepository';
 import ArtistRepository from '../repositories/AritstRepository';
@@ -7,7 +8,6 @@ import AlbumRepository from '../repositories/AlbumRepository';
 import MediaFileLinkGenerator from '../repositories/MediaFileLinkGenerator';
 import FakeTagRepository from '../testing/FakeRepositories/FakeTagRepository';
 import FakeMediaRepository from '../testing/FakeRepositories/FakeMediaRepository';
-import IKeyBasedAPI from '../types/IKeyBasedAPI';
 import SessionStorageAPI from '../testing/KeyBasedAPIs/SessionStorageAPI';
 import LocalStorageAPI from '../testing/KeyBasedAPIs/LocalStorageAPI';
 import FakeAlbumRepository from '../testing/FakeRepositories/FakeAlbumRepository';

@@ -1,15 +1,13 @@
-import Media from '../../types/Media';
-import IMediaSearchQuery from '../../types/IMediaSearchQuery';
-import React, { useCallback, useState, useEffect, useRef } from 'react';
+import { Media, MediaSearchQuery } from '../../types';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import useNavigation from '../../hooks/useNavigation';
 import InfiniteThumbnails from '../Thumbnail/InfiniteThumbnails';
 import PaginatedThumbnails from '../Thumbnail/PaginatedThumbnails';
 import MediaPreview from '../Media/MediaPreview';
 import usePlatform from '../../hooks/usePlatform';
-import { NavItem } from 'react-bootstrap';
 
 type Props = {
-    mediaQuery: IMediaSearchQuery,
+    mediaQuery: MediaSearchQuery,
     mediaPerPage: number,
     mediaList: Media[],
     setMediaList?: (mediaList: Media[]) => void,

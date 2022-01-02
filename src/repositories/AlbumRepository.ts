@@ -1,14 +1,9 @@
-import Album from '../types/Album';
-import IRestAPI from '../types/IRestAPI';
-import ISearchResponse from '../types/ISearchResponse';
-import IAlbumSearchQuery from '../types/IAlbumSearchQuery';
-import IAlbumUpdateRequest from '../types/IAlbumUpdateRequest';
-import IMediaUpdateRequest from '../types/IMediaUpdateRequest';
+import { Album, AlbumSearchQuery, AlbumUpdateRequest, IRestAPI, MediaUpdateRequest, SearchResponse } from '../types';
 import { manageTags } from '../repositories/DomainHelpers';
 import MediaRepository from './MediaRepository';
 import BaseRepository from './BaseRepository';
 
-export default class AlbumRepository extends BaseRepository<Album, IAlbumSearchQuery, IAlbumUpdateRequest> {
+export default class AlbumRepository extends BaseRepository<Album, AlbumSearchQuery, AlbumUpdateRequest> {
 
     baseURL: string = `${process.env.REACT_APP_API}`;
 
@@ -24,7 +19,7 @@ export default class AlbumRepository extends BaseRepository<Album, IAlbumSearchQ
         return this.API.get<Album>(`${this.baseURL}/albums?id=${id}`);
     }
 
-    search(query: IAlbumSearchQuery): Promise<ISearchResponse<Album>> {
+    search(query: AlbumSearchQuery): Promise<SearchResponse<Album>> {
         let endpoint = `${this.baseURL}/albums/search?count=${query.count}`;
 
         if (query.offset) {
@@ -39,14 +34,14 @@ export default class AlbumRepository extends BaseRepository<Album, IAlbumSearchQ
             endpoint += `&artistid=${query.artistId}`;
         }
 
-        return this.API.get<ISearchResponse<Album>>(endpoint);
+        return this.API.get<SearchResponse<Album>>(endpoint);
     }
 
-    async update(updateRequest: IAlbumUpdateRequest): Promise<Album> {
+    async update(updateRequest: AlbumUpdateRequest): Promise<Album> {
         let mediaRepository = new MediaRepository(this.API);
         const response = await mediaRepository.search({ albumID: updateRequest.ID, mode: 1, count: 9999 });
         for (const media of response.data) {
-            let mediaUpdateRequest: IMediaUpdateRequest = { ID: media.id, score: updateRequest.score, source: updateRequest.source };
+            let mediaUpdateRequest: MediaUpdateRequest = { ID: media.id, score: updateRequest.score, source: updateRequest.source };
 
             if (updateRequest.removeTagIDs !== undefined || updateRequest.addTagIDs !== undefined) {
                 mediaUpdateRequest.tagIDs = manageTags(

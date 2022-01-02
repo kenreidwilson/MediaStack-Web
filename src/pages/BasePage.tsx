@@ -1,4 +1,4 @@
-import MSAlert from '../types/MSAlert';
+import { MSAlert } from '../types';
 import { useEffect, useRef, useState } from 'react';
 import { ErrorContext } from '../contexts/ErrorContext';
 import { ThemeContext } from '../contexts/ThemeContext';

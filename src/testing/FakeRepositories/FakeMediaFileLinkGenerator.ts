@@ -1,5 +1,4 @@
-import IMediaFileLinkGenerator from '../../types/IMediaFileLinkGenerator';
-import Media from '../../types/Media';
+import { IMediaFileLinkGenerator, Media } from "../../types";
 
 export default class FakeMediaFileLinkGenerator implements IMediaFileLinkGenerator {
 

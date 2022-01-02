@@ -1,5 +1,4 @@
-import Artist from '../types/Artist';
-import IRestAPI from '../types/IRestAPI';
+import { Artist, IRestAPI } from '../types';
 import GenericRepository from './GenericRepository';
 
 export default class ArtistRepository extends GenericRepository<Artist> {

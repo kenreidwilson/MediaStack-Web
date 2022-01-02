@@ -1,5 +1,4 @@
-import Artist from '../../types/Artist';
-import IKeyBasedAPI from '../../types/IKeyBasedAPI';
+import { Artist, IKeyBasedAPI } from '../../types';
 import GenericFakeRepository from './GenericFakeRepository';
 import { SeedArtists } from '../SeedData/SeedArtists';
 

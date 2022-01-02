@@ -1,4 +1,4 @@
-import Category from '../../types/Category';
+import { Category } from '../../types';
 import useCategories from '../../hooks/useCategories';
 import useNavigation from '../../hooks/useNavigation';
 import GenericAttributeTable from '../PageComponents/GenericAttributeTable';

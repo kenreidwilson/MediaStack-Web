@@ -1,21 +1,17 @@
-import Media from '../../types/Media';
-import Tag from '../../types/Tag';
-import IKeyBasedAPI from '../../types/IKeyBasedAPI';
-import ISearchResponse from '../../types/ISearchResponse';
-import IMediaSearchQuery from '../../types/IMediaSearchQuery';
-import IMediaUpdateRequest from '../../types/IMediaUpdateRequest';
+
 import BaseFakeRepository from './BaseFakeRepository';
 import { SeedMedia } from '../SeedData/SeedMedia';
 import FakeTagRepository from './FakeTagRepository';
 import FakeAlbumRepository from './FakeAlbumRepository';
+import { Media, MediaSearchQuery, MediaUpdateRequest, IKeyBasedAPI, Tag, SearchResponse } from '../../types';
 
-export default class FakeMediaRepository extends BaseFakeRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
+export default class FakeMediaRepository extends BaseFakeRepository<Media, MediaSearchQuery, MediaUpdateRequest> {
 
     constructor(api: IKeyBasedAPI) {
         super(api, "media", SeedMedia);
     }
 
-    search(query: IMediaSearchQuery): Promise<ISearchResponse<Media>> {
+    search(query: MediaSearchQuery): Promise<SearchResponse<Media>> {
         return this.API.get<Media[]>(this.entitiesKey).then(entities => {
 
             if (!query.offset) {
@@ -97,7 +93,7 @@ export default class FakeMediaRepository extends BaseFakeRepository<Media, IMedi
         });
     }
 
-    async update(updateRequest: IMediaUpdateRequest): Promise<Media> {
+    async update(updateRequest: MediaUpdateRequest): Promise<Media> {
 
         let ftr = new FakeTagRepository(this.API);
         let newTags: Promise<Tag[]> | undefined;

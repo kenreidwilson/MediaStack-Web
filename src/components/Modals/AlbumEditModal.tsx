@@ -1,6 +1,4 @@
-import Media from '../../types/Media';
-import Album from '../../types/Album';
-import IAlbumUpdateRequest from '../../types/IAlbumUpdateRequest';
+import { Album, AlbumUpdateRequest, Media } from '../../types';
 import { useState, useEffect } from 'react';
 import useAlbums from '../../hooks/useAlbums';
 import usePromise from '../../hooks/usePromise';
@@ -35,7 +33,7 @@ export default function AlbumEditModal({album, mediaList, isShown, onClose, onSa
         return albumSource;
     };
 
-    const [updateRequest, setUpdateRequest] = useState<IAlbumUpdateRequest>(
+    const [updateRequest, setUpdateRequest] = useState<AlbumUpdateRequest>(
         { 
             ID: album.id, 
             categoryID: mediaList.length !== 0 ? mediaList[0].categoryID : undefined, //TODO: Find a better way.

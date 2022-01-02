@@ -1,4 +1,4 @@
-import IGenericSearchQuery from '../../types/IGenericSearchQuery';
+import { GenericSearchQuery } from '../../types';
 import { useState, useCallback } from 'react';
 import GenericEditModal from '../Modals/GenericEditModal';
 import GenericDeleteModal from '../Modals/GenericDeleteModal';
@@ -9,7 +9,7 @@ import { PaginatedData } from '../../hooks/usePaginatedPromiseData';
 type Props<T> = {
     attributeName: string,
     onSelectAttribute?: (attribute: T) => void,
-    search: (query: IGenericSearchQuery) => Promise<PaginatedData<T>>,
+    search: (query: GenericSearchQuery) => Promise<PaginatedData<T>>,
     update: (attribute: T) => Promise<T>,
     delete: (attribute: T) => Promise<void>
 }
@@ -17,7 +17,7 @@ type Props<T> = {
 export default function GenericAttributeTable<T extends { id: number, name: string }>({ 
     attributeName, onSelectAttribute, search, update, delete: deleteAttribute }: Props<T>) {
 
-    const [searchQuery, setSearchQuery] = useState<IGenericSearchQuery>({});
+    const [searchQuery, setSearchQuery] = useState<GenericSearchQuery>({});
 
     const [{ selectedAttribute, showEditModal, showDeleteModal }, setModalState] =
     useState<{ selectedAttribute: T | undefined, showEditModal: boolean, showDeleteModal: boolean }>

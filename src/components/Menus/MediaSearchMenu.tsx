@@ -1,18 +1,18 @@
-import IMediaSearchQuery from '../../types/IMediaSearchQuery';
+import { MediaSearchQuery } from '../../types';
 import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import MediaSearchForm from '../Forms/MediaSearchForm';
 import { Button } from 'react-bootstrap';
 
 type Props = {
-    initialQuery?: IMediaSearchQuery,
-    onQueryUpdate?: (query: IMediaSearchQuery) => void,
-    onSearch?: (query: IMediaSearchQuery) => void
+    initialQuery?: MediaSearchQuery,
+    onQueryUpdate?: (query: MediaSearchQuery) => void,
+    onSearch?: (query: MediaSearchQuery) => void
 }
 
 export default function MediaSearchMenu({ initialQuery = {}, onQueryUpdate = () => {}, onSearch = () => {} } : Props) {
 
-    const [query, setQuery] = useState<IMediaSearchQuery>(initialQuery);
+    const [query, setQuery] = useState<MediaSearchQuery>(initialQuery);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState<boolean>(false);
 
     const { theme } = useContext(ThemeContext);

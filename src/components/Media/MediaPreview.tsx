@@ -1,4 +1,4 @@
-import Media from '../../types/Media';
+import { Media } from '../../types';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import useSwipeable from '../../hooks/useSwipeable';

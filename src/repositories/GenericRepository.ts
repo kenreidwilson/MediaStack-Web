@@ -1,10 +1,5 @@
-import Tag from '../types/Tag';
-import Artist from '../types/Artist';
-import Category from '../types/Category';
-import ISearchResponse from '../types/ISearchResponse';
-import IGenericSearchQuery from '../types/IGenericSearchQuery';
+import { Artist, Category, GenericSearchQuery, IRestAPI, SearchResponse, Tag } from '../types';
 import BaseRepository from './BaseRepository';
-import IRestAPI from '../types/IRestAPI';
 import { APIBadRequestError } from '../api/APIErrors';
 
 export default abstract class GenericRepository<
@@ -29,7 +24,7 @@ export default abstract class GenericRepository<
         return this.API.get<TEntity>(`${this.baseURL}/${this.baseEndpoint}?id=${id}`);
     }
 
-    search(query: IGenericSearchQuery): Promise<ISearchResponse<TEntity>> {
+    search(query: GenericSearchQuery): Promise<SearchResponse<TEntity>> {
         let endpoint = `${this.baseURL}/${this.baseEndpoint}/search?count=${query.count}`;
 
         if (query.offset) {
@@ -40,7 +35,7 @@ export default abstract class GenericRepository<
             endpoint += `&fuzzyname=${query.fuzzyName}`;
         }
 
-        return this.API.get<ISearchResponse<TEntity>>(endpoint);
+        return this.API.get<SearchResponse<TEntity>>(endpoint);
     }
 
     update(e: TEntity): Promise<TEntity> {

@@ -1,5 +1,5 @@
+import { Theme, ThemeName } from '../types';
 import { useState } from 'react';
-import Theme, { ThemeName } from '../types/Theme';
 import { DarkTheme } from '../themes/DarkTheme';
 import { LightTheme } from '../themes/LightTheme';
 

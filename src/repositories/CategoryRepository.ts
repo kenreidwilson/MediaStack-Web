@@ -1,5 +1,4 @@
-import Category from '../types/Category';
-import IRestAPI from '../types/IRestAPI';
+import { Category, IRestAPI } from '../types';
 import GenericRepository from './GenericRepository';
 
 export default class CategoryRepository extends GenericRepository<Category> {

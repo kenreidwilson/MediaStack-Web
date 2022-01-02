@@ -1,11 +1,7 @@
-import Media from '../types/Media';
-import ISearchResponse from '../types/ISearchResponse';
-import IMediaSearchQuery from '../types/IMediaSearchQuery';
-import IMediaUpdateRequest from '../types/IMediaUpdateRequest';
+import { IRestAPI, Media, MediaSearchQuery, MediaUpdateRequest, SearchResponse } from '../types';
 import BaseRepository from './BaseRepository';
-import IRestAPI from '../types/IRestAPI';
 
-export default class MediaRepository extends BaseRepository<Media, IMediaSearchQuery, IMediaUpdateRequest> {
+export default class MediaRepository extends BaseRepository<Media, MediaSearchQuery, MediaUpdateRequest> {
     
     baseURL: string = `${process.env.REACT_APP_API}`;
 
@@ -21,11 +17,11 @@ export default class MediaRepository extends BaseRepository<Media, IMediaSearchQ
         return this.API.get<Media>(`${this.baseURL}/media?id=${id}`);
     }
 
-    search(query: IMediaSearchQuery): Promise<ISearchResponse<Media>> {
-        return this.API.post<ISearchResponse<Media>>(`${this.baseURL}/media/search`, query);
+    search(query: MediaSearchQuery): Promise<SearchResponse<Media>> {
+        return this.API.post<SearchResponse<Media>>(`${this.baseURL}/media/search`, query);
     }
 
-    update(updateRequest: IMediaUpdateRequest): Promise<Media> {
+    update(updateRequest: MediaUpdateRequest): Promise<Media> {
         return this.API.put<Media>(`${this.baseURL}/media`, updateRequest);
     }
 

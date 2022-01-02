@@ -1,5 +1,4 @@
-import Media from '../types/Media';
-import IMediaSearchQuery from '../types/IMediaSearchQuery';
+import { Media, MediaSearchQuery } from '../types';
 import { useRef, useState } from 'react';
 import useNavigation from '../hooks/useNavigation';
 import usePlatform from '../hooks/usePlatform';
@@ -12,12 +11,13 @@ import ThumbnailPageSidebar from '../components/Sidebar/ThumbnailPageSidebar';
 import ToggleableSidebar from '../components/Sidebar/ToggleableSidebar';
 import MediaListUpdate from '../components/Media/MediaListUpdate';
 
+
 export default function ThumbnailPageComponent() {
     
     const { getNavigationData } = useNavigation();
     const { isMobile } = usePlatform();
 
-    const [mediaQuery, setMediaQuery] = useState<IMediaSearchQuery>(getNavigationData());
+    const [mediaQuery, setMediaQuery] = useState<MediaSearchQuery>(getNavigationData());
     const [mediaList, setMediaList] = useState<Media[]>([]);
     const [showRightSidebar, setShowRightSidebar] = useState<boolean>(false);
     const [isEditMode, setIsEditMode] = useState<boolean>(false);

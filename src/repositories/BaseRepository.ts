@@ -1,9 +1,6 @@
-import IRestAPI from "../types/IRestAPI";
-import IRepository from "../types/IRepository";
-import ISearchQuery from "../types/ISearchQuery";
-import ISearchResponse from "../types/ISearchResponse";
+import { IRepository, IRestAPI, SearchQuery, SearchResponse } from "../types";
 
-export default abstract class BaseRepository<TEntity, TSearchQuery = ISearchQuery, TUpdateRequest = TEntity> 
+export default abstract class BaseRepository<TEntity, TSearchQuery = SearchQuery, TUpdateRequest = TEntity> 
     implements IRepository<TEntity, TSearchQuery, TUpdateRequest> {
 
     API: IRestAPI;
@@ -16,7 +13,7 @@ export default abstract class BaseRepository<TEntity, TSearchQuery = ISearchQuer
 
     abstract get(id: number): Promise<TEntity>;
 
-    abstract search(query: TSearchQuery): Promise<ISearchResponse<TEntity>>;
+    abstract search(query: TSearchQuery): Promise<SearchResponse<TEntity>>;
 
     abstract update(e: TUpdateRequest): Promise<TEntity>;
 

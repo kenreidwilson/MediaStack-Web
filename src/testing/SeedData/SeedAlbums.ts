@@ -1,4 +1,4 @@
-import Album from '../../types/Album';
+import { Album } from "../../types";
 
 export const SeedAlbums: Album[] = ((): Album[] => {
     return [

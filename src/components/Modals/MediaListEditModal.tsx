@@ -1,7 +1,4 @@
-import Media from '../../types/Media';
-import Tag from '../../types/Tag';
-import IMediaUpdateRequest from '../../types/IMediaUpdateRequest';
-import IAlbumUpdateRequest from '../../types/IAlbumUpdateRequest';
+import { AlbumUpdateRequest, Media, MediaUpdateRequest, Tag } from '../../types';
 import { useState, useEffect } from 'react';
 import usePromise from '../../hooks/usePromise';
 import useMedia from '../../hooks/useMedia';
@@ -22,14 +19,14 @@ export default function MediaListEditModal({
     onSave = () => {} }: Props) {
 
     const { update } = useMedia();
-    const [albumUpdateRequest, setAlbumUpdateRequest] = useState<IAlbumUpdateRequest>({ ID: 0 });
+    const [albumUpdateRequest, setAlbumUpdateRequest] = useState<AlbumUpdateRequest>({ ID: 0 });
 
     const generateMediaUpdateRequests = 
-        (albumUpdateRequest: IAlbumUpdateRequest, mediaToUpdate: Media[]): IMediaUpdateRequest[] => {
+        (albumUpdateRequest: AlbumUpdateRequest, mediaToUpdate: Media[]): MediaUpdateRequest[] => {
             
         return mediaToUpdate.map(media => {
 
-            let mediaUpdateRequest: IMediaUpdateRequest = 
+            let mediaUpdateRequest: MediaUpdateRequest = 
                 { ID: media.id, score: albumUpdateRequest.score, source: albumUpdateRequest.source };
 
             if (albumUpdateRequest.removeTagIDs !== undefined || albumUpdateRequest.addTagIDs !== undefined) {
@@ -54,7 +51,7 @@ export default function MediaListEditModal({
         });
     }
 
-    const updateAllMedia = async (mediaUpdateRequests: IMediaUpdateRequest[]): Promise<Media[]> => {
+    const updateAllMedia = async (mediaUpdateRequests: MediaUpdateRequest[]): Promise<Media[]> => {
         return Promise.all(mediaUpdateRequests.map(update));
     }
 

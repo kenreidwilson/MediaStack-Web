@@ -1,4 +1,4 @@
-import IKeyBasedAPI from "../../types/IKeyBasedAPI";
+import { IKeyBasedAPI } from "../../types";
 
 export default abstract class BrowserStorageAPI implements IKeyBasedAPI {
 

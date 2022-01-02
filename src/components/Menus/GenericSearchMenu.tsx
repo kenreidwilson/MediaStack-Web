@@ -1,17 +1,17 @@
-import IGenericSearchQuery from '../../types/IGenericSearchQuery';
+import { GenericSearchQuery } from '../../types';
 import { useEffect, useState } from 'react';
 import GenericSearchForm from '../Forms/GenericSearchForm';
 import { Button } from 'react-bootstrap';
 
 type Props = {
-    initialQuery?: IGenericSearchQuery,
-    onQueryUpdate?: (query: IGenericSearchQuery) => void,
-    onSearch?: (query: IGenericSearchQuery) => void
+    initialQuery?: GenericSearchQuery,
+    onQueryUpdate?: (query: GenericSearchQuery) => void,
+    onSearch?: (query: GenericSearchQuery) => void
 }
 
 export default function GenericSearchMenu({ initialQuery = {}, onQueryUpdate = () => {}, onSearch = () => {} }: Props) {
 
-    const [query, setQuery] = useState<IGenericSearchQuery>(initialQuery);
+    const [query, setQuery] = useState<GenericSearchQuery>(initialQuery);
 
     useEffect(() => {
         onQueryUpdate(query);

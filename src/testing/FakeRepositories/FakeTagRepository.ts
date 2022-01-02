@@ -1,5 +1,4 @@
-import Tag from '../../types/Tag';
-import IKeyBasedAPI from '../../types/IKeyBasedAPI';
+import { IKeyBasedAPI, Tag } from '../../types';
 import GenericFakeRepository from './GenericFakeRepository';
 import { SeedTags } from '../SeedData/SeedTags';
 

@@ -1,5 +1,5 @@
+import { MSAlert } from '../types';
 import { createContext } from 'react';
-import MSAlert from '../types/MSAlert';
 
 interface IAlertContext { 
     getAlerts: () => MSAlert[],
