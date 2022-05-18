@@ -1,4 +1,4 @@
-import SelectOption from '../../types/SelectOption';
+import { SelectOption } from '../../types';
 import { useEffect, useState } from 'react';
 import useTags from '../../hooks/useTags';
 import BaseMultiSelect from './BaseMultiSelect';

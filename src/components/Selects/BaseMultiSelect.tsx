@@ -1,4 +1,4 @@
-import SelectOption from '../../types/SelectOption';
+import { SelectOption } from '../../types';
 import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select';
 

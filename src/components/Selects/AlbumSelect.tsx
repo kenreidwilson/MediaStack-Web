@@ -1,5 +1,4 @@
-import IAlbumSearchQuery from '../../types/IAlbumSearchQuery';
-import SelectOption from '../../types/SelectOption';
+import { SelectOption, AlbumSearchQuery } from '../../types';
 import { useState, useEffect, useContext } from 'react';
 import { ErrorContext } from '../../contexts/ErrorContext';
 import useAlbums from '../../hooks/useAlbums';
@@ -8,7 +7,7 @@ import BaseSingleSelect from './BaseSingleSelect';
 type Props = {
     selectedAlbum?: SelectOption,
     onAlbumChange: (option?: SelectOption) => void,
-    albumsQuery?: IAlbumSearchQuery,
+    albumsQuery?: AlbumSearchQuery,
     albumArtistId?: number,
     isCreatable?: boolean,
     isDisabled?: boolean
@@ -31,7 +30,7 @@ export default function AlbumSelect({  selectedAlbum, onAlbumChange: onChange, a
         return isCreatable && albumArtistId !== undefined;
     }
 
-    const getAlbumQuery = (): IAlbumSearchQuery => {
+    const getAlbumQuery = (): AlbumSearchQuery => {
         if (albumsQuery !== undefined) {
             return albumsQuery;
         }

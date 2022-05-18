@@ -1,5 +1,4 @@
-import IAlbumUpdateRequest from '../../types/IAlbumUpdateRequest';
-import SelectOption from '../../types/SelectOption';
+import { AlbumUpdateRequest, SelectOption } from '../../types';
 import { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import ArtistSelect from '../Selects/ArtistSelect';
@@ -7,8 +6,8 @@ import CategorySelect from '../Selects/CategorySelect';
 import TagSelect from '../Selects/TagSelect';
 
 type Props = {
-    request: IAlbumUpdateRequest,
-    onChange?: (request: IAlbumUpdateRequest) => void,
+    request: AlbumUpdateRequest,
+    onChange?: (request: AlbumUpdateRequest) => void,
     isCreatable?: boolean,
     showCategory?: boolean,
     showArtist?: boolean,

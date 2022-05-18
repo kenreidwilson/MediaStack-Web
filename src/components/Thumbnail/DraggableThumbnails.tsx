@@ -1,4 +1,4 @@
-import Media from '../../types/Media';
+import { Media } from '../../types';
 import Reorder, { reorder } from 'react-reorder';
 import Thumbnail from './Thumbnail';
 

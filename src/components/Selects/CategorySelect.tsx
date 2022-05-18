@@ -1,5 +1,4 @@
-import SelectOption from '../../types/SelectOption';
-import IGenericSearchQuery from '../../types/IGenericSearchQuery';
+import { SelectOption, GenericSearchQuery } from '../../types';
 import { useState, useEffect } from 'react';
 import useCategories from '../../hooks/useCategories';
 import BaseSingleSelect from './BaseSingleSelect';
@@ -7,7 +6,7 @@ import BaseSingleSelect from './BaseSingleSelect';
 type Props = {
     selectedCategory?: SelectOption,
     onCategoryChange: (option?: SelectOption) => void,
-    categoriesQuery?: IGenericSearchQuery,
+    categoriesQuery?: GenericSearchQuery,
     isCreatable?: boolean,
     isDisabled?: boolean
 }

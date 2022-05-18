@@ -1,7 +1,4 @@
-import Media from '../../types/Media';
-import Album from '../../types/Album';
-import Tag from '../../types/Tag';
-import IMediaSearchQuery from '../../types/IMediaSearchQuery';
+import { Media, Album, Tag, MediaSearchQuery } from '../../types';
 import useNavigation from '../../hooks/useNavigation';
 import { List, ListItemButton } from '@mui/material';
 import RatingStars from '../Misc/RatingStars';
@@ -17,7 +14,7 @@ export default function AlbumInfoSidebar({album, mediaList }: Props) {
 
     const { navigate } = useNavigation();
 
-    const onSidebarNavClick = (query: IMediaSearchQuery) => {
+    const onSidebarNavClick = (query: MediaSearchQuery) => {
         navigate({ name: 'search', data: query });
     }
 

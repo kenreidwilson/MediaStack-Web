@@ -1,4 +1,4 @@
-import Media from '../../types/Media';
+import { Media } from '../../types';
 import { useContext } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import DistinguishedThumbnail from './DistinguishedThumbnail';

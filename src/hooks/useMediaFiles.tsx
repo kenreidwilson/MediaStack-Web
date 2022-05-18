@@ -1,4 +1,4 @@
-import IMediaFileLinkGenerator from '../types/IMediaFileLinkGenerator';
+import { IMediaFileLinkGenerator } from '../types';
 import { useContext } from 'react';
 import { DependencyContext } from '../contexts/DependencyContext';
 

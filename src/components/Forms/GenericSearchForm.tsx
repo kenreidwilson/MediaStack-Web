@@ -1,18 +1,18 @@
-import IGenericSearchQuery from "../../types/IGenericSearchQuery";
+import { GenericSearchQuery } from "../../types";
 import { useState, useEffect, useContext } from 'react';
 import { Form } from 'react-bootstrap';
 import { ThemeContext } from "../../contexts/ThemeContext";
 
 type Props = {
-    query: IGenericSearchQuery,
-    setQuery?: (query: IGenericSearchQuery) => void
+    query: GenericSearchQuery,
+    setQuery?: (query: GenericSearchQuery) => void
 }
 
 export default function GenericSearchForm({ query, setQuery = () => {} }: Props) {
 
     const [fuzzyName, setFuzzyName] = useState<string | undefined>(query.fuzzyName);
 
-    const getQuery = (): IGenericSearchQuery => {
+    const getQuery = (): GenericSearchQuery => {
         return {
             fuzzyName
         };

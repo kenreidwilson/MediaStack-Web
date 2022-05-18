@@ -1,5 +1,4 @@
-import Media from '../../types/Media';
-import IMediaSearchQuery from '../../types/IMediaSearchQuery';
+import { Media, MediaSearchQuery } from '../../types';
 import  { useState, useEffect, useContext } from 'react';
 import { ErrorContext } from '../../contexts/ErrorContext';
 import useAlbums from '../../hooks/useAlbums';
@@ -54,7 +53,7 @@ export default function MediaInfoSidebar({ media }: Props) {
         }
     }, [media]);
 
-    const onSidebarNavClick = (query: IMediaSearchQuery) => {
+    const onSidebarNavClick = (query: MediaSearchQuery) => {
         navigate({ name: 'search', data: query });
     }
 

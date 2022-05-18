@@ -1,4 +1,4 @@
-import Tag from '../../../types/Tag';
+import { Tag } from '../../../types';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../contexts/ThemeContext';
 import { Chip } from '@mui/material';

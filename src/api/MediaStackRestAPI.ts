@@ -1,6 +1,5 @@
 import { APINetworkError, APINotFoundError, APIBadRequestError, APIUnexpectedResponseError } from './APIErrors';
-import IRestAPI from '../types/IRestAPI';
-import BaseResponse from '../types/IBaseResponse';
+import { IRestAPI, BaseResponse } from '../types';
 import Axios from 'axios';
 
 export default class MediaStackRestAPI implements IRestAPI {

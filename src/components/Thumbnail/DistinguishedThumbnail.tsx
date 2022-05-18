@@ -1,4 +1,4 @@
-import Media from '../../types/Media';
+import { Media } from '../../types';
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 import usePlatform from '../../hooks/usePlatform';
 import { Badge } from 'react-bootstrap';

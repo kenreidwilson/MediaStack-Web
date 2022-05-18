@@ -1,5 +1,4 @@
-import Media from '../../types/Media';
-import IMediaUpdateRequest from '../../types/IMediaUpdateRequest';
+import { Media, MediaUpdateRequest } from '../../types';
 import { useState, useEffect } from 'react';
 import useMedia from '../../hooks/useMedia';
 import usePromise from '../../hooks/usePromise';
@@ -16,7 +15,7 @@ type Props = {
 export default function MediaInfoModal({ media, isShown, onClose, onSave }: Props) {
 
     const { update } = useMedia();
-    const [updateRequest, setUpdateRequest] = useState<IMediaUpdateRequest>(
+    const [updateRequest, setUpdateRequest] = useState<MediaUpdateRequest>(
         { 
             ID: media.id,
             categoryID: media.categoryID,

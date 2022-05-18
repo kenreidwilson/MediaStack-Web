@@ -1,4 +1,4 @@
-import Media from '../../types/Media';
+import { Media } from '../../types';
 import DistinguishedThumbnail from './DistinguishedThumbnail';
 
 type Props = {

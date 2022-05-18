@@ -1,12 +1,12 @@
-import IMediaSearchQuery from '../../types/IMediaSearchQuery';
+import { MediaSearchQuery } from '../../types';
 import { Button, Accordion, Card } from 'react-bootstrap';
 import Sidebar from './Sidebar';
 import MediaSearchSidebarElement from './Elements/MediaSearchSidebarElement';
 
 type Props = {
     onToggleEditMode?: () => void,
-    mediaQuery?: IMediaSearchQuery,
-    setMediaQuery?: (query: IMediaSearchQuery) => void
+    mediaQuery?: MediaSearchQuery,
+    setMediaQuery?: (query: MediaSearchQuery) => void
 }
 
 export default function ThumbnailPageSidebar({ 

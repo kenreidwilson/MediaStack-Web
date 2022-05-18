@@ -1,5 +1,4 @@
-import Media from '../../types/Media';
-import Album from '../../types/Album';
+import { Media, Album } from '../../types';
 import MediaStackRestAPI from '../../api/MediaStackRestAPI';
 import { Button } from 'react-bootstrap';
 import MediaInfoSidebar from './MediaInfoSidebar';

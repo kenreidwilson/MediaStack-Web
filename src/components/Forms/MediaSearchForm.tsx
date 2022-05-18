@@ -1,5 +1,4 @@
-import SelectOption from '../../types/SelectOption';
-import IMediaSearchQuery from '../../types/IMediaSearchQuery';
+import { SelectOption, MediaSearchQuery } from '../../types';
 import { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import RatingStars from '../Misc/RatingStars';
@@ -13,8 +12,8 @@ import SortBySelect from '../Selects/SortBySelect';
 import TagSelect from '../Selects/TagSelect';
 
 type Props = {
-    query: IMediaSearchQuery,
-    onChange?: (query: IMediaSearchQuery) => void,
+    query: MediaSearchQuery,
+    onChange?: (query: MediaSearchQuery) => void,
     showMode?: boolean,
     showTags?: boolean,
     showBlacklistTags?: boolean,

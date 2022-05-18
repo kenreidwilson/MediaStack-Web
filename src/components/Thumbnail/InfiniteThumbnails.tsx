@@ -1,5 +1,4 @@
-import Media from '../../types/Media';
-import IMediaSearchQuery from '../../types/IMediaSearchQuery';
+import { Media, MediaSearchQuery } from '../../types';
 import { useState, useEffect, CSSProperties } from 'react';
 import useMedia from '../../hooks/useMedia';
 import { Spinner } from 'react-bootstrap';
@@ -7,7 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Thumbnails from './Thumbnails';
 
 type Props = {
-    mediaQuery: IMediaSearchQuery,
+    mediaQuery: MediaSearchQuery,
     mediaList: Media[],
     setMediaList: (mediaList: Media[]) => void,
     onThumbnailClick?: (event: React.MouseEvent, media: Media) => void,

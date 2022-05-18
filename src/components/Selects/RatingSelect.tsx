@@ -1,4 +1,4 @@
-import SelectOption from '../../types/SelectOption'
+import { SelectOption } from '../../types'
 import BaseSingleSelect from './BaseSingleSelect';
 
 type Props = {

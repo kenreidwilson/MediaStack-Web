@@ -1,4 +1,4 @@
-import SelectOption from '../../types/SelectOption';
+import { SelectOption } from '../../types';
 import { useContext } from 'react';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import CreatableSelect from 'react-select/creatable';

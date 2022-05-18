@@ -1,5 +1,4 @@
-import IMediaUpdateRequest from '../../types/IMediaUpdateRequest';
-import SelectOption from '../../types/SelectOption';
+import { SelectOption, MediaUpdateRequest } from '../../types';
 import { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 import AlbumSelect from '../Selects/AlbumSelect';
@@ -8,8 +7,8 @@ import CategorySelect from '../Selects/CategorySelect';
 import TagSelect from '../Selects/TagSelect';
 
 type Props = {
-    request: IMediaUpdateRequest,
-    onChange?: (request: IMediaUpdateRequest) => void,
+    request: MediaUpdateRequest,
+    onChange?: (request: MediaUpdateRequest) => void,
     isCreatable?: boolean,
     showSource?: boolean,
     showCategory?: boolean,

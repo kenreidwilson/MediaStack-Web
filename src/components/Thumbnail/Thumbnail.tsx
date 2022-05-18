@@ -1,4 +1,4 @@
-import Media from '../../types/Media';
+import { Media } from '../../types';
 import React, { CSSProperties, useMemo, useCallback } from 'react';
 import useMediaFiles from '../../hooks/useMediaFiles';
 import usePlatform from '../../hooks/usePlatform';
