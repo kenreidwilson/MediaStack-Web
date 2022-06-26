@@ -114,7 +114,7 @@ export default function PageThumbnails({
                 distinguishAlbumMedia={linkToAlbums}
                 onThumbnailClick={(_, m) => showMediaPreview(m)}
                 //onMediaLoad={(count) => setPageNumber(count % mediaPerPage)}
-                thumbnailContainerStyle={{}}/> 
+                thumbnailContainerStyle={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}/> 
             :
             <>
                 <PaginatedThumbnails
