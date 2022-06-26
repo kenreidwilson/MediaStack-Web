@@ -57,10 +57,22 @@ export default function PaginatedThumbnails({
 
     const thumbnailsRef = useRef<HTMLDivElement | null>(null);
     
+    const onSwipeNext = () => {
+        const newPage = currentPage == 1 ? 1 : currentPage - 1;
+        setPage(newPage);
+        setPageNumber(newPage);
+    }
+
+    const onSwipePrevious = () => {
+        const newPage = currentPage == totalPages ? 1 : currentPage + 1;
+        setPage(newPage);
+        setPageNumber(newPage);
+    }
+
     const { resetPosition, enable, disable } = useSwipeable({
         divRef: thumbnailsRef, 
-        onNext: () => setPage(currentPage == 1 ? 1 : currentPage - 1), 
-        onPrevious: () => setPage(currentPage == totalPages ? 1 : currentPage + 1),
+        onNext: onSwipeNext, 
+        onPrevious: onSwipePrevious,
         move: false});
 
     return (
